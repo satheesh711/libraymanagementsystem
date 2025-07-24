@@ -1,15 +1,17 @@
 package com.domain;
 
+import com.utilities.BookCategory;
+
 public class Book {
 
 	private int bookId;
 	private String title;
 	private String author;
-	private String category;
-	private char status;
-	private char availability;
+	private BookCategory category;
+	private String status;
+	private String availability;
 
-	public Book(int bookId, String title, String author, String category, char status, char availability) {
+	public Book(int bookId, String title, String author, BookCategory category, String status, String availability) {
 		this.bookId = bookId;
 		this.title = title;
 		this.author = author;
@@ -30,15 +32,16 @@ public class Book {
 		return author;
 	}
 
-	public String getCategory() {
+	public BookCategory getCategory() {
+
 		return category;
 	}
 
-	public char getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public char getAvailability() {
+	public String getAvailability() {
 		return availability;
 	}
 
