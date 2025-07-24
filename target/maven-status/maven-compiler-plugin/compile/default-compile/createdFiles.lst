@@ -1,8 +1,11 @@
+com\controller\Books\BookOptionsController.class
 com\dao\impl\BookDaoImpl.class
 com\dao\IssueRecordDao.class
 com\dao\BookDao.class
+com\utilities\BookAvailability.class
 com\utilities\BookCategory.class
 com\dao\MemberDao.class
+com\utilities\BookStatus.class
 com\dao\impl\IssueRecordDaoImpl.class
 com\domain\IssueRecord.class
 com\controller\MainController.class
@@ -13,5 +16,6 @@ com\dao\impl\MemberDaoImpl.class
 com\utilities\SQLQueries.class
 com\domain\Book.class
 com\libraryManagementSystem\App.class
+com\controller\Books\BookAddController.class
 com\utilities\DBConnection.class
 com\services\impl\BookServicesImpl.class
