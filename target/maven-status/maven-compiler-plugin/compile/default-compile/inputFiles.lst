@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 E:\weekly\libraymanagementsystem\src\main\java\com\controller\MainController.java
 E:\weekly\libraymanagementsystem\src\main\java\com\utilities\SQLQueries.java
 E:\weekly\libraymanagementsystem\src\main\java\com\dao\impl\IssueRecordDaoImpl.java
@@ -14,3 +15,21 @@ E:\weekly\libraymanagementsystem\src\main\java\com\domain\IssueRecord.java
 E:\weekly\libraymanagementsystem\src\main\java\com\services\impl\BookServicesImpl.java
 E:\weekly\libraymanagementsystem\src\main\java\com\services\BookServices.java
 E:\weekly\libraymanagementsystem\src\main\java\com\utilities\PreparedStatementManager.java
+=======
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\domain\Member.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\utilities\SQLQueries.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\MemberDao.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\utilities\PreparedStatementManager.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\services\BookServices.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\impl\IssueRecordDaoImpl.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\controller\MainController.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\impl\BookDaoImpl.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\services\impl\BookServicesImpl.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\impl\MemberDaoImpl.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\IssueRecordDao.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\libraryManagementSystem\App.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\domain\Book.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\BookDao.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\utilities\DBConnection.java
+C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\domain\IssueRecord.java
+>>>>>>> 9cf565945bb6978a286eccf8da85bcb103ebc14c
