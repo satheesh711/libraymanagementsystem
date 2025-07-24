@@ -5,23 +5,31 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Button?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.Books.BookAddController">
+   <children>
+   		<Button  layoutX="20.0" layoutY="5.0" mnemonicParsing="false" text="Back"   onAction="#switchToBack"/>
+   </children>
+      <children>
+   		<Button layoutX="550.0" layoutY="5.0" mnemonicParsing="false" text="Home"  onAction="#switchToHome" />
+   </children>
    <children>
       <Label layoutX="135.0" layoutY="71.0" prefHeight="17.0" prefWidth="53.0" text="Title" />
       <Label layoutX="135.0" layoutY="114.0" prefHeight="17.0" prefWidth="53.0" text="Author" />
       <Label layoutX="135.0" layoutY="157.0" text="Category" />
-      <TextField layoutX="226.0" layoutY="67.0" />
-      <TextField layoutX="226.0" layoutY="110.0" />
-      <ComboBox layoutX="225.0" layoutY="153.0" prefWidth="150.0" visibleRowCount="9">
+      <TextField layoutX="226.0" layoutY="67.0" prefWidth="250.0"/>
+      <TextField layoutX="226.0" layoutY="110.0"  prefWidth="250.0"/>
+      <ComboBox layoutX="225.0" layoutY="153.0" prefWidth="250.0" visibleRowCount="9" fx:id="category" promptText="Select Option">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ComboBox>
       <Label layoutX="142.0" layoutY="200.0" text="Status" />
       <Label layoutX="133.0" layoutY="243.0" text="Availability" />
-      <ComboBox layoutX="225.0" layoutY="196.0" prefWidth="150.0" visibleRowCount="2" />
-      <ComboBox layoutX="225.0" layoutY="239.0" prefWidth="150.0" visibleRowCount="2" />
+      <ComboBox layoutX="225.0" layoutY="196.0" prefWidth="250.0" visibleRowCount="2" fx:id="status" promptText="CheckStatus"/>
+      <ComboBox layoutX="225.0" layoutY="239.0" prefWidth="250.0" visibleRowCount="2" fx:id="availability" promptText="CheckAvailability" />
    </children>
+
 </Pane>
