@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 E:\weekly\libraymanagementsystem\src\main\java\com\controller\BooksController.java
 E:\weekly\libraymanagementsystem\src\main\java\com\controller\MainController.java
 E:\weekly\libraymanagementsystem\src\main\java\com\utilities\SQLQueries.java
@@ -6,6 +5,7 @@ E:\weekly\libraymanagementsystem\src\main\java\com\dao\impl\IssueRecordDaoImpl.j
 E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\App.java
 E:\weekly\libraymanagementsystem\src\main\java\com\dao\MemberDao.java
 E:\weekly\libraymanagementsystem\src\main\java\com\domain\Member.java
+E:\weekly\libraymanagementsystem\src\main\java\com\utilities\BookCategory.java
 E:\weekly\libraymanagementsystem\src\main\java\com\dao\BookDao.java
 E:\weekly\libraymanagementsystem\src\main\java\com\dao\impl\MemberDaoImpl.java
 E:\weekly\libraymanagementsystem\src\main\java\com\dao\IssueRecordDao.java
@@ -16,21 +16,3 @@ E:\weekly\libraymanagementsystem\src\main\java\com\domain\IssueRecord.java
 E:\weekly\libraymanagementsystem\src\main\java\com\services\impl\BookServicesImpl.java
 E:\weekly\libraymanagementsystem\src\main\java\com\services\BookServices.java
 E:\weekly\libraymanagementsystem\src\main\java\com\utilities\PreparedStatementManager.java
-=======
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\domain\Member.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\utilities\SQLQueries.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\MemberDao.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\utilities\PreparedStatementManager.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\services\BookServices.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\impl\IssueRecordDaoImpl.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\controller\MainController.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\impl\BookDaoImpl.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\services\impl\BookServicesImpl.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\impl\MemberDaoImpl.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\IssueRecordDao.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\libraryManagementSystem\App.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\domain\Book.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\dao\BookDao.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\utilities\DBConnection.java
-C:\Users\sathe\OneDrive\Documents\medplusproject\libraryManagementSystem\src\main\java\com\domain\IssueRecord.java
->>>>>>> 8cfa6782ec186cfb6aec54b179558228a8eb1feb

@@ -14,8 +14,6 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 		try {
 
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.ISSUE_INSERT);
-			
-			
 
 		} catch (SQLException e) {
 
