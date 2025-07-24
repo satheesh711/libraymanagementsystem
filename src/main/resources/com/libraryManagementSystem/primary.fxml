@@ -6,11 +6,12 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
+
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.MainController">
    <children>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="15.0" prefHeight="200.0" prefWidth="200.0" vgap="20.0">
          <children>
-            <Button mnemonicParsing="false" text="Books" />
+            <Button mnemonicParsing="false" text="Books" onAction="#switchToBook"/>
             <Button mnemonicParsing="false" text="Members" />
             <Button lineSpacing="10.0" mnemonicParsing="false" text="Issue and Return" />
             <Button mnemonicParsing="false" text="Reports" />
