@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>library</groupId>
+    <groupId>com</groupId>
     <artifactId>libraryManagementSystem</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <properties>
@@ -42,7 +42,7 @@
                             <options>
                                 <option>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=localhost:8000</option>
                             </options>
-                            <mainClass>library.libraryManagementSystem.App</mainClass>
+                            <mainClass>com.libraryManagementSystem.App</mainClass>
                         </configuration>
                     </execution>
                     <execution>
@@ -52,7 +52,7 @@
                             <options>
                                 <option>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</option>
                             </options>
-                            <mainClass>library.libraryManagementSystem.App</mainClass>
+                            <mainClass>com.libraryManagementSystem.App</mainClass>
                         </configuration>
                     </execution>
                 </executions>
@@ -76,6 +76,11 @@
                     <artifactId>javafx-fxml</artifactId>
                     <version>11</version>
                 </dependency>
+                <dependency>
+        			<groupId>com.mysql</groupId>
+        			<artifactId>mysql-connector-j</artifactId>
+        			<version>8.0.33</version>  <!-- Or the latest version -->
+    			</dependency>
             </dependencies>
         </profile>
     </profiles>
