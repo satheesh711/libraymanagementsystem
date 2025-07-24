@@ -10,7 +10,7 @@ public interface BookDao {
 
 	void updateBook(Book book);
 
-	void updateBookAvalability(int id, char avalability);
+	void updateBookAvalability(int id, String avalability);
 
 	List<Book> getAllBooks();
 
