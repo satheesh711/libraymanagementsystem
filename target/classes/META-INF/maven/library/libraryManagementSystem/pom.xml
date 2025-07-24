@@ -31,7 +31,7 @@
                         <!-- Usage: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>library.libraryManagementSystem.App</mainClass>
+                            <mainClass>com.libraryManagementSystem.App</mainClass>
                         </configuration>
                     </execution>
                     <execution>
