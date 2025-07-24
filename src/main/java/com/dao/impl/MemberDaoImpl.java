@@ -1,7 +1,9 @@
 package com.dao.impl;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dao.MemberDao;
@@ -38,14 +40,51 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	public void UpdateMember(Member member) {
-		// TODO Auto-generated method stub
 
+		try {
+
+			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_UPDATE);
+
+			stmt.setInt(1, member.getMemberId());
+			stmt.setString(2, member.getName());
+			stmt.setString(3, member.getEmail());
+			stmt.setInt(4, member.getMobile());
+			stmt.setString(5, member.getGender());
+			stmt.setString(6, member.getAddress());
+
+			int rowsUpdated = stmt.executeUpdate();
+
+			if (rowsUpdated > 0) {
+				System.out.println("Member updated successfully.");
+			} else {
+				System.out.println("No member found with ID: " + member.getMemberId());
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Error updating member: " + e.getMessage());
+		}
 	}
 
 	@Override
 	public List<Member> getAllMembers() {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Member> members = new ArrayList<>();
+		try {
+			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.SELECT_ALL_MEMBERS);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Member member = new Member(rs.getInt("id"), rs.getString("name"), rs.getString("email"),
+						rs.getInt("mobile"), rs.getString("gender"), rs.getString("adress"));
+				members.add(member);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Error retrieving all members: " + e.getMessage());
+		}
+
+		return members;
 	}
 
 }
