@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 com\utilities\PreparedStatementManager.class
 com\services\BookServices.class
 com\dao\impl\BookDaoImpl.class
@@ -16,4 +14,3 @@ com\dao\impl\IssueRecordDaoImpl.class
 com\domain\IssueRecord.class
 com\controller\MainController.class
 com\domain\Member.class
->>>>>>> 9cf565945bb6978a286eccf8da85bcb103ebc14c
