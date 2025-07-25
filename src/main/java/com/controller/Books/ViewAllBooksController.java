@@ -1,11 +1,13 @@
 package com.controller.Books;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.domain.Book;
+import com.libraryManagementSystem.App;
 import com.services.BookServices;
 import com.services.impl.BookServicesImpl;
 import com.utilities.BookAvailability;
@@ -43,6 +45,8 @@ public class ViewAllBooksController implements Initializable {
 	private TableColumn<Book, BookAvailability> availabilityColumn;
 	@FXML
 	private TableColumn<Book, Void> actionsColumn;
+
+	private static Book bookIdSelected = null;
 
 	private BookServices bookService = new BookServicesImpl();
 
@@ -101,6 +105,14 @@ public class ViewAllBooksController implements Initializable {
 
 				});
 
+				editButton.setOnAction(event -> {
+					try {
+						bookIdSelected = bookTableView.getItems().get(getIndex());
+						App.setRoot("UpdateBook");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
 			}
 
 			@Override
@@ -110,5 +122,9 @@ public class ViewAllBooksController implements Initializable {
 			}
 
 		});
+	}
+
+	public static Book getBookIdSelected() {
+		return bookIdSelected;
 	}
 }

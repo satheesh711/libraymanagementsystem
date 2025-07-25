@@ -14,7 +14,7 @@ public class SQLQueries {
 
 	public static final String BOOK_INSERT = "INSERT INTO books (title, author, category, status, availability) VALUES (?, ?, ?, ?, ?)";
 
-	public static final String BOOK_UPDATE = "UPDATE books SET  title = ?, authour = ?, category = ?, status = ?, availability = ? WHERE book_id = ?";
+	public static final String BOOK_UPDATE = "UPDATE books SET  title = ?, author = ?, category = ?, status = ?, availability = ? WHERE book_id = ?";
 
 	public static final String BOOK_UPDATE_AVAILABILITY = "UPDATE books SET availability = ? WHERE book_id = ?";
 

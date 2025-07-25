@@ -1,5 +1,7 @@
 package com.domain;
 
+import java.util.Objects;
+
 import com.utilities.BookAvailability;
 import com.utilities.BookCategory;
 import com.utilities.BookStatus;
@@ -56,6 +58,24 @@ public class Book {
 	public String toString() {
 
 		return title;
+
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+
+		Book book = (Book) obj;
+
+		return Objects.equals(book.getTitle(), title) && Objects.equals(book.getAuthor(), author)
+				&& Objects.equals(book.getCategory(), category) && Objects.equals(book.getAvailability(), availability)
+				&& Objects.equals(book.getStatus(), status);
 
 	}
 
