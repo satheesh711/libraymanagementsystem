@@ -1,11 +1,17 @@
 package com.services.impl;
 
+import java.util.List;
+
+import com.dao.BookDao;
+import com.dao.impl.BookDaoImpl;
 import com.domain.Book;
 import com.services.BookServices;
 import com.utilities.Validations;
 import com.validationException.InvalidException;
 
 public class BookServicesImpl implements BookServices {
+
+	private final BookDao bookDao = new BookDaoImpl();
 
 	@Override
 	public void addBook(Book book) throws InvalidException {
@@ -29,6 +35,27 @@ public class BookServicesImpl implements BookServices {
 		if (book.getAvailability() == null) {
 			throw new InvalidException("Please Select Availability Field!");
 		}
+
+		if (bookDao.getBookByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
+
+			throw new InvalidException("Book Already Exit");
+		}
+
+		bookDao.addBook(book);
+
+	}
+
+	@Override
+	public List<Book> getBooks() {
+
+		return bookDao.getAllBooks();
+
+	}
+
+	@Override
+	public void deleteBook(Book book) throws InvalidException {
+
+		bookDao.deleteBook(book);
 	}
 
 }

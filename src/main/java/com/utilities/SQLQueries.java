@@ -18,7 +18,13 @@ public class SQLQueries {
 
 	public static final String BOOK_UPDATE_AVAILABILITY = "UPDATE books SET availability = ? WHERE book_id = ?";
 
+	public static final String BOOK_SELECT_BY_TITLE_AUTHOR = "SELECT * FROM books WHERE LOWER(title) = LOWER(?) AND LOWER(author) = LOWER(?)";
+
 	public static final String BOOK_SELECT_ALL = "SELECT * FROM books";
+
+	public static final String BOOK_DELETE = "DELETE FROM books WHERE book_id = ? ";
+
+	public static final String BOOKS_LOG_INSERT = "INSERT INTO books_log (book_id,title, author, category, status, availability) VALUES (?,?, ?, ?, ?, ?)";
 
 	public static final String ISSUE_INSERT = "INSERT INTO issue_records (book_id, member_id, status, issue_date, return_date VALUES (?, ?, ?, ?, ?)";
 

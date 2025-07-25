@@ -16,6 +16,7 @@ import com.validationException.InvalidException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class BookAddController implements Initializable {
@@ -32,6 +33,8 @@ public class BookAddController implements Initializable {
 	private TextField title;
 	@FXML
 	private TextField author;
+	@FXML
+	private Label error;
 
 	@FXML
 	private void switchToBack() throws IOException {
@@ -66,9 +69,23 @@ public class BookAddController implements Initializable {
 		Book newBook = new Book(bookTitle, bookAuthor, bookcategory, bookstatus, bookAvailability);
 		try {
 			bookService.addBook(newBook);
-			System.out.println("Book added Successfully");
+			error.setText(bookTitle + " Book added Successfully");
+
+			error.setStyle("-fx-text-fill: green");
+			title.clear();
+			author.clear();
+
+			category.setValue(null);
+			status.setValue(null);
+			availability.setValue(null);
+
+			category.setPromptText("Select Option");
+			status.setPromptText("CheckStatus");
+			availability.setPromptText("CheckAvailability");
+
 		} catch (InvalidException e) {
-			System.out.println(e);
+			error.setText(e.getMessage());
+			error.setStyle("-fx-text-fill: red");
 		}
 
 	}
