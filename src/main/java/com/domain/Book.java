@@ -55,8 +55,7 @@ public class Book {
 	@Override
 	public String toString() {
 
-		return "bookId=" + bookId + ", title=" + title + ", author=" + author + ", category=" + category + ", status="
-				+ status + ", availability=" + availability;
+		return title;
 
 	}
 
