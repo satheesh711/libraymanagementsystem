@@ -1,11 +1,17 @@
 package com.services.impl;
 
+import java.util.List;
+
+import com.dao.MemberDao;
+import com.dao.impl.MemberDaoImpl;
 import com.domain.Member;
 import com.services.MemberService;
 import com.utilities.Validations;
 import com.validationException.InvalidException;
 
 public class MemberServiceImpl implements MemberService {
+
+	private final MemberDao memberDao = new MemberDaoImpl();
 
 	@Override
 	public void registerMember(Member member) throws InvalidException {
@@ -24,6 +30,18 @@ public class MemberServiceImpl implements MemberService {
 		if (!Validations.isValidAdress(member.getAddress())) {
 			throw new InvalidException("please enter valid adress");
 		}
+
+	}
+
+	@Override
+	public List<Member> getMembers() {
+
+		return memberDao.getAllMembers();
+	}
+
+	@Override
+	public void deleteMember(Member memberData) throws InvalidException {
+		memberDao.deleteMember(memberData);
 
 	}
 

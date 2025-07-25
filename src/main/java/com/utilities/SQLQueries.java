@@ -12,6 +12,8 @@ public class SQLQueries {
 
 	public static final String SELECT_ALL_MEMBERS = "SELECT * FROM members";
 
+	public static final String MEMBER_DELETE = "DELETE FROM members WHERE member_id= ?";
+
 	public static final String BOOK_INSERT = "INSERT INTO books (title, author, category, status, availability) VALUES (?, ?, ?, ?, ?)";
 
 	public static final String BOOK_UPDATE = "UPDATE books SET  title = ?, authour = ?, category = ?, status = ?, availability = ? WHERE book_id = ?";
@@ -25,6 +27,8 @@ public class SQLQueries {
 	public static final String BOOK_DELETE = "DELETE FROM books WHERE book_id = ? ";
 
 	public static final String BOOKS_LOG_INSERT = "INSERT INTO books_log (book_id,title, author, category, status, availability) VALUES (?,?, ?, ?, ?, ?)";
+
+	public static final String MEMBERS_LOG_INSERT = "INSERT INTO members_log (member_id,name,email,mobile,gender,address) VALUES(?,?,?,?,?,?)";
 
 	public static final String ISSUE_INSERT = "INSERT INTO issue_records (book_id, member_id, status, issue_date, return_date VALUES (?, ?, ?, ?, ?)";
 

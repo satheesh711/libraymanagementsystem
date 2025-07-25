@@ -3,6 +3,7 @@ package com.dao;
 import java.util.List;
 
 import com.domain.Member;
+import com.validationException.InvalidException;
 
 public interface MemberDao {
 
@@ -11,5 +12,7 @@ public interface MemberDao {
 	void UpdateMember(Member member);
 
 	List<Member> getAllMembers();
+
+	void deleteMember(Member memberData) throws InvalidException;
 
 }

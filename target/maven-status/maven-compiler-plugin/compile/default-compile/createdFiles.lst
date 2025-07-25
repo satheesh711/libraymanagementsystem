@@ -7,6 +7,7 @@ com\utilities\BookAvailability.class
 com\utilities\BookCategory.class
 com\utilities\MemberGender.class
 com\utilities\BookStatus.class
+com\controller\Members\ViewAllMembersController$1.class
 com\dao\impl\IssueRecordDaoImpl.class
 com\services\impl\MemberServiceImpl.class
 com\services\BookServices.class
