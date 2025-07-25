@@ -1,5 +1,7 @@
 package com.controller.Members;
 
+import java.io.IOException;
+
 import com.libraryManagementSystem.App;
 
 public class MemberController {
@@ -10,5 +12,9 @@ public class MemberController {
 
 	public void registerMember() throws Exception {
 		App.setRoot("RegisterMember");
+	}
+
+	public void SwitchToUpdateMember() throws IOException {
+		App.setRoot("UpdateMember");
 	}
 }

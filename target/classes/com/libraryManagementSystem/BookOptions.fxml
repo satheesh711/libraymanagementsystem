@@ -23,7 +23,7 @@
                </VBox.margin>
             </HBox>
             <Button mnemonicParsing="false" text="AddBook" onAction="#switchToAddBook"/>
-            <Button mnemonicParsing="false" text="UpdateBook" />
+            <Button mnemonicParsing="false" text="UpdateBook" onAction="#switchToUpdateBook"/>
             <Button mnemonicParsing="false" text="UpadteBookAvailability" />
             <Button alignment="CENTER" mnemonicParsing="false" text="ViewAllBooks" />
          </children>

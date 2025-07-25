@@ -1,15 +1,16 @@
 package com.domain;
 
+import com.utilities.MemberGender;
+
 public class Member {
 	private int memberId;
 	private String name;
 	private String email;
-	private int mobile;
-	private String gender;
+	private long mobile;
+	private MemberGender gender;
 	private String address;
 
-	public Member(int memberId, String name, String email, int mobile, String gender, String address) {
-		super();
+	public Member(int memberId, String name, String email, long mobile, MemberGender gender, String address) {
 		this.memberId = memberId;
 		this.name = name;
 		this.email = email;
@@ -30,11 +31,11 @@ public class Member {
 		return email;
 	}
 
-	public int getMobile() {
+	public long getMobile() {
 		return mobile;
 	}
 
-	public String getGender() {
+	public MemberGender getGender() {
 		return gender;
 	}
 

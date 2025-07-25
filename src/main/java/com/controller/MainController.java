@@ -18,4 +18,9 @@ public class MainController {
 	public void switchToMemberOptions() throws IOException {
 		App.setRoot("Members");
 	}
+
+	@FXML
+	public void switchTOIssueAndReturn() throws Exception {
+		App.setRoot("Issue&Return");
+	}
 }

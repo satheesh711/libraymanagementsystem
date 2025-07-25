@@ -19,4 +19,9 @@ public class BookOptionsController {
 
 		App.setRoot("AddAndUpdateBook");
 	}
+
+	@FXML
+	private void switchToUpdateBook() throws Exception {
+		App.setRoot("UpdateBook");
+	}
 }

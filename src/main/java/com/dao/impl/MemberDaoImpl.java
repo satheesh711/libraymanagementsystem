@@ -1,7 +1,6 @@
 package com.dao.impl;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +21,8 @@ public class MemberDaoImpl implements MemberDao {
 			stmt.setInt(1, member.getMemberId());
 			stmt.setString(2, member.getName());
 			stmt.setString(3, member.getEmail());
-			stmt.setInt(4, member.getMobile());
-			stmt.setString(5, member.getGender());
+			stmt.setLong(4, member.getMobile());
+			stmt.setString(5, member.getGender().toString());
 			stmt.setString(6, member.getAddress());
 
 			int rows = stmt.executeUpdate();
@@ -48,8 +47,8 @@ public class MemberDaoImpl implements MemberDao {
 			stmt.setInt(1, member.getMemberId());
 			stmt.setString(2, member.getName());
 			stmt.setString(3, member.getEmail());
-			stmt.setInt(4, member.getMobile());
-			stmt.setString(5, member.getGender());
+			stmt.setLong(4, member.getMobile());
+			stmt.setString(5, member.getGender().toString());
 			stmt.setString(6, member.getAddress());
 
 			int rowsUpdated = stmt.executeUpdate();
@@ -72,13 +71,13 @@ public class MemberDaoImpl implements MemberDao {
 		try {
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.SELECT_ALL_MEMBERS);
 
-			ResultSet rs = stmt.executeQuery();
+//			ResultSet rs = stmt.executeQuery();
 
-			while (rs.next()) {
-				Member member = new Member(rs.getInt("id"), rs.getString("name"), rs.getString("email"),
-						rs.getInt("mobile"), rs.getString("gender"), rs.getString("adress"));
-				members.add(member);
-			}
+//			while (rs.next()) {
+//				Member member = new Member(rs.getInt("id"), rs.getString("name"), rs.getString("email"),
+//						rs.getInt("mobile"), rs.getString("gender"), rs.getString("adress"));
+//				members.add(member);
+//			}
 
 		} catch (SQLException e) {
 			System.out.println("Error retrieving all members: " + e.getMessage());
