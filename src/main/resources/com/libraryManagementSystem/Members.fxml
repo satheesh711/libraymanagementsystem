@@ -8,7 +8,7 @@
    <children>
       <Button layoutX="108.0" layoutY="175.0" mnemonicParsing="false" text="RegisterMember" onAction="#registerMember"/>
       <Button layoutX="250.0" layoutY="175.0" mnemonicParsing="false" text="UpdateMember" onAction="#SwitchToUpdateMember"/>
-      <Button layoutX="391.0" layoutY="175.0" mnemonicParsing="false" text="GetAllMembers" />
+      <Button layoutX="391.0" layoutY="175.0" mnemonicParsing="false" text="GetAllMembers" onAction="#switchToViewAllMembers"/>
       <Button layoutX="20.0" layoutY="24.0" mnemonicParsing="false" text="Back"  onAction="#switchToBack"/>
    </children>
    <cursor>
