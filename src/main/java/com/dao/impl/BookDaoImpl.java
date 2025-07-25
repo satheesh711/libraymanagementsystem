@@ -8,7 +8,9 @@ import java.util.List;
 
 import com.dao.BookDao;
 import com.domain.Book;
+import com.utilities.BookAvailability;
 import com.utilities.BookCategory;
+import com.utilities.BookStatus;
 import com.utilities.PreparedStatementManager;
 import com.utilities.SQLQueries;
 
@@ -24,8 +26,8 @@ public class BookDaoImpl implements BookDao {
 			stmt.setString(1, book.getTitle());
 			stmt.setString(2, book.getAuthor());
 			stmt.setString(3, book.getCategory().toString());
-			stmt.setString(4, book.getStatus());
-			stmt.setString(5, book.getAvailability());
+			stmt.setString(4, book.getStatus().toString());
+			stmt.setString(5, book.getAvailability().toString());
 
 			int rows = stmt.executeUpdate();
 
@@ -47,8 +49,8 @@ public class BookDaoImpl implements BookDao {
 			stmt.setString(1, book.getTitle());
 			stmt.setString(2, book.getAuthor());
 			stmt.setString(3, book.getCategory().toString());
-			stmt.setString(4, book.getStatus());
-			stmt.setString(5, book.getAvailability());
+			stmt.setString(4, book.getStatus().toString());
+			stmt.setString(5, book.getAvailability().toString());
 			stmt.setInt(6, book.getBookId());
 
 			int rowsUpdated = stmt.executeUpdate();
@@ -106,8 +108,8 @@ public class BookDaoImpl implements BookDao {
 				String status = rs.getString("status");
 				String availability = rs.getString("availability");
 
-				Book book = new Book(bookId, title, author, BookCategory.valueOf(category.toUpperCase()), status,
-						availability);
+				Book book = new Book(bookId, title, author, BookCategory.valueOf(category.toUpperCase()),
+						BookStatus.valueOf(status.toUpperCase()), BookAvailability.valueOf(availability.toUpperCase()));
 
 				books.add(book);
 			}

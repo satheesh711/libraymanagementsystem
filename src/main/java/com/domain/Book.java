@@ -1,6 +1,8 @@
 package com.domain;
 
+import com.utilities.BookAvailability;
 import com.utilities.BookCategory;
+import com.utilities.BookStatus;
 
 public class Book {
 
@@ -8,16 +10,21 @@ public class Book {
 	private String title;
 	private String author;
 	private BookCategory category;
-	private String status;
-	private String availability;
+	private BookStatus status;
+	private BookAvailability availability;
 
-	public Book(int bookId, String title, String author, BookCategory category, String status, String availability) {
+	public Book(int bookId, String title, String author, BookCategory category, BookStatus status,
+			BookAvailability availability) {
 		this.bookId = bookId;
 		this.title = title;
 		this.author = author;
 		this.category = category;
 		this.status = status;
 		this.availability = availability;
+	}
+
+	public Book(String title, String author, BookCategory category, BookStatus status, BookAvailability availability) {
+		this(-1, title, author, category, status, availability);
 	}
 
 	public int getBookId() {
@@ -37,11 +44,11 @@ public class Book {
 		return category;
 	}
 
-	public String getStatus() {
+	public BookStatus getStatus() {
 		return status;
 	}
 
-	public String getAvailability() {
+	public BookAvailability getAvailability() {
 		return availability;
 	}
 
