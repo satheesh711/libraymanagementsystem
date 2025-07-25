@@ -1,4 +1,5 @@
 com\services\MemberService.class
+com\controller\Books\ViewAllBooksController$1.class
 com\controller\Books\BookOptionsController.class
 com\dao\impl\BookDaoImpl.class
 com\utilities\Validations.class
@@ -23,11 +24,13 @@ com\controller\Members\UpdateMemberController.class
 com\dao\impl\MemberDaoImpl.class
 com\utilities\SQLQueries.class
 com\domain\Book.class
+com\controller\Books\ViewAllBooksController.class
 com\libraryManagementSystem\App.class
 com\controller\Books\BookAddController.class
 com\utilities\DBConnection.class
 com\services\impl\BookServicesImpl.class
 com\controller\Books\BookUpdateController.class
 com\validationException\InvalidException.class
+com\controller\Books\BookAvailabilityController.class
 com\controller\Members\RegisterMemberController.class
 com\controller\issueAndreturn\IssueController.class

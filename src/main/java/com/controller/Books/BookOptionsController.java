@@ -30,4 +30,9 @@ public class BookOptionsController {
 	private void switchToUpdateBook() throws Exception {
 		App.setRoot("UpdateBook");
 	}
+
+	@FXML
+	private void switchToBookAvailability() throws Exception {
+		App.setRoot("BookAvailabilty");
+	}
 }

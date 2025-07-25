@@ -19,9 +19,11 @@ E:\weekly\libraymanagementsystem\src\main\java\com\controller\MainController.jav
 E:\weekly\libraymanagementsystem\src\main\java\com\services\impl\MemberServiceImpl.java
 E:\weekly\libraymanagementsystem\src\main\java\com\utilities\SQLQueries.java
 E:\weekly\libraymanagementsystem\src\main\java\com\dao\impl\IssueRecordDaoImpl.java
+E:\weekly\libraymanagementsystem\src\main\java\com\controller\Books\ViewAllBooksController.java
 E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\App.java
 E:\weekly\libraymanagementsystem\src\main\java\com\controller\Members\RegisterMemberController.java
 E:\weekly\libraymanagementsystem\src\main\java\com\controller\Members\MemberController.java
+E:\weekly\libraymanagementsystem\src\main\java\com\controller\Books\BookAvailabilityController.java
 E:\weekly\libraymanagementsystem\src\main\java\com\dao\BookDao.java
 E:\weekly\libraymanagementsystem\src\main\java\com\dao\IssueRecordDao.java
 E:\weekly\libraymanagementsystem\src\main\java\com\services\MemberService.java
