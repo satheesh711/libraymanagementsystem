@@ -43,7 +43,7 @@ public class BookDaoImpl implements BookDao {
 	}
 
 	@Override
-	public void updateBook(Book book) {
+	public void updateBook(Book book) throws InvalidException {
 
 		try {
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_UPDATE);
@@ -51,44 +51,74 @@ public class BookDaoImpl implements BookDao {
 			stmt.setString(1, book.getTitle());
 			stmt.setString(2, book.getAuthor());
 			stmt.setString(3, book.getCategory().toString());
-			stmt.setString(4, book.getStatus().toString());
-			stmt.setString(5, book.getAvailability().toString());
+			stmt.setString(4, String.valueOf(book.getStatus().toString().charAt(0)));
+			stmt.setString(5, String.valueOf(book.getAvailability().toString().charAt(0)));
 			stmt.setInt(6, book.getBookId());
+
+			PreparedStatement stmt1 = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOKS_LOG_INSERT);
+
+			stmt1.setInt(1, book.getBookId());
+			stmt1.setString(2, book.getTitle());
+			stmt1.setString(3, book.getAuthor());
+			stmt1.setString(4, book.getCategory().toString());
+			stmt1.setString(5, String.valueOf(book.getStatus().toString().charAt(0)));
+			stmt1.setString(6, String.valueOf(book.getAvailability().toString().charAt(0)));
 
 			int rowsUpdated = stmt.executeUpdate();
 
-			if (rowsUpdated > 0) {
-				System.out.println("Book updated successfully.");
-			} else {
-				System.out.println("No Book found with ID: " + book.getBookId());
+			if (rowsUpdated < 0) {
+				throw new InvalidException("Book not added to server");
+			}
+
+			int rowsInserted = stmt1.executeUpdate();
+
+			if (rowsInserted > 0) {
+				System.out.println("log added ");
 			}
 
 		} catch (SQLException e) {
 
-			e.printStackTrace();
+			System.out.println(e.getMessage());
+			throw new InvalidException("Error in Server" + e.getMessage());
 		}
 	}
 
 	@Override
-	public void updateBookAvalability(int id, String avalability) {
+	public void updateBookAvalability(Book book, BookAvailability avalability) throws InvalidException {
 		try {
 
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_UPDATE_AVAILABILITY);
 
-			stmt.setString(1, avalability);
-			stmt.setInt(2, id);
+			stmt.setString(1, String.valueOf(avalability.toString().charAt(0)));
+			stmt.setInt(2, book.getBookId());
+
+			PreparedStatement stmt1 = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOKS_LOG_INSERT);
+
+			stmt1.setInt(1, book.getBookId());
+			stmt1.setString(2, book.getTitle());
+			stmt1.setString(3, book.getAuthor());
+			stmt1.setString(4, book.getCategory().toString());
+			stmt1.setString(5, String.valueOf(book.getStatus().toString().charAt(0)));
+			stmt1.setString(6, String.valueOf(book.getAvailability().toString().charAt(0)));
 
 			int rowsUpdated = stmt.executeUpdate();
 
 			if (rowsUpdated > 0) {
 				System.out.println("Book Avalability updated successfully.");
 			} else {
-				System.out.println("No Book found with ID: " + id);
+				System.out.println("No Book found with ID: " + book.getBookId());
+			}
+
+			int rowsInserted = stmt1.executeUpdate();
+
+			if (rowsInserted > 0) {
+				System.out.println("log added ");
 			}
 
 		} catch (SQLException e) {
 
-			e.printStackTrace();
+			System.out.println(e.getMessage());
+			throw new InvalidException("Error in Server" + e.getMessage());
 		}
 	}
 
