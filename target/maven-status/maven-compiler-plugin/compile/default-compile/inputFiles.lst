@@ -1,10 +1,13 @@
 E:\weekly\libraymanagementsystem\src\main\java\com\utilities\BookStatus.java
+E:\weekly\libraymanagementsystem\src\main\java\com\utilities\MemberGender.java
 E:\weekly\libraymanagementsystem\src\main\java\com\controller\MainController.java
 E:\weekly\libraymanagementsystem\src\main\java\com\controller\Books\BookAddController.java
 E:\weekly\libraymanagementsystem\src\main\java\com\utilities\SQLQueries.java
 E:\weekly\libraymanagementsystem\src\main\java\com\dao\impl\IssueRecordDaoImpl.java
 E:\weekly\libraymanagementsystem\src\main\java\com\utilities\BookAvailability.java
 E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\App.java
+E:\weekly\libraymanagementsystem\src\main\java\com\controller\Members\RegisterMemberController.java
+E:\weekly\libraymanagementsystem\src\main\java\com\controller\Members\MemberController.java
 E:\weekly\libraymanagementsystem\src\main\java\com\dao\MemberDao.java
 E:\weekly\libraymanagementsystem\src\main\java\com\domain\Member.java
 E:\weekly\libraymanagementsystem\src\main\java\com\utilities\BookCategory.java

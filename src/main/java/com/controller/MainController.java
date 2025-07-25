@@ -13,4 +13,9 @@ public class MainController {
 
 		App.setRoot("BookOptions");
 	}
+
+	@FXML
+	public void switchToMemberOptions() throws IOException {
+		App.setRoot("Members");
+	}
 }

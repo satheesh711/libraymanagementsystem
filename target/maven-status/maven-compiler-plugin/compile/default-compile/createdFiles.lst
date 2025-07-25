@@ -4,9 +4,11 @@ com\dao\IssueRecordDao.class
 com\dao\BookDao.class
 com\utilities\BookAvailability.class
 com\utilities\BookCategory.class
+com\utilities\MemberGender.class
 com\dao\MemberDao.class
 com\utilities\BookStatus.class
 com\dao\impl\IssueRecordDaoImpl.class
+com\controller\Members\MemberController.class
 com\domain\IssueRecord.class
 com\controller\MainController.class
 com\domain\Member.class
@@ -19,3 +21,4 @@ com\libraryManagementSystem\App.class
 com\controller\Books\BookAddController.class
 com\utilities\DBConnection.class
 com\services\impl\BookServicesImpl.class
+com\controller\Members\RegisterMemberController.class
