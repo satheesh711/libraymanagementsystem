@@ -17,7 +17,13 @@ public class BookOptionsController {
 	@FXML
 	private void switchToAddBook() throws IOException {
 
-		App.setRoot("AddAndUpdateBook");
+		App.setRoot("AddBook");
+	}
+
+	@FXML
+	private void switchToViewAllBooks() throws IOException {
+
+		App.setRoot("ViewAllBooks");
 	}
 
 	@FXML
