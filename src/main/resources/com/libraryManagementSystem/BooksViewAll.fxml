@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="659.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.libraryManagementSystem.controller.BooksViewAllController">
+	
+	<Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Back" onAction="#switchToBack" />
+      <Button layoutX="534.0" layoutY="14.0" mnemonicParsing="false" text="Home" onAction="#switchToHome" />
+      <Label alignment="CENTER" layoutX="208.0" layoutY="18.0" prefHeight="28.0" prefWidth="178.0" text="View All Books">
+         <font>
+            <Font name="System Bold Italic" size="19.0" />
+         </font>
+      </Label>
+
+  <TableView fx:id="bookTableView" prefWidth="680" layoutX="1.0" layoutY="83.0">
+
+      <columns>
+		  <TableColumn fx:id="idColumn" prefWidth="30" text="Id" />
+		  
+          <TableColumn fx:id="titleColumn" prefWidth="120" text="Title" />
+
+          <TableColumn fx:id="authorColumn" prefWidth="120" text="Author" />
+
+          <TableColumn fx:id="categoryColumn" prefWidth="80" text="category" />
+          
+          <TableColumn fx:id="statusColumn" prefWidth="60" text="status" />
+          
+          <TableColumn fx:id="availabilityColumn" prefWidth="95" text="availability" />
+          
+          <TableColumn fx:id="actionsColumn" prefWidth="155" text="actions" />
+      </columns>
+
+    </TableView>
+    
+</Pane>
