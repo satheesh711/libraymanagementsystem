@@ -1,5 +1,7 @@
 package com.libraryManagementSystem.domain;
 
+import java.util.Objects;
+
 import com.libraryManagementSystem.utilities.MemberGender;
 
 public class Member {
@@ -45,8 +47,26 @@ public class Member {
 
 	@Override
 	public String toString() {
-		return "memberId :" + memberId + ", name : " + name + ", email : " + email + ", mobile :" + mobile
-				+ ", gender : " + gender + ", address : " + address;
+
+		return name;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+
+		Member member = (Member) obj;
+
+		return Objects.equals(member.getName(), name) && Objects.equals(member.getEmail(), email)
+				&& Objects.equals(member.getMobile(), mobile) && Objects.equals(member.getGender(), gender)
+				&& Objects.equals(member.getAddress(), address);
+
 	}
 
 }

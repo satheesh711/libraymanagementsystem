@@ -24,6 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 public class MembersViewAllController implements Initializable {
 	@FXML
@@ -43,6 +44,8 @@ public class MembersViewAllController implements Initializable {
 	@FXML
 	private TableColumn<Member, Void> actions;
 
+	private static Member memberIdSelected = null;
+
 	private MemberService memberService = new MemberServiceImpl();
 
 	@FXML
@@ -58,21 +61,54 @@ public class MembersViewAllController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		List<Member> members = memberService.getMembers();
+		List<Member> members;
 
-		memberID.setCellValueFactory(new PropertyValueFactory<>("memberId"));
-		name.setCellValueFactory(new PropertyValueFactory<>("name"));
-		email.setCellValueFactory(new PropertyValueFactory<>("email"));
-		mobile.setCellValueFactory(new PropertyValueFactory<>("mobile"));
-		gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
-		address.setCellValueFactory(new PropertyValueFactory<>("address"));
+		try {
 
-		ObservableList<Member> memberList = FXCollections.observableArrayList();
-		members.forEach(member -> {
-			memberList.add(member);
-		});
-		memberTableView.setItems(memberList);
-		addActionButtons();
+			members = memberService.getMembers();
+
+			memberID.setCellValueFactory(new PropertyValueFactory<>("memberId"));
+			name.setCellValueFactory(new PropertyValueFactory<>("name"));
+			email.setCellValueFactory(new PropertyValueFactory<>("email"));
+			mobile.setCellValueFactory(new PropertyValueFactory<>("mobile"));
+			gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+			address.setCellValueFactory(new PropertyValueFactory<>("address"));
+
+			ObservableList<Member> memberList = FXCollections.observableArrayList();
+			members.forEach(member -> {
+				memberList.add(member);
+			});
+
+			memberTableView.setItems(memberList);
+
+			for (TableColumn<Member, ?> column : memberTableView.getColumns()) {
+				if (memberList.isEmpty() || column.getCellData(0) instanceof String) {
+					@SuppressWarnings("unchecked")
+					TableColumn<Member, String> stringColumn = (TableColumn<Member, String>) column;
+
+					stringColumn.setCellFactory(col -> new TableCell<Member, String>() {
+						private final Text text = new Text();
+
+						{
+							text.wrappingWidthProperty().bind(col.widthProperty().subtract(10));
+							text.setStyle("-fx-padding: 5px;");
+							setGraphic(text);
+						}
+
+						@Override
+						protected void updateItem(String item, boolean empty) {
+							super.updateItem(item, empty);
+							text.setText(empty || item == null ? "" : item);
+						}
+					});
+				}
+			}
+			addActionButtons();
+
+		} catch (InvalidException e) {
+			System.out.println(e.getMessage());
+		}
+
 	}
 
 	private void addActionButtons() {
@@ -81,16 +117,23 @@ public class MembersViewAllController implements Initializable {
 			private final Button editButton = new Button("Edit");
 			private final Button deletBotton = new Button("Delete");
 			private final HBox actionBox = new HBox(10, editButton, deletBotton);
+
 			{
 				deletBotton.setOnAction(event -> {
+
 					Member memberData = memberTableView.getItems().get(getIndex());
+
 					Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 					alert.setTitle("Delete Book ");
 					alert.setHeaderText("Delete item : " + memberData.getName());
 					alert.setContentText("Are you sure? ");
+
 					Optional<ButtonType> result = alert.showAndWait();
+
 					if (result.isPresent() && (result.get() == ButtonType.OK)) {
+
 						Alert deleteShow = new Alert(Alert.AlertType.INFORMATION);
+
 						try {
 							memberService.deleteMember(memberData);
 							initialize(null, null);
@@ -109,6 +152,15 @@ public class MembersViewAllController implements Initializable {
 
 				});
 
+				editButton.setOnAction(event -> {
+					try {
+						memberIdSelected = memberTableView.getItems().get(getIndex());
+						App.setRoot("MemberUpdate");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+
 			}
 
 			@Override
@@ -118,5 +170,10 @@ public class MembersViewAllController implements Initializable {
 			}
 
 		});
+	}
+
+	public static Member getMemberIdSelected() {
+
+		return memberIdSelected;
 	}
 }

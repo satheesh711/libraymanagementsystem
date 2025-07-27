@@ -27,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 public class BooksViewAllController implements Initializable {
 	@FXML
@@ -68,6 +69,29 @@ public class BooksViewAllController implements Initializable {
 		});
 
 		bookTableView.setItems(bookList);
+
+		for (TableColumn<Book, ?> column : bookTableView.getColumns()) {
+			if (bookList.isEmpty() || column.getCellData(0) instanceof String) {
+				@SuppressWarnings("unchecked")
+				TableColumn<Book, String> stringColumn = (TableColumn<Book, String>) column;
+
+				stringColumn.setCellFactory(col -> new TableCell<Book, String>() {
+					private final Text text = new Text();
+
+					{
+						text.wrappingWidthProperty().bind(col.widthProperty().subtract(10));
+						text.setStyle("-fx-padding: 5px;");
+						setGraphic(text);
+					}
+
+					@Override
+					protected void updateItem(String item, boolean empty) {
+						super.updateItem(item, empty);
+						text.setText(empty || item == null ? "" : item);
+					}
+				});
+			}
+		}
 		addActionButtons();
 	}
 
@@ -77,21 +101,29 @@ public class BooksViewAllController implements Initializable {
 			private final Button editButton = new Button("Edit");
 			private final Button deletBotton = new Button("Delete");
 			private final HBox actionBox = new HBox(10, editButton, deletBotton);
+
 			{
 				deletBotton.setOnAction(event -> {
+
 					Book bookData = bookTableView.getItems().get(getIndex());
 					Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
 					alert.setTitle("Delete Book ");
 					alert.setHeaderText("Delete item : " + bookData.getTitle());
 					alert.setContentText("Are you sure? ");
+
 					Optional<ButtonType> result = alert.showAndWait();
+
 					if (result.isPresent() && (result.get() == ButtonType.OK)) {
+
 						Alert deleteShow = new Alert(Alert.AlertType.INFORMATION);
+
 						try {
 							bookService.deleteBook(bookData);
 							initialize(null, null);
 							deleteShow.setContentText(bookData.getTitle() + "Deleted successfully ");
 							deleteShow.show();
+
 						} catch (InvalidException e) {
 							deleteShow.setContentText(e.getMessage());
 							deleteShow.show();

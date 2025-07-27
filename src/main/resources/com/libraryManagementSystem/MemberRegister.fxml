@@ -6,25 +6,41 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.libraryManagementSystem.controller.MemberRegisterController">
+   
+   <children>
+   		<Label layoutX="200.0" layoutY="45.0" prefHeight="27.0"  text="" style="-fx-text-fill: red"  fx:id="error">
+   			<font>
+   				<Font name= "Times New Roman bold" size="20"  />
+   			</font>
+   		</Label>
+   	</children>
+   
    <children>
       <Label layoutX="175.0" layoutY="85.0" prefHeight="17.0" prefWidth="51.0" text="Name" />
       <Label layoutX="175.0" layoutY="126.0" prefHeight="17.0" prefWidth="48.0" text="Email" />
+      
       <Label layoutX="174.0" layoutY="167.0" text="Mobile" />
       <Label layoutX="173.0" layoutY="204.0" text="Gender" />
       <Label layoutX="175.0" layoutY="245.0" text="Adress" />
+      
       <TextField layoutX="252.0" layoutY="81.0" fx:id="name"/>
       <TextField layoutX="252.0" layoutY="122.0" fx:id="email"/>
       <TextField layoutX="252.0" layoutY="163.0" fx:id="mobile" />
-      <ComboBox fx:id="gender" layoutX="251.0" layoutY="200.0" prefHeight="25.0" prefWidth="169.0" promptText="Select Gender"/>
+      
+      <ComboBox layoutX="251.0" layoutY="200.0" prefHeight="25.0" prefWidth="185.0" promptText="Select Gender"  fx:id="gender" />
       <TextField layoutX="252.0" layoutY="241.0" fx:id="adress"/>
+      
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToMembers" text="Back" />
       <Button layoutX="526.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToPrimary" text="Home" />
-      <Button layoutX="235.0" layoutY="302.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" text="Submit" onAction="#submitDetails">
+      
+      <Button layoutX="295.0" layoutY="302.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" text="Submit" onAction="#submitDetails">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
+      
    </children>
 </Pane>

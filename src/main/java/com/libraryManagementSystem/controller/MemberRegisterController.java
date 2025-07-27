@@ -13,6 +13,7 @@ import com.libraryManagementSystem.utilities.MemberGender;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class MemberRegisterController implements Initializable {
@@ -33,6 +34,8 @@ public class MemberRegisterController implements Initializable {
 
 	@FXML
 	private TextField adress;
+	@FXML
+	private Label error;
 
 	public void switchToMembers() throws Exception {
 		App.setRoot("Members");
@@ -53,17 +56,37 @@ public class MemberRegisterController implements Initializable {
 
 		String memberName = name.getText();
 		String memberEmail = email.getText();
-		long memberMobile = 0L;
+		long memberMobile;
+		try {
+			memberMobile = Long.parseLong(mobile.getText());
+		} catch (NumberFormatException e) {
+			memberMobile = 0L;
+		}
+
 		MemberGender memberGender = gender.getSelectionModel().getSelectedItem();
 		String memberAdress = adress.getText();
-//		System.out.println(memberName + memberEmail + memberMobile + memberGender + memberAdress);
+
 		Member newMember = new Member(-1, memberName, memberEmail, memberMobile, memberGender, memberAdress);
 
 		try {
 			memberService.registerMember(newMember);
-			System.out.println("Member Registration successful!");
+
+			error.setText(newMember.getName() + " Member added Successfully");
+
+			error.setStyle("-fx-text-fill: green");
+
+			name.clear();
+			email.clear();
+			mobile.clear();
+			adress.clear();
+
+			gender.setValue(null);
+
+			gender.setPromptText("Select Gender");
+
 		} catch (InvalidException e) {
-			System.out.println(e);
+			error.setText(e.getMessage());
+			error.setStyle("-fx-text-fill: red");
 		}
 	}
 

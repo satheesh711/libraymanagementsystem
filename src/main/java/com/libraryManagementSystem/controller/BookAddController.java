@@ -67,6 +67,7 @@ public class BookAddController implements Initializable {
 		BookAvailability bookAvailability = availability.getSelectionModel().getSelectedItem();
 
 		Book newBook = new Book(-1, bookTitle, bookAuthor, bookcategory, bookstatus, bookAvailability);
+
 		try {
 			bookService.addBook(newBook);
 			error.setText(bookTitle + " Book added Successfully");

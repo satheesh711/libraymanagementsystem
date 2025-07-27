@@ -9,7 +9,9 @@ public interface MemberService {
 
 	void registerMember(Member member) throws InvalidException;
 
-	List<Member> getMembers();
+	List<Member> getMembers() throws InvalidException;
+
+	void updateMember(Member newMember, Member oldMember) throws InvalidException;
 
 	void deleteMember(Member memberData) throws InvalidException;
 }
