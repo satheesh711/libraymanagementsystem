@@ -16,59 +16,102 @@ import com.libraryManagementSystem.utilities.SQLQueries;
 public class MemberDaoImpl implements MemberDao {
 
 	@Override
-	public void RegisterMember(Member member) {
+	public void RegisterMember(Member member) throws InvalidException {
 		try {
 
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_INSERT);
 
-			stmt.setInt(1, member.getMemberId());
-			stmt.setString(2, member.getName());
-			stmt.setString(3, member.getEmail());
-			stmt.setLong(4, member.getMobile());
-			stmt.setString(5, member.getGender().toString());
-			stmt.setString(6, member.getAddress());
+			stmt.setString(1, member.getName());
+			stmt.setString(2, member.getEmail());
+			stmt.setLong(3, member.getMobile());
+			stmt.setString(4, String.valueOf(member.getGender().toString().charAt(0)));
+			stmt.setString(5, member.getAddress());
 
 			int rows = stmt.executeUpdate();
 
-			if (rows > 0) {
-				System.out.println("Member added successfully.");
+			if (rows < 0) {
+				throw new InvalidException("Member not added to server");
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Error adding member: " + e.getMessage());
+			throw new InvalidException("Error adding member: " + e.getMessage());
 		}
 
 	}
 
 	@Override
-	public void UpdateMember(Member member) {
+	public boolean getMemberByMobile(Long mobile) throws InvalidException {
+		PreparedStatement stmt;
+		try {
+
+			stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_SELECT_BY_MOBILE);
+			stmt.setLong(1, mobile);
+
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+
+				return true;
+			}
+
+			return false;
+
+		} catch (SQLException e) {
+			throw new InvalidException("Error in Server" + e.getMessage());
+		}
+	}
+
+	@Override
+	public boolean getMemberByEmail(String email) throws InvalidException {
+		PreparedStatement stmt;
+		try {
+
+			stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_SELECT_BY_EMAIL);
+			stmt.setString(1, email);
+
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+
+				return true;
+			}
+
+			return false;
+
+		} catch (SQLException e) {
+			throw new InvalidException("Error in Server" + e.getMessage());
+		}
+	}
+
+	@Override
+	public void UpdateMember(Member member, Member oldMember) throws InvalidException {
 
 		try {
 
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_UPDATE);
 
-			stmt.setInt(1, member.getMemberId());
-			stmt.setString(2, member.getName());
-			stmt.setString(3, member.getEmail());
-			stmt.setLong(4, member.getMobile());
-			stmt.setString(5, member.getGender().toString());
-			stmt.setString(6, member.getAddress());
+			stmt.setString(1, member.getName());
+			stmt.setString(2, member.getEmail());
+			stmt.setLong(3, member.getMobile());
+			stmt.setString(4, String.valueOf(member.getGender().toString().charAt(0)));
+			stmt.setString(5, member.getAddress());
+			stmt.setLong(6, member.getMemberId());
 
 			int rowsUpdated = stmt.executeUpdate();
 
-			if (rowsUpdated > 0) {
-				System.out.println("Member updated successfully.");
-			} else {
-				System.out.println("No member found with ID: " + member.getMemberId());
+			if (rowsUpdated < 0) {
+				throw new InvalidException("Member not added to server");
 			}
 
+			memberLog(oldMember);
+
 		} catch (SQLException e) {
-			System.out.println("Error updating member: " + e.getMessage());
+			throw new InvalidException("Error in Server" + e.getMessage());
 		}
 	}
 
 	@Override
-	public List<Member> getAllMembers() {
+	public List<Member> getAllMembers() throws InvalidException {
 
 		List<Member> members = new ArrayList<>();
 		try {
@@ -79,12 +122,12 @@ public class MemberDaoImpl implements MemberDao {
 				MemberGender gender = rs.getString("gender").equalsIgnoreCase("F") ? MemberGender.FEMALE
 						: MemberGender.MALE;
 				Member member = new Member(rs.getInt("member_id"), rs.getString("name"), rs.getString("email"),
-						rs.getInt("mobile"), gender, rs.getString("address"));
+						rs.getLong("mobile"), gender, rs.getString("address"));
 				members.add(member);
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Error retrieving all members: " + e.getMessage());
+			throw new InvalidException("Error in Server" + e.getMessage());
 		}
 
 		return members;
@@ -97,26 +140,14 @@ public class MemberDaoImpl implements MemberDao {
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_DELETE);
 			stmt.setInt(1, memberData.getMemberId());
 
-			PreparedStatement stmt1 = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBERS_LOG_INSERT);
-
-			stmt1.setInt(1, memberData.getMemberId());
-			stmt1.setString(2, memberData.getName());
-			stmt1.setString(3, memberData.getEmail());
-			stmt1.setLong(4, memberData.getMobile());
-			stmt1.setString(5, String.valueOf(memberData.getGender().toString().charAt(0)));
-			stmt1.setString(6, memberData.getAddress());
-
 			int rowsDeleted = stmt.executeUpdate();
-			int rowsInserted = stmt1.executeUpdate();
-
-			if (rowsInserted > 0) {
-				System.out.println("log added ");
-			}
 
 			if (rowsDeleted <= 0) {
 
 				throw new InvalidException("No Book found with Title: " + memberData.getName());
 			}
+
+			memberLog(memberData);
 
 		} catch (SQLException e) {
 			throw new InvalidException("Error in Server" + e.getMessage());
@@ -124,4 +155,29 @@ public class MemberDaoImpl implements MemberDao {
 
 	}
 
+	@Override
+	public void memberLog(Member member) throws InvalidException {
+		PreparedStatement stmt;
+		try {
+
+			stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBERS_LOG_INSERT);
+			stmt.setInt(1, member.getMemberId());
+			stmt.setString(2, member.getName());
+			stmt.setString(3, member.getEmail());
+			stmt.setLong(4, member.getMobile());
+			stmt.setString(5, String.valueOf(member.getGender().toString().charAt(0)));
+			stmt.setString(6, member.getAddress());
+
+			int rowsInserted = stmt.executeUpdate();
+
+			if (rowsInserted > 0) {
+				System.out.println("log added ");
+			}
+
+		} catch (SQLException e) {
+
+			throw new InvalidException("Error in Server" + e.getMessage());
+		}
+
+	}
 }

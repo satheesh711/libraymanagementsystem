@@ -55,13 +55,12 @@ public class BookDaoImpl implements BookDao {
 			stmt.setString(5, String.valueOf(book.getAvailability().toString().charAt(0)));
 			stmt.setInt(6, book.getBookId());
 
-			bookLog(oldBook);
-
 			int rowsUpdated = stmt.executeUpdate();
 
 			if (rowsUpdated < 0) {
 				throw new InvalidException("Book not added to server");
 			}
+			bookLog(oldBook);
 
 		} catch (SQLException e) {
 
@@ -80,13 +79,12 @@ public class BookDaoImpl implements BookDao {
 			stmt.setInt(2, book.getBookId());
 
 			int rowsUpdated = stmt.executeUpdate();
-			bookLog(book);
 
-			if (rowsUpdated > 0) {
-				System.out.println("Book Avalability updated successfully.");
-			} else {
-				System.out.println("No Book found with ID: " + book.getBookId());
+			if (rowsUpdated <= 0) {
+
+				throw new InvalidException("Book Avalability not updated.");
 			}
+			bookLog(book);
 
 		} catch (SQLException e) {
 
@@ -159,12 +157,13 @@ public class BookDaoImpl implements BookDao {
 
 			int rowsDeleted = stmt.executeUpdate();
 
-			bookLog(book);
-
 			if (rowsDeleted <= 0) {
 
 				throw new InvalidException("No Book found with Title: " + book.getTitle());
 			}
+
+			bookLog(book);
+
 		} catch (SQLException e) {
 			throw new InvalidException("Error in Server" + e.getMessage());
 		}
