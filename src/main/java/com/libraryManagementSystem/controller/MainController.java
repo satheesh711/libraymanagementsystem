@@ -23,4 +23,9 @@ public class MainController {
 	public void switchTOIssueAndReturn() throws Exception {
 		App.setRoot("Issue&Return");
 	}
+
+	@FXML
+	public void switchToReports() throws Exception {
+		App.setRoot("Reports");
+	}
 }

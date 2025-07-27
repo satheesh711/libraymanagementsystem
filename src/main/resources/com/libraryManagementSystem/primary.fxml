@@ -14,7 +14,7 @@
             <Button mnemonicParsing="false" text="Books" onAction="#switchToBook"/>
             <Button mnemonicParsing="false" text="Members" onAction="#switchToMemberOptions"/>
             <Button lineSpacing="10.0" mnemonicParsing="false" text="Issue and Return" onAction="#switchTOIssueAndReturn" />
-            <Button mnemonicParsing="false" text="Reports" />
+            <Button mnemonicParsing="false" text="Reports" onAction="#switchToReports" />
          </children>
          <VBox.margin>
             <Insets />
