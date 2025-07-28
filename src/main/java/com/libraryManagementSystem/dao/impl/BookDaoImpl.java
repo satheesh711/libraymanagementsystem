@@ -195,4 +195,37 @@ public class BookDaoImpl implements BookDao {
 
 	}
 
+	@Override
+	public Book getBookById(int id) throws InvalidException {
+		Book book = null;
+		PreparedStatement stmt;
+		try {
+
+			stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_SELECT_BY_ID);
+			stmt.setInt(1, id);
+
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+
+				int bookId = rs.getInt("book_id");
+				String title = rs.getString("title");
+				String author = rs.getString("author");
+				String category = rs.getString("category");
+				BookStatus status = rs.getString("status").equals("A") ? BookStatus.ACTIVE : BookStatus.INACTIVE;
+				BookAvailability availability = rs.getString("availability").equalsIgnoreCase("A")
+						? BookAvailability.AVAILABLE
+						: BookAvailability.ISSUED;
+				book = new Book(bookId, title, author, BookCategory.valueOf(category.toUpperCase()), status,
+						availability);
+
+			}
+
+			return book;
+
+		} catch (SQLException e) {
+			throw new InvalidException("Error in Server" + e.getMessage());
+		}
+	}
+
 }

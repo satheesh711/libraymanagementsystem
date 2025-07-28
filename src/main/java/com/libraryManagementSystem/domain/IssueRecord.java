@@ -2,16 +2,19 @@ package com.libraryManagementSystem.domain;
 
 import java.time.LocalDate;
 
+import com.libraryManagementSystem.utilities.IssueStatus;
+
 public class IssueRecord {
 
 	private int issueId;
 	private int bookId;
 	private int memberId;
-	private char status;
+	private IssueStatus status;
 	private LocalDate issueDate;
 	private LocalDate returnDate;
 
-	public IssueRecord(int issueId, int bookId, int memberId, char status, LocalDate issueDate, LocalDate returnDate) {
+	public IssueRecord(int issueId, int bookId, int memberId, IssueStatus status, LocalDate issueDate,
+			LocalDate returnDate) {
 		this.issueId = issueId;
 		this.bookId = bookId;
 		this.memberId = memberId;
@@ -32,11 +35,12 @@ public class IssueRecord {
 		return memberId;
 	}
 
-	public char getStatus() {
+	public IssueStatus getStatus() {
 		return status;
 	}
 
 	public LocalDate getIssueDate() {
+
 		return issueDate;
 	}
 

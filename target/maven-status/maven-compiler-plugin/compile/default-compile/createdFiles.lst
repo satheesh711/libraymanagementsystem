@@ -9,6 +9,7 @@ com\libraryManagementSystem\services\BookServices.class
 com\libraryManagementSystem\dao\MemberDao.class
 com\libraryManagementSystem\controller\IssueController.class
 com\libraryManagementSystem\controller\MainController.class
+com\libraryManagementSystem\controller\MembersViewAllController$2.class
 com\libraryManagementSystem\controller\BooksViewAllController.class
 com\libraryManagementSystem\controller\BookUpdateController.class
 com\libraryManagementSystem\controller\IssueAndReturnController.class
@@ -23,6 +24,7 @@ com\libraryManagementSystem\utilities\PreparedStatementManager.class
 com\libraryManagementSystem\dao\impl\MemberDaoImpl.class
 com\libraryManagementSystem\utilities\SQLQueries.class
 com\libraryManagementSystem\domain\Book.class
+com\libraryManagementSystem\controller\BooksViewAllController$2.class
 com\libraryManagementSystem\services\impl\BookServicesImpl.class
 com\libraryManagementSystem\services\impl\MemberServiceImpl.class
 com\libraryManagementSystem\domain\Member.class

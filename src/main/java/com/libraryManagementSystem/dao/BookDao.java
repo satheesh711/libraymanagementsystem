@@ -22,4 +22,6 @@ public interface BookDao {
 
 	void bookLog(Book book) throws InvalidException;
 
+	Book getBookById(int id) throws InvalidException;
+
 }
