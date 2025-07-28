@@ -254,8 +254,27 @@ public class BookDaoImpl implements BookDao {
 
 	@Override
 	public List<CustomOverDueBooks> getOverDueBooks() {
+		List<CustomOverDueBooks> overDueBooks = new ArrayList<>();
+		PreparedStatement ps;
+		try {
+			ps = PreparedStatementManager.getPreparedStatement(SQLQueries.GET_OVER_DUE_BOOKS);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int bookId = rs.getInt("book_id");
+				String bookName = rs.getString("book_name");
+				int memberId = rs.getInt("member_id");
+				String memberName = rs.getString("member_name");
+				LocalDate issuedDate = rs.getDate("issue_date").toLocalDate();
 
-		return null;
+				CustomOverDueBooks customOverDueBooks = new CustomOverDueBooks(bookId, bookName, memberId, memberName,
+						issuedDate);
+
+				overDueBooks.add(customOverDueBooks);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return overDueBooks;
 	}
 
 	@Override

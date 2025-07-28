@@ -14,13 +14,13 @@
             <Font name="System Bold Italic" size="17.0" />
          </font>
       </Label>
-      <TableView fx:id="bookTableView" layoutX="2.0" layoutY="78.0" prefHeight="200.0" prefWidth="600.0">
+      <TableView fx:id="overDueBookTableView" layoutX="2.0" layoutY="78.0" prefHeight="200.0" prefWidth="600.0">
         <columns>
           <TableColumn fx:id="bookId" prefWidth="67.199951171875" text="BookId" />
-          <TableColumn fx:id="memberId" prefWidth="135.20001983642578" text="MemberId" />
-            <TableColumn fx:id="memberName" prefWidth="156.79998779296875" text="MemberName" />
-            <TableColumn fx:id="issueDate" prefWidth="118.39996337890625" text="IssueDate" />
-            <TableColumn fx:id="returnDate" prefWidth="122.39999389648438" text="ReturnDate" />
+          <TableColumn fx:id="bookName" prefWidth="135.20001983642578" text="BookName" />
+            <TableColumn fx:id="memberId" prefWidth="156.79998779296875" text="MemberId" />
+            <TableColumn fx:id="memberName" prefWidth="118.39996337890625" text="MemberName" />
+            <TableColumn fx:id="issuedDate" prefWidth="122.39999389648438" text="IssueDate" />
         </columns>
       </TableView>
       <Button layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onAction="#switchTOReports" text="Back" />
