@@ -25,11 +25,11 @@ public interface BookDao {
 
 	void bookLog(Book book) throws InvalidException;
 
+	Book getBookById(int id) throws InvalidException;
+
 	List<CustomCategoryCount> getBookCountByCategory();
 
 	List<CustomActiveIssuedBooks> getActiveIssuedBooks();
-
-	Book getBookById(int id) throws InvalidException;
 
 	List<CustomOverDueBooks> getOverDueBooks();
 

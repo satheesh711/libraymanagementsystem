@@ -1,26 +1,30 @@
 package com.libraryManagementSystem.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class CustomOverDueBooks {
 
 	private int bookId;
+	private String bookName;
 	private int memberId;
 	private String memberName;
-	private Date issuedate;
-	private Date returnDate;
+	private LocalDate issueDate;
 
-	public CustomOverDueBooks(int bookId, int memberId, String memberName, Date issuedate, Date returnDate) {
+	public CustomOverDueBooks(int bookId, String bookName, int memberId, String memberName, LocalDate issueDate) {
 		super();
 		this.bookId = bookId;
+		this.bookName = bookName;
 		this.memberId = memberId;
 		this.memberName = memberName;
-		this.issuedate = issuedate;
-		this.returnDate = returnDate;
+		this.issueDate = issueDate;
 	}
 
 	public int getBookId() {
 		return bookId;
+	}
+
+	public String getBookName() {
+		return bookName;
 	}
 
 	public int getMemberId() {
@@ -31,12 +35,8 @@ public class CustomOverDueBooks {
 		return memberName;
 	}
 
-	public Date getIssuedate() {
-		return issuedate;
-	}
-
-	public Date getReturnDate() {
-		return returnDate;
+	public LocalDate getIssueDate() {
+		return issueDate;
 	}
 
 }
