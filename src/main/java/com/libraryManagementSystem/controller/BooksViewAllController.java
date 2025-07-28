@@ -22,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -46,6 +47,8 @@ public class BooksViewAllController implements Initializable {
 	private TableColumn<Book, BookAvailability> availabilityColumn;
 	@FXML
 	private TableColumn<Book, Void> actionsColumn;
+	@FXML
+	private Label error;
 
 	private static Book bookIdSelected = null;
 
@@ -54,45 +57,53 @@ public class BooksViewAllController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		List<Book> books = bookService.getBooks();
+		List<Book> books;
+		try {
 
-		idColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
-		titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-		authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
-		categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-		statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-		availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("availability"));
+			books = bookService.getBooks();
 
-		ObservableList<Book> bookList = FXCollections.observableArrayList();
-		books.forEach(book -> {
-			bookList.add(book);
-		});
+			idColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
+			titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+			authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+			categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+			statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+			availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("availability"));
 
-		bookTableView.setItems(bookList);
+			ObservableList<Book> bookList = FXCollections.observableArrayList();
+			books.forEach(book -> {
+				bookList.add(book);
+			});
 
-		for (TableColumn<Book, ?> column : bookTableView.getColumns()) {
-			if (bookList.isEmpty() || column.getCellData(0) instanceof String) {
-				@SuppressWarnings("unchecked")
-				TableColumn<Book, String> stringColumn = (TableColumn<Book, String>) column;
+			bookTableView.setItems(bookList);
 
-				stringColumn.setCellFactory(col -> new TableCell<Book, String>() {
-					private final Text text = new Text();
+			for (TableColumn<Book, ?> column : bookTableView.getColumns()) {
+				if (bookList.isEmpty() || column.getCellData(0) instanceof String) {
+					@SuppressWarnings("unchecked")
+					TableColumn<Book, String> stringColumn = (TableColumn<Book, String>) column;
 
-					{
-						text.wrappingWidthProperty().bind(col.widthProperty().subtract(10));
-						text.setStyle("-fx-padding: 5px;");
-						setGraphic(text);
-					}
+					stringColumn.setCellFactory(col -> new TableCell<Book, String>() {
+						private final Text text = new Text();
 
-					@Override
-					protected void updateItem(String item, boolean empty) {
-						super.updateItem(item, empty);
-						text.setText(empty || item == null ? "" : item);
-					}
-				});
+						{
+							text.wrappingWidthProperty().bind(col.widthProperty().subtract(10));
+							text.setStyle("-fx-padding: 5px;");
+							setGraphic(text);
+						}
+
+						@Override
+						protected void updateItem(String item, boolean empty) {
+							super.updateItem(item, empty);
+							text.setText(empty || item == null ? "" : item);
+						}
+					});
+				}
 			}
+			addActionButtons();
+		} catch (InvalidException e) {
+
+			error.setText(e.getMessage());
 		}
-		addActionButtons();
+
 	}
 
 	private void addActionButtons() {

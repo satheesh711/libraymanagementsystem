@@ -50,7 +50,7 @@ public class BookServicesImpl implements BookServices {
 	}
 
 	@Override
-	public List<Book> getBooks() {
+	public List<Book> getBooks() throws InvalidException {
 
 		return bookDao.getAllBooks();
 
@@ -96,13 +96,13 @@ public class BookServicesImpl implements BookServices {
 	}
 
 	@Override
-	public List<CustomCategoryCount> getBookCountByCategory() {
+	public List<CustomCategoryCount> getBookCountByCategory() throws InvalidException {
 
 		return bookDao.getBookCountByCategory();
 	}
 
 	@Override
-	public List<CustomActiveIssuedBooks> getActiveIssuedBooks() {
+	public List<CustomActiveIssuedBooks> getActiveIssuedBooks() throws InvalidException {
 
 		return bookDao.getActiveIssuedBooks();
 	}

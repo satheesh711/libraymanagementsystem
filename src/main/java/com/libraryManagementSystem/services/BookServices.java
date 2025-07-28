@@ -13,7 +13,7 @@ public interface BookServices {
 
 	void addBook(Book book) throws InvalidException;
 
-	List<Book> getBooks();
+	List<Book> getBooks() throws InvalidException;
 
 	void deleteBook(Book book) throws InvalidException;
 
@@ -21,9 +21,9 @@ public interface BookServices {
 
 	void updateBookAvailability(Book book, BookAvailability avail) throws InvalidException;
 
-	List<CustomCategoryCount> getBookCountByCategory();
+	List<CustomCategoryCount> getBookCountByCategory() throws InvalidException;
 
-	List<CustomActiveIssuedBooks> getActiveIssuedBooks();
+	List<CustomActiveIssuedBooks> getActiveIssuedBooks() throws InvalidException;
 
 	List<CustomOverDueBooks> getOverDueBooks();
 

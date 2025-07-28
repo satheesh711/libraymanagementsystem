@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.CustomCategoryCount;
+import com.libraryManagementSystem.exceptions.InvalidException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.services.impl.BookServicesImpl;
 import com.libraryManagementSystem.utilities.BookCategory;
@@ -14,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,6 +29,8 @@ public class CountOfBooksController implements Initializable {
 	private TableColumn<CustomCategoryCount, BookCategory> categoryColumn;
 	@FXML
 	private TableColumn<CustomCategoryCount, Integer> bookCount;
+	@FXML
+	private Label error;
 
 	@FXML
 	public void switchTOReports() throws Exception {
@@ -41,16 +45,22 @@ public class CountOfBooksController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		List<CustomCategoryCount> categories = bookService.getBookCountByCategory();
+		List<CustomCategoryCount> categories;
+		try {
+			categories = bookService.getBookCountByCategory();
 
-		categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-		bookCount.setCellValueFactory(new PropertyValueFactory<>("count"));
+			categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+			bookCount.setCellValueFactory(new PropertyValueFactory<>("count"));
 
-		ObservableList<CustomCategoryCount> bookList = FXCollections.observableArrayList();
-		categories.forEach(book -> {
-			bookList.add(book);
-		});
-		categoryCountTableView.setItems(bookList);
+			ObservableList<CustomCategoryCount> bookList = FXCollections.observableArrayList();
+			categories.forEach(book -> {
+				bookList.add(book);
+			});
+			categoryCountTableView.setItems(bookList);
+		} catch (InvalidException e) {
+
+			error.setText(e.getMessage());
+		}
 
 	}
 }

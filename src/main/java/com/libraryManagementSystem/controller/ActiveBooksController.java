@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.CustomActiveIssuedBooks;
+import com.libraryManagementSystem.exceptions.InvalidException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.services.impl.BookServicesImpl;
 
@@ -14,11 +15,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ActiveBooksController implements Initializable {
+
 	private BookServices bookService = new BookServicesImpl();
 
 	@FXML
@@ -33,6 +36,8 @@ public class ActiveBooksController implements Initializable {
 	private TableColumn<CustomActiveIssuedBooks, String> bookTitle;
 	@FXML
 	private TableColumn<CustomActiveIssuedBooks, Date> issuedDate;
+	@FXML
+	private Label error;
 
 	@FXML
 	public void switchToReports() throws Exception {
@@ -46,18 +51,26 @@ public class ActiveBooksController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		List<CustomActiveIssuedBooks> activeIssuedBooks = bookService.getActiveIssuedBooks();
 
-		memberId.setCellValueFactory(new PropertyValueFactory<>("memberId"));
-		memberName.setCellValueFactory(new PropertyValueFactory<>("memberName"));
-		bookId.setCellValueFactory(new PropertyValueFactory<>("bookId"));
-		bookTitle.setCellValueFactory(new PropertyValueFactory<>("bookTitle"));
-		issuedDate.setCellValueFactory(new PropertyValueFactory<>("issuedDate"));
+		List<CustomActiveIssuedBooks> activeIssuedBooks;
+		try {
+			activeIssuedBooks = bookService.getActiveIssuedBooks();
+			memberId.setCellValueFactory(new PropertyValueFactory<>("memberId"));
+			memberName.setCellValueFactory(new PropertyValueFactory<>("memberName"));
+			bookTitle.setCellValueFactory(new PropertyValueFactory<>("bookTitle"));
+			bookId.setCellValueFactory(new PropertyValueFactory<>("bookId"));
+			issuedDate.setCellValueFactory(new PropertyValueFactory<>("issueDate"));
 
-		ObservableList<CustomActiveIssuedBooks> bookList = FXCollections.observableArrayList();
-		activeIssuedBooks.forEach(book -> {
-			bookList.add(book);
-		});
-		activeIssuedBooksTableView.setItems(bookList);
+			ObservableList<CustomActiveIssuedBooks> bookList = FXCollections.observableArrayList();
+
+			activeIssuedBooks.forEach(book -> {
+				bookList.add(book);
+			});
+			bookList.forEach(System.out::println);
+			activeIssuedBooksTableView.setItems(bookList);
+		} catch (InvalidException e) {
+			error.setText(e.getMessage());
+		}
+
 	}
 }

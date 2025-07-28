@@ -19,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -43,6 +44,8 @@ public class MembersViewAllController implements Initializable {
 	private TableColumn<Member, String> address;
 	@FXML
 	private TableColumn<Member, Void> actions;
+	@FXML
+	private Label error;
 
 	private static Member memberIdSelected = null;
 
@@ -106,7 +109,7 @@ public class MembersViewAllController implements Initializable {
 			addActionButtons();
 
 		} catch (InvalidException e) {
-			System.out.println(e.getMessage());
+			error.setText(e.getMessage());
 		}
 
 	}
