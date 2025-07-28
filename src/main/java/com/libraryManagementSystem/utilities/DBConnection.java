@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import com.libraryManagementSystem.exceptions.InvalidException;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class DBConnection {
@@ -17,7 +18,7 @@ public class DBConnection {
 
 	private static Connection connection;
 
-	private static void initializeConnection() {
+	private static void initializeConnection() throws InvalidException {
 
 		if (connection != null) {
 			return;
@@ -42,18 +43,17 @@ public class DBConnection {
 			inputStream.close();
 
 		} catch (SQLException | IOException e) {
-			System.out.println("Connection failed: " + e.getMessage());
-			connection = null;
+			throw new InvalidException("Connection failed: " + e.getMessage());
 		}
 	}
 
-	public static Connection getConnection() {
+	public static Connection getConnection() throws InvalidException {
 		try {
 			if (connection == null || connection.isClosed()) {
 				initializeConnection();
 			}
 		} catch (SQLException e) {
-			System.out.println("Error checking connection state: " + e.getMessage());
+			throw new InvalidException("Error checking connection state: " + e.getMessage());
 		}
 		return connection;
 	}

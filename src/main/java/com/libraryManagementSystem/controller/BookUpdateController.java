@@ -53,23 +53,30 @@ public class BookUpdateController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		List<Book> bookTitles = bookService.getBooks();
-		books.getItems().addAll(bookTitles);
-		category.getItems().addAll(BookCategory.values());
-		status.getItems().addAll(BookStatus.values());
-		availability.getItems().addAll(BookAvailability.values());
+		List<Book> bookTitles;
+		try {
 
-		books.setOnAction(event -> {
+			bookTitles = bookService.getBooks();
+			books.getItems().addAll(bookTitles);
+			category.getItems().addAll(BookCategory.values());
+			status.getItems().addAll(BookStatus.values());
+			availability.getItems().addAll(BookAvailability.values());
 
+			books.setOnAction(event -> {
+
+				if (!books.getSelectionModel().isEmpty()) {
+					bookPropertySetting();
+				}
+			});
+
+			books.setValue(BooksViewAllController.getBookIdSelected());
 			if (!books.getSelectionModel().isEmpty()) {
 				bookPropertySetting();
 			}
-		});
-
-		books.setValue(BooksViewAllController.getBookIdSelected());
-		if (!books.getSelectionModel().isEmpty()) {
-			bookPropertySetting();
+		} catch (InvalidException e) {
+			error.setText(e.getMessage());
 		}
+
 	}
 
 	@FXML

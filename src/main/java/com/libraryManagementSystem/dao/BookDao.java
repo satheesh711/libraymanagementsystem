@@ -19,15 +19,15 @@ public interface BookDao {
 
 	boolean getBookByTitleAndAuthor(String title, String author) throws InvalidException;
 
-	List<Book> getAllBooks();
+	List<Book> getAllBooks() throws InvalidException;
 
 	void deleteBook(Book book) throws InvalidException;
 
 	void bookLog(Book book) throws InvalidException;
 
-	List<CustomCategoryCount> getBookCountByCategory();
+	List<CustomCategoryCount> getBookCountByCategory() throws InvalidException;
 
-	List<CustomActiveIssuedBooks> getActiveIssuedBooks();
+	List<CustomActiveIssuedBooks> getActiveIssuedBooks() throws InvalidException;
 
 	Book getBookById(int id) throws InvalidException;
 

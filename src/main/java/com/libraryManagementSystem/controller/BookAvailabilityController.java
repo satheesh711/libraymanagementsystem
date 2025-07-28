@@ -40,18 +40,24 @@ public class BookAvailabilityController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		List<Book> bookTitles = bookService.getBooks();
-		books.getItems().addAll(bookTitles);
-		availability.getItems().addAll(BookAvailability.values());
+		List<Book> bookTitles;
+		try {
+			bookTitles = bookService.getBooks();
+			books.getItems().addAll(bookTitles);
+			availability.getItems().addAll(BookAvailability.values());
 
-		books.setOnAction(event -> {
+			books.setOnAction(event -> {
 
-			if (!books.getSelectionModel().isEmpty()) {
-				Book book = books.getSelectionModel().getSelectedItem();
-				availability.setDisable(false);
-				availability.getSelectionModel().select(book.getAvailability());
-			}
-		});
+				if (!books.getSelectionModel().isEmpty()) {
+					Book book = books.getSelectionModel().getSelectedItem();
+					availability.setDisable(false);
+					availability.getSelectionModel().select(book.getAvailability());
+				}
+			});
+		} catch (InvalidException e) {
+
+			error.setText(e.getMessage());
+		}
 
 	}
 
@@ -62,7 +68,7 @@ public class BookAvailabilityController implements Initializable {
 		if (!books.getSelectionModel().isEmpty()) {
 			book = books.getSelectionModel().getSelectedItem();
 			BookAvailability bookAvailability = availability.getSelectionModel().getSelectedItem();
-			
+
 			if (!(book.getAvailability().equals(bookAvailability))) {
 				try {
 					bookService.updateBookAvailability(book, bookAvailability);

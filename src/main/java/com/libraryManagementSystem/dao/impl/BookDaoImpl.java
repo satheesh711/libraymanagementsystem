@@ -98,12 +98,12 @@ public class BookDaoImpl implements BookDao {
 	}
 
 	@Override
-	public List<Book> getAllBooks() {
+	public List<Book> getAllBooks() throws InvalidException {
 		List<Book> books = new ArrayList<>();
-
+		PreparedStatement stmt;
 		try {
+			stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_SELECT_ALL);
 
-			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_SELECT_ALL);
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
@@ -200,12 +200,13 @@ public class BookDaoImpl implements BookDao {
 	}
 
 	@Override
-	public List<CustomCategoryCount> getBookCountByCategory() {
+	public List<CustomCategoryCount> getBookCountByCategory() throws InvalidException {
 		List<CustomCategoryCount> books = new ArrayList<>();
 
 		PreparedStatement ps;
 		try {
 			ps = PreparedStatementManager.getPreparedStatement(SQLQueries.GET_BOOK_BY_CATEGORY);
+
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
@@ -226,7 +227,7 @@ public class BookDaoImpl implements BookDao {
 	}
 
 	@Override
-	public List<CustomActiveIssuedBooks> getActiveIssuedBooks() {
+	public List<CustomActiveIssuedBooks> getActiveIssuedBooks() throws InvalidException {
 		List<CustomActiveIssuedBooks> activeBooks = new ArrayList<>();
 		PreparedStatement ps;
 		try {
