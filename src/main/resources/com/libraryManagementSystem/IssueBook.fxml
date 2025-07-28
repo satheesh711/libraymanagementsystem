@@ -9,22 +9,28 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.libraryManagementSystem.controller.IssueController">
    <children>
+   		<Label layoutX="230.0" layoutY="35.0" prefHeight="27.0"  text="" style="-fx-text-fill: red"  fx:id="error">
+   			<font>
+   				<Font name= "Times New Roman bold" size="20"  />
+   			</font>
+   		</Label>
+   	</children>
+   <children>
       <Label layoutX="126.0" layoutY="87.0" prefHeight="17.0" prefWidth="88.0" text="MemberId" />
       <Label layoutX="126.0" layoutY="125.0" prefHeight="17.0" prefWidth="71.0" text="BookId" />
       <Label layoutX="126.0" layoutY="163.0" prefHeight="17.0" prefWidth="71.0" text="IssueDate" />
-      <Label layoutX="126.0" layoutY="200.0" prefHeight="17.0" prefWidth="71.0" text="Status" />
-      <DatePicker layoutX="228.0" layoutY="159.0" prefHeight="25.0" prefWidth="149.0" />
-      <ComboBox layoutX="228.0" layoutY="196.0" prefWidth="150.0" />
+ 	  <DatePicker layoutX="228.0" layoutY="159.0" prefHeight="25.0" prefWidth="200.0" fx:id="issueDate" Disable="true"/>
+      
       <Button layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#switchToIssueAndReturn" text="Back" />
       <Button layoutX="527.0" layoutY="21.0" mnemonicParsing="false" onAction="#switchTOPrimary" text="Home" />
-      <ComboBox layoutX="225.0" layoutY="83.0" prefWidth="150.0" />
-      <ComboBox layoutX="225.0" layoutY="121.0" prefWidth="150.0" />
+      <ComboBox layoutX="225.0" layoutY="83.0" prefWidth="200.0"  promptText="Select Member" fx:id="members"/>
+      <ComboBox layoutX="225.0" layoutY="121.0" prefWidth="200.0" promptText="Select Book" fx:id="books"/>
       <Label layoutX="255.0" layoutY="20.0" text="Issue Book">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="274.0" layoutY="258.0" mnemonicParsing="false" text="ISSUE">
+      <Button layoutX="274.0" layoutY="208.0" mnemonicParsing="false" text="ISSUE" onAction="#issueBook" >
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

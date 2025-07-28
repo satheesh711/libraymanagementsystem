@@ -29,6 +29,8 @@ public interface BookDao {
 
 	List<CustomActiveIssuedBooks> getActiveIssuedBooks();
 
+	Book getBookById(int id) throws InvalidException;
+
 	List<CustomOverDueBooks> getOverDueBooks();
 
 }

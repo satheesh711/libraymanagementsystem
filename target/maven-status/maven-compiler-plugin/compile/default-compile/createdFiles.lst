@@ -6,6 +6,7 @@ com\libraryManagementSystem\controller\BookOptionsController.class
 com\libraryManagementSystem\utilities\BookAvailability.class
 com\libraryManagementSystem\dao\impl\IssueRecordDaoImpl.class
 com\libraryManagementSystem\services\BookServices.class
+com\libraryManagementSystem\domain\CustomOverDueBooks.class
 com\libraryManagementSystem\dao\MemberDao.class
 com\libraryManagementSystem\controller\IssueController.class
 com\libraryManagementSystem\controller\MainController.class
@@ -15,6 +16,7 @@ com\libraryManagementSystem\controller\BookUpdateController.class
 com\libraryManagementSystem\controller\IssueAndReturnController.class
 com\libraryManagementSystem\utilities\BookCategory.class
 com\libraryManagementSystem\utilities\MemberGender.class
+com\libraryManagementSystem\services\IssueService.class
 com\libraryManagementSystem\controller\BookAvailabilityController.class
 com\libraryManagementSystem\utilities\Validations.class
 com\libraryManagementSystem\domain\IssueRecord.class
@@ -31,9 +33,11 @@ com\libraryManagementSystem\services\impl\MemberServiceImpl.class
 com\libraryManagementSystem\domain\Member.class
 com\libraryManagementSystem\services\MemberService.class
 com\libraryManagementSystem\controller\MembersViewAllController$1.class
+com\libraryManagementSystem\utilities\IssueStatus.class
 com\libraryManagementSystem\controller\ReportsController.class
 com\libraryManagementSystem\dao\BookDao.class
 com\libraryManagementSystem\controller\MembersViewAllController.class
+com\libraryManagementSystem\services\impl\IssueServiceImpl.class
 com\libraryManagementSystem\App.class
 com\libraryManagementSystem\dao\impl\BookDaoImpl.class
 com\libraryManagementSystem\exceptions\InvalidException.class

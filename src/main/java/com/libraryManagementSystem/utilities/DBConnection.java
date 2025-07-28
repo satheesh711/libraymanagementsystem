@@ -67,4 +67,22 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 	}
+
+	public static void SetAutoCommit(Boolean commit) {
+		try {
+			if (connection != null) {
+				connection.setAutoCommit(commit);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void commit() throws SQLException {
+		connection.commit();
+	}
+
+	public static void rollback() throws SQLException {
+		connection.rollback();
+	}
 }

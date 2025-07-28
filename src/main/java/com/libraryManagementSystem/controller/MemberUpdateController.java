@@ -101,7 +101,7 @@ public class MemberUpdateController implements Initializable {
 			if (!(member.equals(newMember))) {
 				try {
 					memberService.updateMember(newMember, member);
-					error.setText(member.getName() + " Book updated Successfully");
+					error.setText(member.getName() + " Member updated Successfully");
 
 					error.setStyle("-fx-text-fill: green");
 
