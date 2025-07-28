@@ -108,7 +108,7 @@ public class BookServicesImpl implements BookServices {
 	}
 
 	@Override
-	public List<CustomOverDueBooks> getOverDueBooks() {
+	public List<CustomOverDueBooks> getOverDueBooks() throws InvalidException {
 
 		return bookDao.getOverDueBooks();
 	}

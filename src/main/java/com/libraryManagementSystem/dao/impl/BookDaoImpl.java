@@ -253,7 +253,7 @@ public class BookDaoImpl implements BookDao {
 	}
 
 	@Override
-	public List<CustomOverDueBooks> getOverDueBooks() {
+	public List<CustomOverDueBooks> getOverDueBooks() throws InvalidException {
 		List<CustomOverDueBooks> overDueBooks = new ArrayList<>();
 		PreparedStatement ps;
 		try {

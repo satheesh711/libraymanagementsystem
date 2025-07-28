@@ -25,6 +25,6 @@ public interface BookServices {
 
 	List<CustomActiveIssuedBooks> getActiveIssuedBooks() throws InvalidException;
 
-	List<CustomOverDueBooks> getOverDueBooks();
+	List<CustomOverDueBooks> getOverDueBooks() throws InvalidException;
 
 }
