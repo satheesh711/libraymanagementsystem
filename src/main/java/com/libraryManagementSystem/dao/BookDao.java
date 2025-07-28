@@ -3,6 +3,9 @@ package com.libraryManagementSystem.dao;
 import java.util.List;
 
 import com.libraryManagementSystem.domain.Book;
+import com.libraryManagementSystem.domain.CustomActiveIssuedBooks;
+import com.libraryManagementSystem.domain.CustomCategoryCount;
+import com.libraryManagementSystem.domain.CustomOverDueBooks;
 import com.libraryManagementSystem.exceptions.InvalidException;
 import com.libraryManagementSystem.utilities.BookAvailability;
 
@@ -21,5 +24,11 @@ public interface BookDao {
 	void deleteBook(Book book) throws InvalidException;
 
 	void bookLog(Book book) throws InvalidException;
+
+	List<CustomCategoryCount> getBookCountByCategory();
+
+	List<CustomActiveIssuedBooks> getActiveIssuedBooks();
+
+	List<CustomOverDueBooks> getOverDueBooks();
 
 }

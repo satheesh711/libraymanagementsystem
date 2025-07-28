@@ -3,11 +3,15 @@ package com.libraryManagementSystem.dao.impl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.libraryManagementSystem.dao.BookDao;
 import com.libraryManagementSystem.domain.Book;
+import com.libraryManagementSystem.domain.CustomActiveIssuedBooks;
+import com.libraryManagementSystem.domain.CustomCategoryCount;
+import com.libraryManagementSystem.domain.CustomOverDueBooks;
 import com.libraryManagementSystem.exceptions.InvalidException;
 import com.libraryManagementSystem.utilities.BookAvailability;
 import com.libraryManagementSystem.utilities.BookCategory;
@@ -193,6 +197,64 @@ public class BookDaoImpl implements BookDao {
 			throw new InvalidException("Error in Server" + e.getMessage());
 		}
 
+	}
+
+	@Override
+	public List<CustomCategoryCount> getBookCountByCategory() {
+		List<CustomCategoryCount> books = new ArrayList<>();
+
+		PreparedStatement ps;
+		try {
+			ps = PreparedStatementManager.getPreparedStatement(SQLQueries.GET_BOOK_BY_CATEGORY);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String category = rs.getString("category");
+				int count = rs.getInt("book_count");
+				CustomCategoryCount customCategoryCount = new CustomCategoryCount(BookCategory.valueOf(category),
+						count);
+
+				books.add(customCategoryCount);
+			}
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+		}
+		return books;
+
+	}
+
+	@Override
+	public List<CustomActiveIssuedBooks> getActiveIssuedBooks() {
+		List<CustomActiveIssuedBooks> activeBooks = new ArrayList<>();
+		PreparedStatement ps;
+		try {
+			ps = PreparedStatementManager.getPreparedStatement(SQLQueries.GET_ACTIVE_ISSUED_BOOKS);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int memberId = rs.getInt("member_id");
+				String memberName = rs.getString("member_name");
+				int bookId = rs.getInt("book_id");
+				String bookTitle = rs.getString("book_title");
+				LocalDate issuedDate = rs.getDate("issue_date").toLocalDate();
+
+				CustomActiveIssuedBooks customActiveIssuedBooks = new CustomActiveIssuedBooks(memberId, memberName,
+						bookId, bookTitle, issuedDate);
+
+				activeBooks.add(customActiveIssuedBooks);
+
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return activeBooks;
+	}
+
+	@Override
+	public List<CustomOverDueBooks> getOverDueBooks() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

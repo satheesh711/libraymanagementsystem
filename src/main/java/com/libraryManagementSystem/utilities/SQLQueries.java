@@ -34,6 +34,11 @@ public class SQLQueries {
 
 	public static final String ISSUE_UPDATE_RETURN_DATE = "UPDATE issue_records SET return_date = ? WHERE book_id = ?";
 
+	public static final String GET_BOOK_BY_CATEGORY = "SELECT category, COUNT(*) AS book_count FROM books GROUP BY category";
+
+	public static final String GET_ACTIVE_ISSUED_BOOKS = "SELECT m.member_id , m.name AS member_name , b.book_id ,b.title AS book_title , ir.issue_date FROM members m JOIN issue_records ir ON m.member_id = ir.member_id JOIN books b ON ir.book_id = b.book_id WHERE ir.return_date IS NULL ORDER BY m.member_id";
+
+	public static final String GET_OVER_DUE_BOOKS = "SELECT b.book_id , m.member_id , m.name AS member_name , ir.issue_date , ir.return_date FROM issue_records ir JOIN members m ON ir.member_id = m.member_id JOIN books b ON ir.book_id = b.book_id WHERE ir.return_date IS NULL AND DATEDIFF(CURDATE(), ir.issue_date) > 14 ORDER BY ir.issue_date";
 	// Log Tables SQLQueries
 	public static final String BOOKS_LOG_INSERT = "INSERT INTO books_log (book_id,title, author, category, status, availability) VALUES (?,?, ?, ?, ?, ?)";
 

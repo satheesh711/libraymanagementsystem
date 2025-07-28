@@ -5,6 +5,8 @@ import java.util.List;
 import com.libraryManagementSystem.dao.BookDao;
 import com.libraryManagementSystem.dao.impl.BookDaoImpl;
 import com.libraryManagementSystem.domain.Book;
+import com.libraryManagementSystem.domain.CustomActiveIssuedBooks;
+import com.libraryManagementSystem.domain.CustomCategoryCount;
 import com.libraryManagementSystem.exceptions.InvalidException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.utilities.BookAvailability;
@@ -90,6 +92,18 @@ public class BookServicesImpl implements BookServices {
 
 		bookDao.updateBookAvalability(book, avail);
 
+	}
+
+	@Override
+	public List<CustomCategoryCount> getBookCountByCategory() {
+
+		return bookDao.getBookCountByCategory();
+	}
+
+	@Override
+	public List<CustomActiveIssuedBooks> getActiveIssuedBooks() {
+
+		return bookDao.getActiveIssuedBooks();
 	}
 
 }

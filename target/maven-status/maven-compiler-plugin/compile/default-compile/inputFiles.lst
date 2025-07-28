@@ -18,6 +18,8 @@ E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\contr
 E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\dao\impl\MemberDaoImpl.java
 E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\controller\BookAddController.java
 E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\dao\BookDao.java
+E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\domain\CustomActiveIssuedBooks.java
+E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\domain\CustomCategoryCount.java
 E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\services\BookServices.java
 E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\controller\BookOptionsController.java
 E:\weekly\libraymanagementsystem\src\main\java\com\libraryManagementSystem\utilities\PreparedStatementManager.java
