@@ -8,39 +8,52 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.libraryManagementSystem.controller.MemberRegisterController">
-   
+<Pane prefHeight="420.0" prefWidth="600.0"
+      xmlns="http://javafx.com/javafx/24.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.libraryManagementSystem.controller.MemberRegisterController"
+      stylesheets="@css/member_Registration.css"
+      styleClass="main-pane">
+
+   <!-- Title -->
    <children>
-   		<Label layoutX="200.0" layoutY="45.0" prefHeight="27.0"  text="" style="-fx-text-fill: red"  fx:id="error">
-   			<font>
-   				<Font name= "Times New Roman bold" size="20"  />
-   			</font>
-   		</Label>
-   	</children>
-   
+      <Label layoutX="180.0" layoutY="10.0" text="Member Registration" styleClass="title-label"/>
+   </children>
+
+   <!-- Error Message -->
    <children>
-      <Label layoutX="175.0" layoutY="85.0" prefHeight="17.0" prefWidth="51.0" text="Name" />
-      <Label layoutX="175.0" layoutY="126.0" prefHeight="17.0" prefWidth="48.0" text="Email" />
-      
-      <Label layoutX="174.0" layoutY="167.0" text="Mobile" />
-      <Label layoutX="173.0" layoutY="204.0" text="Gender" />
-      <Label layoutX="175.0" layoutY="245.0" text="Adress" />
-      
-      <TextField layoutX="252.0" layoutY="81.0" fx:id="name"/>
-      <TextField layoutX="252.0" layoutY="122.0" fx:id="email"/>
-      <TextField layoutX="252.0" layoutY="163.0" fx:id="mobile" />
-      
-      <ComboBox layoutX="251.0" layoutY="200.0" prefHeight="25.0" prefWidth="185.0" promptText="Select Gender"  fx:id="gender" />
-      <TextField layoutX="252.0" layoutY="241.0" fx:id="adress"/>
-      
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToMembers" text="Back" />
-      <Button layoutX="526.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToPrimary" text="Home" />
-      
-      <Button layoutX="295.0" layoutY="302.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" text="Submit" onAction="#submitDetails">
+      <Label layoutX="160.0" layoutY="40.0" fx:id="error"
+             text=""
+             styleClass="error-label"/>
+   </children>
+
+   <!-- Labels and Fields -->
+   <children>
+      <Label layoutX="140.0" layoutY="80.0" text="Name" styleClass="form-label"/>
+      <TextField layoutX="250.0" layoutY="76.0" fx:id="name" styleClass="form-field" prefWidth="200"/>
+
+      <Label layoutX="140.0" layoutY="120.0" text="Email" styleClass="form-label"/>
+      <TextField layoutX="250.0" layoutY="116.0" fx:id="email" styleClass="form-field" prefWidth="200"/>
+
+      <Label layoutX="140.0" layoutY="160.0" text="Mobile" styleClass="form-label"/>
+      <TextField layoutX="250.0" layoutY="156.0" fx:id="mobile" styleClass="form-field" prefWidth="200"/>
+
+      <Label layoutX="140.0" layoutY="200.0" text="Gender" styleClass="form-label"/>
+      <ComboBox layoutX="250.0" layoutY="196.0" fx:id="gender" promptText="Select Gender"
+                styleClass="form-field" prefWidth="200"/>
+
+      <Label layoutX="140.0" layoutY="240.0" text="Address" styleClass="form-label"/>
+      <TextField layoutX="250.0" layoutY="236.0" fx:id="adress" styleClass="form-field" prefWidth="200"/>
+   </children>
+
+   <!-- Buttons -->
+   <children>
+      <Button layoutX="20.0" layoutY="14.0" text="Back" onAction="#switchToMembers" styleClass="nav-button"/>
+      <Button layoutX="520.0" layoutY="14.0" text="Home" onAction="#switchToPrimary" styleClass="nav-button"/>
+      <Button layoutX="266.0" layoutY="290.0" text="Submit" onAction="#submitDetails" styleClass="submit-button">
          <cursor>
-            <Cursor fx:constant="HAND" />
+            <Cursor fx:constant="HAND"/>
          </cursor>
       </Button>
-      
    </children>
 </Pane>
