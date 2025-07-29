@@ -1,57 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
 
+<StackPane xmlns="http://javafx.com/javafx/24.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.libraryManagementSystem.controller.ReturnController"
+           stylesheets="@css/return.css"
+           prefWidth="600.0" prefHeight="450.0">
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.libraryManagementSystem.controller.ReturnController">
-   
-   <children>
-   		<Label layoutX="230.0" layoutY="35.0" prefHeight="27.0"  text="" style="-fx-text-fill: red"  fx:id="error">
-   			<font>
-   				<Font name= "Times New Roman bold" size="20"  />
-   			</font>
-   		</Label>
-   	</children>
-   
-   <children>
-      <Label alignment="CENTER" layoutX="243.0" layoutY="14.0" prefHeight="32.0" prefWidth="115.0" text="Return Book">
-         <font>
-            <Font name="System Bold Italic" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="149.0" layoutY="90.0" text="BookId">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="149.0" layoutY="147.0" text="MemberId">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="146.0" layoutY="209.0" text="ReturnDate">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <ComboBox layoutX="253.0" layoutY="86.0" prefHeight="25.0" prefWidth="206.0" promptText="Select Book" fx:id="books" />
-      <ComboBox layoutX="253.0" layoutY="143.0" prefHeight="25.0" prefWidth="206.0" promptText="Select Member" fx:id="members"/>
-      <DatePicker layoutX="253.0" layoutY="205.0" prefWidth="206.0" fx:id="returnDate"/>
-      <Button layoutX="221.0" layoutY="282.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="79.0" text="Return" onAction="#returnBook">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Button>
-      <Button layoutX="14.0" layoutY="18.0" mnemonicParsing="false" text="Back" onAction="#switchToIssueAndReturn"/>
-      <Button layoutX="527.0" layoutY="18.0" mnemonicParsing="false" text="Home" onAction="#switchTOPrimary"/>
-   </children>
-</Pane>
+    <children>
+        <VBox fx:id="mainVBox" alignment="TOP_CENTER" spacing="20.0">
+            
+            <!-- Top Navigation Buttons -->
+            <HBox alignment="TOP_CENTER" spacing="320.0" VBox.vgrow="NEVER">
+                <Button text="Back" onAction="#switchToIssueAndReturn" styleClass="nav-button"/>
+                <Button text="Home" onAction="#switchTOPrimary" styleClass="nav-button"/>
+            </HBox>
+
+            <!-- Title -->
+            <Label text="Return Book" styleClass="title-label"/>
+
+            <!-- Error Label -->
+            <Label fx:id="error" text="" styleClass="error-label"/>
+
+            <!-- Form Fields -->
+            <VBox alignment="CENTER" spacing="12.0">
+                
+                <HBox alignment="CENTER" spacing="10.0">
+                    <Label text="Book ID" styleClass="form-label"/>
+                    <ComboBox fx:id="books" promptText="Select Book" prefWidth="220.0" styleClass="form-input"/>
+                </HBox>
+
+                <HBox alignment="CENTER" spacing="10.0">
+                    <Label text="Member ID" styleClass="form-label"/>
+                    <ComboBox fx:id="members" promptText="Select Member" prefWidth="220.0" styleClass="form-input"/>
+                </HBox>
+
+                <HBox alignment="CENTER" spacing="10.0">
+                    <Label text="Return Date" styleClass="form-label"/>
+                    <DatePicker fx:id="returnDate" prefWidth="220.0" styleClass="form-input"/>
+                </HBox>
+
+                <Button text="Return" onAction="#returnBook" styleClass="submit-button" prefWidth="140"/>
+            </VBox>
+        </VBox>
+    </children>
+</StackPane>
