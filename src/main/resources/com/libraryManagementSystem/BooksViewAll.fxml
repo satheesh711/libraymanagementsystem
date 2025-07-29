@@ -1,41 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefWidth="1000.0" prefHeight="600.0"
-      xmlns="http://javafx.com/javafx/24.0.1"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.libraryManagementSystem.controller.BooksViewAllController"
-      stylesheets="@css/viewall_books.css"
-      styleClass="main-pane">
+<AnchorPane prefWidth="1000.0" prefHeight="600.0"
+            xmlns="http://javafx.com/javafx/24.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.libraryManagementSystem.controller.BooksViewAllController"
+            stylesheets="@css/viewall_books.css"
+            styleClass="main-pane">
 
-    <!-- Page Title -->
-    <Label layoutX="380.0" layoutY="10.0" text="View All Books" styleClass="header-label"/>
+ 
+<Label text="View All Books"
+       styleClass="header-label"
+       AnchorPane.topAnchor="15.0"
+       AnchorPane.leftAnchor="0.0"
+       AnchorPane.rightAnchor="0.0"
+       alignment="CENTER"
+       maxWidth="Infinity" />
 
-    <!-- Error Label -->
-    <Label fx:id="error" layoutX="400.0" layoutY="50.0" text=" " styleClass="error-label"/>
+ 
+<Label fx:id="error"
+       text=" "
+       styleClass="error-label"
+       AnchorPane.topAnchor="50.0"
+       AnchorPane.leftAnchor="0.0"
+       AnchorPane.rightAnchor="0.0"
+       alignment="CENTER"
+       maxWidth="Infinity" />
 
-    <!-- Navigation Buttons -->
-    <Button layoutX="20.0" layoutY="10.0" text="Back" onAction="#switchToBack" styleClass="nav-button"/>
-    <Button layoutX="900.0" layoutY="10.0" text="Home" onAction="#switchToHome" styleClass="nav-button"/>
+ 
+<Button text="Back"
+        onAction="#switchToBack"
+        styleClass="nav-button"
+        AnchorPane.topAnchor="10.0"
+        AnchorPane.leftAnchor="20.0" />
 
-    <!-- Book Table -->
+<Button text="Home"
+        onAction="#switchToHome"
+        styleClass="nav-button"
+        AnchorPane.topAnchor="10.0"
+        AnchorPane.rightAnchor="20.0" />
+
+ 
     <TableView fx:id="bookTableView"
-               layoutX="25.0" layoutY="90.0"
-               prefWidth="950.0" prefHeight="480.0"
+               AnchorPane.topAnchor="90.0"
+               AnchorPane.bottomAnchor="10.0"
+               AnchorPane.leftAnchor="25.0"
+               AnchorPane.rightAnchor="25.0"
                styleClass="book-table">
 
         <columns>
-            <TableColumn fx:id="idColumn" prefWidth="50.0" text="ID"/>
-            <TableColumn fx:id="titleColumn" prefWidth="170.0" text="Title"/>
-            <TableColumn fx:id="authorColumn" prefWidth="160.0" text="Author"/>
-            <TableColumn fx:id="categoryColumn" prefWidth="120.0" text="Category"/>
-            <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Status"/>
-            <TableColumn fx:id="availabilityColumn" prefWidth="120.0" text="Availability"/>
+            <TableColumn fx:id="idColumn" prefWidth="60.0" text="ID"/>
+            <TableColumn fx:id="titleColumn" prefWidth="200.0" text="Title"/>
+            <TableColumn fx:id="authorColumn" prefWidth="180.0" text="Author"/>
+            <TableColumn fx:id="categoryColumn" prefWidth="140.0" text="Category"/>
+            <TableColumn fx:id="statusColumn" prefWidth="120.0" text="Status"/>
+            <TableColumn fx:id="availabilityColumn" prefWidth="140.0" text="Availability"/>
             <TableColumn fx:id="actionsColumn" prefWidth="200.0" text="Actions"/>
         </columns>
     </TableView>
 
-</Pane>
+</AnchorPane>

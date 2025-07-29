@@ -1,78 +1,83 @@
-/* Main Pane Background */
+ 
 .main-pane {
-    -fx-background-color: linear-gradient(to bottom right, #f0faff, #cbe7ff);
+    -fx-background-color: #f4f6f8;
     -fx-padding: 20;
 }
-
-/* Header Title */
+ 
 .header-label {
     -fx-font-size: 26px;
+    -fx-font-family: "Arial";
     -fx-font-weight: bold;
-    -fx-text-fill: #0d47a1;
-    -fx-font-family: "Segoe UI";
+    -fx-text-fill: #2c3e50;
 }
 
-/* Error Label */
+ 
 .error-label {
-    -fx-text-fill: #d50000;
-    -fx-font-size: 16px;
+    -fx-font-size: 14px;
+    -fx-text-fill: red;
     -fx-font-weight: bold;
 }
 
-/* Navigation Buttons */
+ 
 .nav-button {
-    -fx-background-color: #1565c0;
+    -fx-background-color: #2980b9;
     -fx-text-fill: white;
-    -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-padding: 6 16;
-    -fx-background-radius: 8;
+    -fx-font-size: 14px;
+    -fx-padding: 6 16 6 16;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
     -fx-cursor: hand;
 }
+
 .nav-button:hover {
-    -fx-background-color: #0d47a1;
+    -fx-background-color: #1c6692;
 }
 
-/* Table Styling */
+ 
 .book-table {
-    -fx-font-size: 15px;
-    -fx-font-family: "Segoe UI";
-    -fx-border-color: #90caf9;
-    -fx-border-radius: 8px;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-font-size: 14px;
 }
 
-/* Table Header */
-.book-table .column-header {
-    -fx-background-color: #1976d2;
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
+/* Table Column Header */
+.table-view .column-header-background {
+    -fx-background-color: #34495e;
+    -fx-border-radius: 6 6 0 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: black;
     -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER;
+    -fx-padding: 10 0 10 0;
 }
 
 /* Table Rows */
-.book-table .table-row-cell {
-    -fx-cell-size: 40px;
-    -fx-font-size: 15px;
-}
-.book-table .table-row-cell:odd {
-    -fx-background-color: #e3f2fd;
-}
-.book-table .table-row-cell:even {
-    -fx-background-color: #ffffff;
-}
-.book-table .table-row-cell:selected {
-    -fx-background-color: #90caf9;
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-font-size: 14px;
 }
 
-/* Action Buttons (Edit/Delete) */
-.action-button {
-    -fx-background-color: #0288d1;
-    -fx-text-fill: white;
-    -fx-font-size: 13px;
-    -fx-padding: 4 10;
-    -fx-background-radius: 5;
-    -fx-cursor: hand;
+.table-row-cell:filled:selected, .table-row-cell:focused {
+    -fx-background-color: #d0e7ff;
 }
-.action-button:hover {
-    -fx-background-color: #0277bd;
+
+/* Table Cells */
+.table-cell {
+    -fx-padding: 10 5 10 5;
+    -fx-alignment: CENTER_LEFT;
+    -fx-font-family: "Segoe UI";
+}
+
+/* Specific Column Styles */
+.table-view .column-header .label:filled {
+    -fx-text-alignment: center;
+}
+
+.table-view .table-column {
+    -fx-alignment: CENTER_LEFT;
 }

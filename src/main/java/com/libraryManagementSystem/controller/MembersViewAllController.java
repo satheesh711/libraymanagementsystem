@@ -67,7 +67,7 @@ public class MembersViewAllController implements Initializable {
 		List<Member> members;
 
 		try {
-
+			memberTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			members = memberService.getMembers();
 
 			memberID.setCellValueFactory(new PropertyValueFactory<>("memberId"));
@@ -110,6 +110,7 @@ public class MembersViewAllController implements Initializable {
 
 		} catch (InvalidException e) {
 			error.setText(e.getMessage());
+			error.setStyle("-fx-text-fill: red");
 		}
 
 	}
