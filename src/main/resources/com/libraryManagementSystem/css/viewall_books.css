@@ -1,0 +1,78 @@
+/* Main Pane Background */
+.main-pane {
+    -fx-background-color: linear-gradient(to bottom right, #f0faff, #cbe7ff);
+    -fx-padding: 20;
+}
+
+/* Header Title */
+.header-label {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0d47a1;
+    -fx-font-family: "Segoe UI";
+}
+
+/* Error Label */
+.error-label {
+    -fx-text-fill: #d50000;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* Navigation Buttons */
+.nav-button {
+    -fx-background-color: #1565c0;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 16;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+.nav-button:hover {
+    -fx-background-color: #0d47a1;
+}
+
+/* Table Styling */
+.book-table {
+    -fx-font-size: 15px;
+    -fx-font-family: "Segoe UI";
+    -fx-border-color: #90caf9;
+    -fx-border-radius: 8px;
+}
+
+/* Table Header */
+.book-table .column-header {
+    -fx-background-color: #1976d2;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* Table Rows */
+.book-table .table-row-cell {
+    -fx-cell-size: 40px;
+    -fx-font-size: 15px;
+}
+.book-table .table-row-cell:odd {
+    -fx-background-color: #e3f2fd;
+}
+.book-table .table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+.book-table .table-row-cell:selected {
+    -fx-background-color: #90caf9;
+}
+
+/* Action Buttons (Edit/Delete) */
+.action-button {
+    -fx-background-color: #0288d1;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 4 10;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+.action-button:hover {
+    -fx-background-color: #0277bd;
+}
