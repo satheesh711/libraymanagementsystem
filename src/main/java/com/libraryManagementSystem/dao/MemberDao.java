@@ -7,15 +7,15 @@ import com.libraryManagementSystem.exceptions.InvalidException;
 
 public interface MemberDao {
 
-	void RegisterMember(Member member) throws InvalidException;
+	int RegisterMember(Member member) throws InvalidException;
 
-	void UpdateMember(Member newMember, Member oldMember) throws InvalidException;
+	int UpdateMember(Member newMember, Member oldMember) throws InvalidException;
 
 	List<Member> getAllMembers() throws InvalidException;
 
 	public void memberLog(Member member) throws InvalidException;
 
-	void deleteMember(Member memberData) throws InvalidException;
+	int deleteMember(Member memberData) throws InvalidException;
 
 	boolean getMemberByMobile(Long mobile) throws InvalidException;
 

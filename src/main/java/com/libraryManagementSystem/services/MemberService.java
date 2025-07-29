@@ -7,11 +7,11 @@ import com.libraryManagementSystem.exceptions.InvalidException;
 
 public interface MemberService {
 
-	void registerMember(Member member) throws InvalidException;
+	int registerMember(Member member) throws InvalidException;
 
 	List<Member> getMembers() throws InvalidException;
 
-	void updateMember(Member newMember, Member oldMember) throws InvalidException;
+	int updateMember(Member newMember, Member oldMember) throws InvalidException;
 
-	void deleteMember(Member memberData) throws InvalidException;
+	int deleteMember(Member memberData) throws InvalidException;
 }

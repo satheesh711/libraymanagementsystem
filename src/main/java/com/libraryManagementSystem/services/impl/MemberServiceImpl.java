@@ -14,39 +14,39 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberDao memberDao = new MemberDaoImpl();
 
 	@Override
-	public void registerMember(Member member) throws InvalidException {
+	public int registerMember(Member member) throws InvalidException {
 
 		if (!Validations.isValidString(member.getName())) {
-			throw new InvalidException("please enter valid name");
+			throw new InvalidException("Name must be at least 3 characters long");
 		}
 
 		if (!Validations.isValidEmail(member.getEmail())) {
-			throw new InvalidException("please enter valid email");
+			throw new InvalidException("Invalid email format");
 		}
 
 		if (!Validations.isValidMobile(member.getMobile())) {
-			throw new InvalidException("please enter valid mobileNumber");
+			throw new InvalidException("Mobile number must be 10 digits");
 		}
 
 		if (member.getGender() == null) {
-			throw new InvalidException("please select gender");
+			throw new InvalidException("Gender must not be null");
 		}
 
 		if (!Validations.isValidAdress(member.getAddress())) {
-			throw new InvalidException("please enter valid adress");
+			throw new InvalidException("Address must not be empty");
 		}
 
 		if (memberDao.getMemberByMobile(member.getMobile())) {
 
-			throw new InvalidException("Mobile Number Already Exit");
+			throw new InvalidException("Mobile Number Already Exist");
 		}
 
 		if (memberDao.getMemberByEmail(member.getEmail())) {
 
-			throw new InvalidException("Email Already Exit");
+			throw new InvalidException("Email Already Exist");
 		}
 
-		memberDao.RegisterMember(member);
+		return memberDao.RegisterMember(member);
 
 	}
 
@@ -57,35 +57,35 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void deleteMember(Member memberData) throws InvalidException {
-		memberDao.deleteMember(memberData);
+	public int deleteMember(Member memberData) throws InvalidException {
+		return memberDao.deleteMember(memberData);
 
 	}
 
 	@Override
-	public void updateMember(Member newMember, Member oldMember) throws InvalidException {
+	public int updateMember(Member newMember, Member oldMember) throws InvalidException {
 
 		if (!Validations.isValidString(newMember.getName())) {
-			throw new InvalidException("please enter valid name");
+			throw new InvalidException("Name must be at least 3 characters long");
 		}
 
 		if (!Validations.isValidEmail(newMember.getEmail())) {
-			throw new InvalidException("please enter valid email");
+			throw new InvalidException("Invalid email format");
 		}
 
 		if (!Validations.isValidMobile(newMember.getMobile())) {
-			throw new InvalidException("please enter valid mobileNumber");
+			throw new InvalidException("Mobile number must be 10 digits");
 		}
 
 		if (newMember.getGender() == null) {
-			throw new InvalidException("please select gender");
+			throw new InvalidException("Gender must not be null");
 		}
 
 		if (!Validations.isValidAdress(newMember.getAddress())) {
 			throw new InvalidException("please enter valid adress");
 		}
 
-		memberDao.UpdateMember(newMember, oldMember);
+		return memberDao.UpdateMember(newMember, oldMember);
 
 	}
 
