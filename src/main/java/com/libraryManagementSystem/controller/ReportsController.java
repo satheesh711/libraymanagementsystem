@@ -25,4 +25,5 @@ public class ReportsController {
 	public void switchToActiveBooks() throws Exception {
 		App.setRoot("MembersWithActiveIssuedBooks");
 	}
+
 }

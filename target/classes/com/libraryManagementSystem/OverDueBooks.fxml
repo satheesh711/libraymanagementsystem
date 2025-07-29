@@ -4,31 +4,53 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.libraryManagementSystem.controller.BooksOverDueController">
-   <children>
-   <Label layoutX="242.0" layoutY="14.0" text="" fx:id="error">
-         <font>
-            <Font name="System Bold Italic" size="17.0" />
-         </font>
-      </Label>
-      <Label layoutX="242.0" layoutY="14.0" text="OverDueBooks">
-         <font>
-            <Font name="System Bold Italic" size="17.0" />
-         </font>
-      </Label>
-      <TableView fx:id="overDueBookTableView" layoutX="2.0" layoutY="78.0" prefHeight="200.0" prefWidth="600.0">
-        <columns>
-          <TableColumn fx:id="bookId" prefWidth="67.199951171875" text="BookId" />
-          <TableColumn fx:id="bookName" prefWidth="135.20001983642578" text="BookName" />
-            <TableColumn fx:id="memberId" prefWidth="156.79998779296875" text="MemberId" />
-            <TableColumn fx:id="memberName" prefWidth="118.39996337890625" text="MemberName" />
-            <TableColumn fx:id="issuedDate" prefWidth="122.39999389648438" text="IssueDate" />
-        </columns>
-      </TableView>
-      <Button layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onAction="#switchTOReports" text="Back" />
-      <Button layoutX="534.0" layoutY="15.0" mnemonicParsing="false" onAction="#switchToPrimary" text="Home" />
-   </children>
-</Pane>
+<VBox fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" spacing="20" alignment="TOP_CENTER"
+      xmlns="http://javafx.com/javafx/24.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.libraryManagementSystem.controller.BooksOverDueController"
+      stylesheets="@css/booksOverdue.css"
+      styleClass="books-pane">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Header Bar -->
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="header-box">
+        <Button text="Back" onAction="#switchTOReports"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Home" onAction="#switchToPrimary"/>
+    </HBox>
+
+    <!-- Title -->
+    <Label text="OverDueBooks" styleClass="title-label">
+        <font>
+            <Font name="System Bold Italic" size="20.0"/>
+        </font>
+    </Label>
+
+    <!-- Error message -->
+    <Label fx:id="error" text="" styleClass="error-label" />
+
+    <!-- Scrollable Table -->
+    <ScrollPane fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS">
+        <TableView fx:id="overDueBookTableView" prefHeight="400.0" prefWidth="580.0">
+            <columns>
+                <TableColumn fx:id="bookId" text="BookId" prefWidth="100"/>
+                <TableColumn fx:id="bookName" text="BookName" prefWidth="150"/>
+                <TableColumn fx:id="memberId" text="MemberId" prefWidth="100"/>
+                <TableColumn fx:id="memberName" text="MemberName" prefWidth="150"/>
+                <TableColumn fx:id="issuedDate" text="IssueDate" prefWidth="150"/>
+            </columns>
+        </TableView>
+    </ScrollPane>
+
+</VBox>

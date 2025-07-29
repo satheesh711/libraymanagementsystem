@@ -4,7 +4,7 @@ public class Validations {
 
 	public static boolean isValidString(String name) {
 
-		return name.matches("^[A-Z a-z,:]{2,255}$");
+		return name.trim().matches("^[A-Z a-z,:]{2,255}$");
 	}
 
 	public static boolean isValidMobile(long mobile) {
