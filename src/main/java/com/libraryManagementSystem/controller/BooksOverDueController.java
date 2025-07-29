@@ -48,8 +48,11 @@ public class BooksOverDueController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
 		List<CustomOverDueBooks> overDueBooks;
 		try {
+			overDueBookTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
 			overDueBooks = bookService.getOverDueBooks();
 
 			bookId.setCellValueFactory(new PropertyValueFactory<>("bookId"));

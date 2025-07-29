@@ -47,6 +47,8 @@ public class CountOfBooksController implements Initializable {
 
 		List<CustomCategoryCount> categories;
 		try {
+			categoryCountTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
 			categories = bookService.getBookCountByCategory();
 
 			categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));

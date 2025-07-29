@@ -54,6 +54,7 @@ public class ActiveBooksController implements Initializable {
 
 		List<CustomActiveIssuedBooks> activeIssuedBooks;
 		try {
+			activeIssuedBooksTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			activeIssuedBooks = bookService.getActiveIssuedBooks();
 			memberId.setCellValueFactory(new PropertyValueFactory<>("memberId"));
 			memberName.setCellValueFactory(new PropertyValueFactory<>("memberName"));
