@@ -16,7 +16,7 @@ import com.libraryManagementSystem.utilities.SQLQueries;
 public class MemberDaoImpl implements MemberDao {
 
 	@Override
-	public void RegisterMember(Member member) throws InvalidException {
+	public int RegisterMember(Member member) throws InvalidException {
 		try {
 
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_INSERT);
@@ -29,9 +29,10 @@ public class MemberDaoImpl implements MemberDao {
 
 			int rows = stmt.executeUpdate();
 
-			if (rows < 0) {
+			if (rows <= 0) {
 				throw new InvalidException("Member not added to server");
 			}
+			return rows;
 
 		} catch (SQLException e) {
 			throw new InvalidException("Error adding member: " + e.getMessage());
@@ -84,7 +85,7 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public void UpdateMember(Member member, Member oldMember) throws InvalidException {
+	public int UpdateMember(Member member, Member oldMember) throws InvalidException {
 
 		try {
 
@@ -104,6 +105,8 @@ public class MemberDaoImpl implements MemberDao {
 			}
 
 			memberLog(oldMember);
+
+			return rowsUpdated;
 
 		} catch (SQLException e) {
 			throw new InvalidException("Error in Server" + e.getMessage());
@@ -134,7 +137,7 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public void deleteMember(Member memberData) throws InvalidException {
+	public int deleteMember(Member memberData) throws InvalidException {
 
 		try {
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_DELETE);
@@ -144,10 +147,12 @@ public class MemberDaoImpl implements MemberDao {
 
 			if (rowsDeleted <= 0) {
 
-				throw new InvalidException("No Book found with Title: " + memberData.getName());
+				throw new InvalidException("No Member found with Name: " + memberData.getName());
 			}
 
 			memberLog(memberData);
+
+			return rowsDeleted;
 
 		} catch (SQLException e) {
 			throw new InvalidException("Error in Server" + e.getMessage());
