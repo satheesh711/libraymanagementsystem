@@ -60,6 +60,7 @@ public class BooksViewAllController implements Initializable {
 		List<Book> books;
 		try {
 
+			bookTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			books = bookService.getBooks();
 
 			idColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
