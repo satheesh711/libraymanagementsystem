@@ -28,20 +28,28 @@
 
         <!-- Navigation Buttons -->
         <Button text="Back" onAction="#switchToBack" styleClass="button"
-                AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="20.0"/>
+                AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="20.0">
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </Button>
         <Button text="Home" onAction="#switchToHome" styleClass="button"
-                AnchorPane.topAnchor="5.0" AnchorPane.rightAnchor="20.0"/>
+                AnchorPane.topAnchor="5.0" AnchorPane.rightAnchor="20.0">
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </Button>
 
         <!-- Labels -->
         <Label text="Title" styleClass="label" AnchorPane.topAnchor="90.0" AnchorPane.leftAnchor="135.0"/>
         <Label text="Author" styleClass="label" AnchorPane.topAnchor="130.0" AnchorPane.leftAnchor="135.0"/>
         <Label text="Category" styleClass="label" AnchorPane.topAnchor="170.0" AnchorPane.leftAnchor="135.0"/>
-        <Label text="Status" styleClass="label" AnchorPane.topAnchor="210.0" AnchorPane.leftAnchor="135.0"/>
-        <Label text="Availability" styleClass="label" AnchorPane.topAnchor="250.0" AnchorPane.leftAnchor="135.0"/>
 
         <!-- Fields -->
-        <TextField fx:id="title" styleClass="text-field" AnchorPane.topAnchor="86.0" AnchorPane.leftAnchor="225.0" prefWidth="250.0"/>
-        <TextField fx:id="author" styleClass="text-field" AnchorPane.topAnchor="126.0" AnchorPane.leftAnchor="225.0" prefWidth="250.0"/>
+        <TextField fx:id="title" styleClass="text-field"
+                   AnchorPane.topAnchor="86.0" AnchorPane.leftAnchor="225.0" prefWidth="250.0"/>
+        <TextField fx:id="author" styleClass="text-field"
+                   AnchorPane.topAnchor="126.0" AnchorPane.leftAnchor="225.0" prefWidth="250.0"/>
 
         <ComboBox fx:id="category" promptText="Select Option" styleClass="combo-box"
                   AnchorPane.topAnchor="166.0" AnchorPane.leftAnchor="225.0" prefWidth="250.0">
@@ -50,13 +58,12 @@
             </cursor>
         </ComboBox>
 
-        <ComboBox fx:id="status" promptText="CheckStatus" styleClass="combo-box"
-                  AnchorPane.topAnchor="206.0" AnchorPane.leftAnchor="225.0" prefWidth="250.0"/>
-        <ComboBox fx:id="availability" promptText="CheckAvailability" styleClass="combo-box"
-                  AnchorPane.topAnchor="246.0" AnchorPane.leftAnchor="225.0" prefWidth="250.0"/>
-
         <!-- Submit Button -->
         <Button text="Submit" onAction="#submit" styleClass="button"
-                AnchorPane.topAnchor="300.0" AnchorPane.leftAnchor="260.0"/>
+                AnchorPane.topAnchor="220.0" AnchorPane.leftAnchor="260.0">
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </Button>
     </children>
 </AnchorPane>

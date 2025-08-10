@@ -6,43 +6,47 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
+import com.libraryManagementSystem.exceptions.StatementPreparationException;
 
 public class PreparedStatementManager {
 
 	private PreparedStatementManager() {
-
 	}
 
-	private static Map<String, PreparedStatement> preparedStatementCache = new HashMap<>();
+	private static final Map<String, PreparedStatement> preparedStatementCache = new HashMap<>();
 
-	public static PreparedStatement getPreparedStatement(String query) throws SQLException, InvalidException {
+	public static PreparedStatement getPreparedStatement(String query)
+			throws DatabaseConnectionException, StatementPreparationException {
 
 		if (!preparedStatementCache.containsKey(query)) {
 			Connection conn;
 			try {
 				conn = DBConnection.getConnection();
-			} catch (InvalidException e) {
-
-				throw new InvalidException("DB Connection fail Pleace Check Credentials");
+			} catch (Exception e) {
+				throw new DatabaseConnectionException(
+						"Database connection failed. Please check credentials or server status.", e);
 			}
-			PreparedStatement stmt = conn.prepareStatement(query);
-			preparedStatementCache.put(query, stmt);
+
+			try {
+				PreparedStatement stmt = conn.prepareStatement(query);
+				preparedStatementCache.put(query, stmt);
+			} catch (SQLException e) {
+				throw new StatementPreparationException("Failed to prepare statement for query: " + query, e);
+			}
 		}
 
 		return preparedStatementCache.get(query);
 	}
 
 	public static void closeAllStatements() {
-
 		for (PreparedStatement stmt : preparedStatementCache.values()) {
 			try {
 				stmt.close();
 			} catch (SQLException e) {
-				System.out.println("Error closing statement: " + e.getMessage());
+				System.err.println("Error closing statement: " + e.getMessage());
 			}
 		}
 		preparedStatementCache.clear();
-
 	}
 }

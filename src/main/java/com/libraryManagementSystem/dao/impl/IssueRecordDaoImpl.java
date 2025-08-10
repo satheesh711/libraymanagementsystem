@@ -10,7 +10,11 @@ import com.libraryManagementSystem.dao.BookDao;
 import com.libraryManagementSystem.dao.IssueRecordDao;
 import com.libraryManagementSystem.domain.Book;
 import com.libraryManagementSystem.domain.IssueRecord;
+import com.libraryManagementSystem.exceptions.BookNotFoundException;
+import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.utilities.BookAvailability;
 import com.libraryManagementSystem.utilities.DBConnection;
 import com.libraryManagementSystem.utilities.IssueStatus;
@@ -25,7 +29,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 	public void issueBook(IssueRecord newIssue, Book book) throws InvalidException {
 		try {
 
-			DBConnection.SetAutoCommit(false);
+			DBConnection.setAutoCommit(false);
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.ISSUE_INSERT);
 
 			stmt.setInt(1, newIssue.getBookId());
@@ -35,11 +39,12 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 
 			stmt.executeUpdate();
 
-			bookDaoImpl.updateBookAvalability(book, BookAvailability.ISSUED);
+			bookDaoImpl.updateBookAvailability(book, BookAvailability.ISSUED);
 
 			DBConnection.commit();
-			DBConnection.SetAutoCommit(true);
-		} catch (SQLException e) {
+			DBConnection.setAutoCommit(true);
+		} catch (SQLException | BookNotFoundException | DatabaseOperationException | DatabaseConnectionException
+				| StatementPreparationException e) {
 			try {
 				DBConnection.rollback();
 				System.out.println(e.getMessage());
@@ -83,7 +88,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 				throw new InvalidException("Issue record Not Found ");
 			}
 
-			DBConnection.SetAutoCommit(false);
+			DBConnection.setAutoCommit(false);
 
 			if (issue.getIssueDate().isAfter(date)) {
 				throw new InvalidException("return date Must be after Issue Date");
@@ -102,12 +107,13 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 			issueLog(issue);
 			System.out.println("after log");
 
-			bookDaoImpl.updateBookAvalability(book, BookAvailability.AVAILABLE);
+			bookDaoImpl.updateBookAvailability(book, BookAvailability.AVAILABLE);
 			System.out.println("after book avail");
 			DBConnection.commit();
-			DBConnection.SetAutoCommit(true);
+			DBConnection.setAutoCommit(true);
 
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException | StatementPreparationException | BookNotFoundException
+				| DatabaseOperationException e) {
 			try {
 				DBConnection.rollback();
 				System.out.println(e.getMessage());
@@ -137,7 +143,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 
 			stmt.executeUpdate();
 
-		} catch (SQLException e) {
+		} catch (SQLException | DatabaseConnectionException | StatementPreparationException e) {
 
 			e.printStackTrace();
 		}

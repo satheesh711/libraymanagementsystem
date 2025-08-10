@@ -3,34 +3,42 @@ package com.libraryManagementSystem.controller;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.Book;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.BookNotFoundException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
+import com.libraryManagementSystem.exceptions.DuplicateBookException;
+import com.libraryManagementSystem.exceptions.InvalidBookDataException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.services.impl.BookServicesImpl;
-import com.libraryManagementSystem.utilities.BookAvailability;
 import com.libraryManagementSystem.utilities.BookCategory;
-import com.libraryManagementSystem.utilities.BookStatus;
+import com.libraryManagementSystem.utilities.Validations;
 
+import javafx.animation.PauseTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.util.Duration;
 
 public class BookUpdateController implements Initializable {
 
-	BookServices bookService = new BookServicesImpl();
+	private final BookServices bookService = new BookServicesImpl();
+
+	private ObservableList<Book> allBooks;
 
 	@FXML
-	private ComboBox<Book> books;
+	private TextField bookSearchField;
 	@FXML
 	private ComboBox<BookCategory> category;
-	@FXML
-	private ComboBox<BookStatus> status;
-	@FXML
-	private ComboBox<BookAvailability> availability;
 	@FXML
 	private TextField title;
 	@FXML
@@ -39,6 +47,9 @@ public class BookUpdateController implements Initializable {
 	private Label bookId;
 	@FXML
 	private Label error;
+
+	private ContextMenu suggestionsPopup = new ContextMenu();
+	private Book selectedBook = null;
 
 	@FXML
 	private void switchToBookOptions() throws Exception {
@@ -52,93 +63,89 @@ public class BookUpdateController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		List<Book> bookTitles;
 		try {
-
-			bookTitles = bookService.getBooks();
-			books.getItems().addAll(bookTitles);
+			allBooks = FXCollections.observableArrayList(bookService.getBooks());
 			category.getItems().addAll(BookCategory.values());
-			status.getItems().addAll(BookStatus.values());
-			availability.getItems().addAll(BookAvailability.values());
 
-			books.setOnAction(event -> {
+			setupSearch();
 
-				if (!books.getSelectionModel().isEmpty()) {
-					bookPropertySetting();
+			title.setTextFormatter(new TextFormatter<>(change -> {
+				error.setText("");
+				if (Validations.isValidTitle(change.getControlNewText())) {
+					return change;
 				}
-			});
+				showError("Please use only letters, numbers, and allowed punctuation in the title.");
+				return null;
+			}));
 
-			books.setValue(BooksViewAllController.getBookIdSelected());
-			if (!books.getSelectionModel().isEmpty()) {
-				bookPropertySetting();
-			}
-		} catch (InvalidException e) {
-			error.setText(e.getMessage());
+			author.setTextFormatter(new TextFormatter<>(change -> {
+				error.setText("");
+				if (Validations.isValidName(change.getControlNewText())) {
+					return change;
+				}
+				showError("Please use only letters and spaces for the author's name.");
+				return null;
+			}));
+
+		} catch (DatabaseOperationException e) {
+			showError("Error loading books: " + e.getMessage());
 		}
-
 	}
 
-	@FXML
-	public void updateBook() {
+	private void setupSearch() {
+		bookSearchField.textProperty().addListener((obs, oldVal, newVal) -> {
+			if (newVal == null || newVal.isEmpty()) {
+				suggestionsPopup.hide();
+				selectedBook = null;
+				clearFormFieldsOnly();
+				return;
+			}
 
-		Book book;
+			String filter = newVal.toLowerCase();
+			List<Book> matches = allBooks.stream().filter(
+					b -> b.getTitle().toLowerCase().contains(filter) || b.getAuthor().toLowerCase().contains(filter))
+					.collect(Collectors.toList());
 
-		if (!books.getSelectionModel().isEmpty()) {
-			book = books.getSelectionModel().getSelectedItem();
+			Book exactMatch = allBooks.stream()
+					.filter(b -> (b.getTitle() + " - " + b.getAuthor()).equalsIgnoreCase(newVal)).findFirst()
+					.orElse(null);
 
-			String bookTitle = title.getText();
-			String bookAuthor = author.getText();
-			BookCategory bookcategory = category.getSelectionModel().getSelectedItem();
-			BookStatus bookstatus = status.getSelectionModel().getSelectedItem();
-			BookAvailability bookAvailability = availability.getSelectionModel().getSelectedItem();
-
-			Book newBook = new Book(book.getBookId(), bookTitle, bookAuthor, bookcategory, bookstatus,
-					bookAvailability);
-
-			if (!(book.equals(newBook))) {
-				try {
-					bookService.updateBook(newBook, book);
-					error.setText(bookTitle + " Book updated Successfully");
-
-					error.setStyle("-fx-text-fill: green");
-					title.clear();
-					author.clear();
-
-					category.setValue(null);
-					status.setValue(null);
-					availability.setValue(null);
-					books.setValue(null);
-
-				} catch (InvalidException e) {
-					error.setText(e.getMessage());
-					error.setStyle("-fx-text-fill: red");
-				}
+			if (exactMatch != null) {
+				selectedBook = exactMatch;
+				fillBookDetails(exactMatch);
 			} else {
-				error.setText("Please edit at least one Field");
-				error.setStyle("-fx-text-fill: red");
+				selectedBook = null;
+				clearFormFieldsOnly();
 			}
 
-		} else {
-			error.setText("Please Select Book Frist");
-			error.setStyle("-fx-text-fill: red");
-		}
-
+			if (matches.isEmpty()) {
+				suggestionsPopup.hide();
+			} else {
+				populateSuggestions(matches);
+				if (!suggestionsPopup.isShowing()) {
+					suggestionsPopup.show(bookSearchField, javafx.geometry.Side.BOTTOM, 0, 0);
+				}
+			}
+		});
 	}
 
-	private void bookPropertySetting() {
+	private void populateSuggestions(List<Book> matches) {
+		suggestionsPopup.getItems().clear();
+		for (Book b : matches) {
+			MenuItem item = new MenuItem(b.getTitle() + " - " + b.getAuthor());
+			item.setOnAction(e -> {
+				selectedBook = b;
+				bookSearchField.setText(b.getTitle() + " - " + b.getAuthor());
+				fillBookDetails(b);
+				suggestionsPopup.hide();
+			});
+			suggestionsPopup.getItems().add(item);
+		}
+	}
 
-		Book book = books.getSelectionModel().getSelectedItem();
-
+	private void fillBookDetails(Book book) {
 		category.setDisable(false);
-
 		category.getSelectionModel().select(book.getCategory());
-
-		status.setDisable(false);
-
-		status.getSelectionModel().select(book.getStatus());
-
-		availability.getSelectionModel().select(book.getAvailability());
 
 		title.setDisable(false);
 		title.setText(book.getTitle());
@@ -147,6 +154,65 @@ public class BookUpdateController implements Initializable {
 		author.setText(book.getAuthor());
 
 		bookId.setText(String.valueOf(book.getBookId()));
+	}
+
+	@FXML
+	public void updateBook() {
+		if (selectedBook == null) {
+			showError("Please select a book from suggestions.");
+			return;
+		}
+
+		String bookTitle = title.getText().trim();
+		String bookAuthor = author.getText().trim();
+		BookCategory bookCategory = category.getSelectionModel().getSelectedItem();
+
+		if (bookTitle.isEmpty() || bookAuthor.isEmpty() || bookCategory == null) {
+			showError("All fields must be filled out.");
+			return;
+		}
+
+		Book newBook = new Book(selectedBook.getBookId(), bookTitle, bookAuthor, bookCategory);
+
+		try {
+			bookService.updateBook(newBook, selectedBook);
+			clearForm();
+			showSuccess(bookTitle + " updated successfully.");
+			initialize(null, null);
+
+		} catch (BookNotFoundException | InvalidBookDataException | DatabaseOperationException
+				| DuplicateBookException e) {
+			showError("Update failed: " + e.getMessage());
+		}
+	}
+
+	private void showError(String message) {
+		error.setText(message);
+		error.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+		PauseTransition pause = new PauseTransition(Duration.seconds(3));
+		pause.setOnFinished(event -> error.setText(""));
+		pause.play();
+	}
+
+	private void showSuccess(String message) {
+		error.setText(message);
+		error.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+		PauseTransition pause = new PauseTransition(Duration.seconds(3));
+		pause.setOnFinished(event -> error.setText(""));
+		pause.play();
+	}
+
+	private void clearForm() {
+		clearFormFieldsOnly();
+		bookSearchField.clear();
+		selectedBook = null;
+	}
+
+	private void clearFormFieldsOnly() {
+		title.clear();
+		author.clear();
+		category.setValue(null);
+		bookId.setText("");
 	}
 
 }

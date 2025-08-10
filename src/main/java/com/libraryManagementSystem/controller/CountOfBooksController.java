@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.CustomCategoryCount;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.services.impl.BookServicesImpl;
 import com.libraryManagementSystem.utilities.BookCategory;
@@ -49,7 +49,7 @@ public class CountOfBooksController implements Initializable {
 		try {
 			categoryCountTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-			categories = bookService.getBookCountByCategory();
+			categories = bookService.getBooksCountByCategory();
 
 			categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
 			bookCount.setCellValueFactory(new PropertyValueFactory<>("count"));
@@ -59,7 +59,7 @@ public class CountOfBooksController implements Initializable {
 				bookList.add(book);
 			});
 			categoryCountTableView.setItems(bookList);
-		} catch (InvalidException e) {
+		} catch (DatabaseOperationException e) {
 
 			error.setText(e.getMessage());
 		}

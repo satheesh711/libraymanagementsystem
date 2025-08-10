@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.CustomActiveIssuedBooks;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.services.impl.BookServicesImpl;
 
@@ -69,7 +69,7 @@ public class ActiveBooksController implements Initializable {
 			});
 			bookList.forEach(System.out::println);
 			activeIssuedBooksTableView.setItems(bookList);
-		} catch (InvalidException e) {
+		} catch (DatabaseOperationException e) {
 			error.setText(e.getMessage());
 		}
 

@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.CustomOverDueBooks;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.services.impl.BookServicesImpl;
 
@@ -67,7 +67,7 @@ public class BooksOverDueController implements Initializable {
 				System.out.println(book);
 			});
 			overDueBookTableView.setItems(bookList);
-		} catch (InvalidException e) {
+		} catch (DatabaseOperationException e) {
 
 			error.setText(e.getMessage());
 		}

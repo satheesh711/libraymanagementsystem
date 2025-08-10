@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.Book;
 import com.libraryManagementSystem.domain.Member;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.exceptions.InvalidException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.services.IssueService;
@@ -68,7 +69,7 @@ public class ReturnController implements Initializable {
 				returnPropertySetting();
 			});
 
-		} catch (InvalidException e) {
+		} catch (DatabaseOperationException | InvalidException e) {
 			error.setText(e.getMessage());
 		}
 

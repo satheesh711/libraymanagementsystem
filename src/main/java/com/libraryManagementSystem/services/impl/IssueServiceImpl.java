@@ -8,6 +8,8 @@ import com.libraryManagementSystem.dao.impl.BookDaoImpl;
 import com.libraryManagementSystem.dao.impl.IssueRecordDaoImpl;
 import com.libraryManagementSystem.domain.Book;
 import com.libraryManagementSystem.domain.IssueRecord;
+import com.libraryManagementSystem.exceptions.BookNotFoundException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.exceptions.InvalidException;
 import com.libraryManagementSystem.services.IssueService;
 import com.libraryManagementSystem.utilities.BookAvailability;
@@ -25,7 +27,13 @@ public class IssueServiceImpl implements IssueService {
 			throw new InvalidException("Date Should not greater than today!");
 		}
 
-		Book book = bookDao.getBookById(newIssue.getBookId());
+		Book book = null;
+		try {
+			book = bookDao.getBookById(newIssue.getBookId());
+		} catch (BookNotFoundException | DatabaseOperationException e) {
+
+			e.printStackTrace();
+		}
 		if (book == null) {
 			throw new InvalidException("Book Details not found");
 		}

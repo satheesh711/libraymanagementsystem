@@ -7,28 +7,25 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class DBConnection {
 
 	private DBConnection() {
-
 	}
 
 	private static Connection connection;
 
-	private static void initializeConnection() throws InvalidException {
-
+	private static void initializeConnection() throws DatabaseConnectionException {
 		if (connection != null) {
 			return;
 		}
 
-		try {
+		try (InputStream inputStream = new FileInputStream("config.properties")) {
 			MysqlDataSource dataSource = new MysqlDataSource();
 
 			Properties properties = new Properties();
-			InputStream inputStream = new FileInputStream("config.properties");
 			properties.load(inputStream);
 
 			dataSource.setPort(Integer.parseInt(properties.getProperty("port")));
@@ -40,20 +37,20 @@ public class DBConnection {
 			connection = dataSource.getConnection();
 			System.out.println("Connected successfully");
 
-			inputStream.close();
-
-		} catch (SQLException | IOException e) {
-			throw new InvalidException("Connection failed: " + e.getMessage());
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Failed to connect to database.", e);
+		} catch (IOException e) {
+			throw new DatabaseConnectionException("Failed to read database configuration file.", e);
 		}
 	}
 
-	public static Connection getConnection() throws InvalidException {
+	public static Connection getConnection() throws DatabaseConnectionException {
 		try {
 			if (connection == null || connection.isClosed()) {
 				initializeConnection();
 			}
 		} catch (SQLException e) {
-			throw new InvalidException("Error checking connection state: " + e.getMessage());
+			throw new DatabaseConnectionException("Error checking database connection state.", e);
 		}
 		return connection;
 	}
@@ -64,25 +61,29 @@ public class DBConnection {
 				connection.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println("Error closing database connection: " + e.getMessage());
 		}
 	}
 
-	public static void SetAutoCommit(Boolean commit) {
+	public static void setAutoCommit(boolean commit) {
 		try {
 			if (connection != null) {
 				connection.setAutoCommit(commit);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println("Error setting auto-commit: " + e.getMessage());
 		}
 	}
 
 	public static void commit() throws SQLException {
-		connection.commit();
+		if (connection != null) {
+			connection.commit();
+		}
 	}
 
 	public static void rollback() throws SQLException {
-		connection.rollback();
+		if (connection != null) {
+			connection.rollback();
+		}
 	}
 }

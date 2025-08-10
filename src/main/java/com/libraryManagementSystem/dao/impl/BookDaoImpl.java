@@ -1,5 +1,6 @@
 package com.libraryManagementSystem.dao.impl;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,226 +13,289 @@ import com.libraryManagementSystem.domain.Book;
 import com.libraryManagementSystem.domain.CustomActiveIssuedBooks;
 import com.libraryManagementSystem.domain.CustomCategoryCount;
 import com.libraryManagementSystem.domain.CustomOverDueBooks;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.BookNotFoundException;
+import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
+import com.libraryManagementSystem.exceptions.InvalidEnumValueException;
+import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.utilities.BookAvailability;
 import com.libraryManagementSystem.utilities.BookCategory;
 import com.libraryManagementSystem.utilities.BookStatus;
+import com.libraryManagementSystem.utilities.DBConnection;
 import com.libraryManagementSystem.utilities.PreparedStatementManager;
 import com.libraryManagementSystem.utilities.SQLQueries;
 
 public class BookDaoImpl implements BookDao {
 
 	@Override
-	public void addBook(Book book) throws InvalidException {
-
+	public void addBook(Book book) throws DatabaseOperationException {
 		try {
-
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_INSERT);
 
 			stmt.setString(1, book.getTitle());
 			stmt.setString(2, book.getAuthor());
-			stmt.setString(3, book.getCategory().toString());
-			stmt.setString(4, String.valueOf(book.getStatus().toString().charAt(0)));
-			stmt.setString(5, String.valueOf(book.getAvailability().toString().charAt(0)));
+			stmt.setString(3, book.getCategory().getCategory());
+			stmt.setString(4, book.getStatus().getDbName());
+			stmt.setString(5, book.getAvailability().getDbName());
 
 			int rows = stmt.executeUpdate();
-
-			if (rows < 0) {
-				throw new InvalidException("Book not added to server");
+			if (rows == 0) {
+				throw new DatabaseOperationException("Book could not be added to the database.");
 			}
-
-		} catch (SQLException e) {
-			throw new InvalidException("Error in Server");
+		} catch (SQLException | DatabaseConnectionException | StatementPreparationException e) {
+			throw new DatabaseOperationException("Error while adding book to the database.", e);
 		}
-
 	}
 
 	@Override
-	public void updateBook(Book book, Book oldBook) throws InvalidException {
-
+	public boolean existsByTitleAndAuthor(String title, String author) throws DatabaseOperationException {
+		ResultSet rs = null;
 		try {
-			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_UPDATE);
+			PreparedStatement stmt = PreparedStatementManager
+					.getPreparedStatement(SQLQueries.BOOK_SELECT_BY_TITLE_AUTHOR);
+			stmt.setString(1, title.trim().toLowerCase());
+			stmt.setString(2, author.trim().toLowerCase());
 
-			stmt.setString(1, book.getTitle());
-			stmt.setString(2, book.getAuthor());
-			stmt.setString(3, book.getCategory().toString());
-			stmt.setString(4, String.valueOf(book.getStatus().toString().charAt(0)));
-			stmt.setString(5, String.valueOf(book.getAvailability().toString().charAt(0)));
-			stmt.setInt(6, book.getBookId());
-
-			int rowsUpdated = stmt.executeUpdate();
-
-			if (rowsUpdated < 0) {
-				throw new InvalidException("Book not added to server");
+			rs = stmt.executeQuery();
+			return rs.next();
+		} catch (SQLException | DatabaseConnectionException | StatementPreparationException e) {
+			throw new DatabaseOperationException("Error checking book existence: " + e.getMessage(), e);
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					System.err.println("Failed to close ResultSet: " + e.getMessage());
+				}
 			}
-			bookLog(oldBook);
-
-		} catch (SQLException e) {
-
-			System.out.println(e.getMessage());
-			throw new InvalidException("Error in Server" + e.getMessage());
 		}
 	}
 
 	@Override
-	public void updateBookAvalability(Book book, BookAvailability avalability) throws InvalidException {
-		try {
-
-			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_UPDATE_AVAILABILITY);
-
-			stmt.setString(1, String.valueOf(avalability.toString().charAt(0)));
-			stmt.setInt(2, book.getBookId());
-
-			int rowsUpdated = stmt.executeUpdate();
-
-			if (rowsUpdated <= 0) {
-
-				throw new InvalidException("Book Avalability not updated.");
-			}
-			bookLog(book);
-
-		} catch (SQLException e) {
-
-			System.out.println(e.getMessage());
-			throw new InvalidException("Error in Server" + e.getMessage());
-		}
-	}
-
-	@Override
-	public List<Book> getAllBooks() throws InvalidException {
+	public List<Book> getAllBooks() throws DatabaseOperationException {
 		List<Book> books = new ArrayList<>();
-		PreparedStatement stmt;
 		try {
-			stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_SELECT_ALL);
-
+			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_SELECT_ALL);
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
-
-				int bookId = rs.getInt("book_id");
-				String title = rs.getString("title");
-				String author = rs.getString("author");
-				String category = rs.getString("category");
-				BookStatus status = rs.getString("status").equals("A") ? BookStatus.ACTIVE : BookStatus.INACTIVE;
-				BookAvailability availability = rs.getString("availability").equalsIgnoreCase("A")
-						? BookAvailability.AVAILABLE
-						: BookAvailability.ISSUED;
-				Book book = new Book(bookId, title, author, BookCategory.valueOf(category.toUpperCase()), status,
-						availability);
+				Book book = extractBookFromResultSet(rs);
 				books.add(book);
 			}
 
-		} catch (SQLException e) {
-			System.out.println("Error retrieving all members: " + e.getMessage());
+		} catch (SQLException | InvalidEnumValueException | DatabaseConnectionException
+				| StatementPreparationException e) {
+			throw new DatabaseOperationException("Error retrieving all books: " + e.getMessage(), e);
 		}
-
 		return books;
 	}
 
 	@Override
-	public boolean getBookByTitleAndAuthor(String title, String author) throws InvalidException {
-		PreparedStatement stmt;
+	public Book getBookById(int id) throws BookNotFoundException, DatabaseOperationException {
 		try {
+			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_SELECT_BY_ID);
+			stmt.setInt(1, id);
 
-			stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_SELECT_BY_TITLE_AUTHOR);
-			stmt.setString(1, title.trim().toLowerCase());
-			stmt.setString(2, author.trim().toLowerCase());
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
 
-			ResultSet rs = stmt.executeQuery();
+					return extractBookFromResultSet(rs);
 
-			if (rs.next()) {
-
-				return true;
+				} else {
+					throw new BookNotFoundException("No book found with ID " + id);
+				}
 			}
-
-			return false;
-
 		} catch (SQLException e) {
-			throw new InvalidException("Error in Server" + e.getMessage());
+			throw new DatabaseOperationException("SQL error while retrieving book: " + e.getMessage(), e);
+		} catch (InvalidEnumValueException | DatabaseConnectionException | StatementPreparationException e) {
+			throw new DatabaseOperationException("Invalid enum value in DB: " + e.getMessage(), e);
 		}
-
 	}
 
 	@Override
-	public void deleteBook(Book book) throws InvalidException {
-
+	public boolean existsByTitleAndAuthorExceptId(String title, String author, int excludeId)
+			throws DatabaseOperationException {
 		try {
-			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_DELETE);
-			stmt.setInt(1, book.getBookId());
+			PreparedStatement stmt = PreparedStatementManager
+					.getPreparedStatement(SQLQueries.BOOK_EXISTS_BY_TITLE_AUTHOR_EXCEPT_ID);
+			stmt.setString(1, title);
+			stmt.setString(2, author);
+			stmt.setInt(3, excludeId);
 
-			int rowsDeleted = stmt.executeUpdate();
-
-			if (rowsDeleted <= 0) {
-
-				throw new InvalidException("No Book found with Title: " + book.getTitle());
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1) > 0;
+				}
 			}
-
-			bookLog(book);
-
-		} catch (SQLException e) {
-			throw new InvalidException("Error in Server" + e.getMessage());
+		} catch (SQLException | DatabaseConnectionException | StatementPreparationException e) {
+			throw new DatabaseOperationException("Error checking for duplicate book (excluding ID): " + e.getMessage(),
+					e);
 		}
-
+		return false;
 	}
 
 	@Override
-	public void bookLog(Book book) throws InvalidException {
-		PreparedStatement stmt;
+	public void updateBook(Book book, Book oldBook) throws BookNotFoundException, DatabaseOperationException {
+		Connection conn = null;
+
 		try {
+			conn = DBConnection.getConnection();
+			conn.setAutoCommit(false);
 
-			stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOKS_LOG_INSERT);
-			stmt.setInt(1, book.getBookId());
-			stmt.setString(2, book.getTitle());
-			stmt.setString(3, book.getAuthor());
-			stmt.setString(4, book.getCategory().toString());
-			stmt.setString(5, String.valueOf(book.getStatus().toString().charAt(0)));
-			stmt.setString(6, String.valueOf(book.getAvailability().toString().charAt(0)));
-			int rowsInserted = stmt.executeUpdate();
+			try (PreparedStatement stmt = conn.prepareStatement(SQLQueries.BOOK_UPDATE)) {
+				stmt.setString(1, book.getTitle());
+				stmt.setString(2, book.getAuthor());
+				stmt.setString(3, book.getCategory().getCategory());
+				stmt.setString(4, book.getStatus().getDbName());
+				stmt.setString(5, book.getAvailability().getDbName());
+				stmt.setInt(6, book.getBookId());
 
-			if (rowsInserted > 0) {
-				System.out.println("log added ");
+				int rowsUpdated = stmt.executeUpdate();
+
+				if (rowsUpdated == 0) {
+					conn.rollback();
+					throw new BookNotFoundException("No book found with the given ID. Update failed.");
+				}
 			}
 
-		} catch (SQLException e) {
+			bookLog(oldBook, conn);
 
-			throw new InvalidException("Error in Server" + e.getMessage());
+			conn.commit();
+
+		} catch (SQLException | DatabaseConnectionException e) {
+			if (conn != null) {
+				try {
+					conn.rollback();
+				} catch (SQLException rollbackEx) {
+					System.err.println("Rollback failed: " + rollbackEx.getMessage());
+				}
+			}
+			throw new DatabaseOperationException("Failed to update book: " + e.getMessage(), e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.setAutoCommit(true);
+				} catch (SQLException e) {
+					System.err.println("Failed to reset auto-commit: " + e.getMessage());
+				}
+			}
 		}
-
 	}
 
 	@Override
-	public List<CustomCategoryCount> getBookCountByCategory() throws InvalidException {
+	public void updateBookAvailability(Book book, BookAvailability availability)
+			throws BookNotFoundException, DatabaseOperationException {
+
+		Connection con = null;
+
+		try {
+			con = DBConnection.getConnection();
+			con.setAutoCommit(false);
+
+			try (PreparedStatement stmt = PreparedStatementManager
+					.getPreparedStatement(SQLQueries.BOOK_UPDATE_AVAILABILITY)) {
+				stmt.setString(1, availability.getDbName());
+				stmt.setInt(2, book.getBookId());
+
+				int rowsUpdated = stmt.executeUpdate();
+				if (rowsUpdated == 0) {
+					con.rollback();
+					throw new BookNotFoundException(
+							"Book with ID " + book.getBookId() + " not found. Availability not updated.");
+				}
+
+				bookLog(book, con);
+
+				con.commit();
+			} catch (SQLException e) {
+				if (con != null) {
+					con.rollback();
+				}
+				throw e;
+			}
+		} catch (SQLException | DatabaseConnectionException | StatementPreparationException e) {
+			throw new DatabaseOperationException("Error updating book availability: " + e.getMessage(), e);
+		} finally {
+			if (con != null) {
+				try {
+					con.setAutoCommit(true);
+					con.close();
+				} catch (SQLException ignored) {
+				}
+			}
+		}
+	}
+
+	@Override
+	public void deleteBook(Book book) throws BookNotFoundException, DatabaseOperationException {
+		Connection conn = null;
+		try {
+			conn = DBConnection.getConnection();
+			conn.setAutoCommit(false);
+
+			try (PreparedStatement stmt = conn.prepareStatement(SQLQueries.BOOK_DELETE)) {
+				stmt.setInt(1, book.getBookId());
+
+				int rowsDeleted = stmt.executeUpdate();
+
+				if (rowsDeleted <= 0) {
+					conn.rollback();
+					throw new BookNotFoundException("No Book found with Title: " + book.getTitle());
+				}
+
+				bookLog(book, conn);
+
+				conn.commit();
+			}
+		} catch (SQLException | DatabaseConnectionException e) {
+			if (conn != null) {
+				try {
+					conn.rollback();
+				} catch (SQLException rollbackEx) {
+					System.err.println("Rollback failed: " + rollbackEx.getMessage());
+				}
+			}
+			throw new DatabaseOperationException("Failed to update book: " + e.getMessage(), e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.setAutoCommit(true);
+				} catch (SQLException e) {
+					System.err.println("Failed to reset auto-commit: " + e.getMessage());
+				}
+			}
+		}
+	}
+
+	@Override
+	public List<CustomCategoryCount> getBookCountByCategory() throws DatabaseOperationException {
 		List<CustomCategoryCount> books = new ArrayList<>();
 
-		PreparedStatement ps;
 		try {
-			ps = PreparedStatementManager.getPreparedStatement(SQLQueries.GET_BOOK_BY_CATEGORY);
-
+			PreparedStatement ps = PreparedStatementManager.getPreparedStatement(SQLQueries.GET_BOOK_BY_CATEGORY);
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				String category = rs.getString("category");
 				int count = rs.getInt("book_count");
-				CustomCategoryCount customCategoryCount = new CustomCategoryCount(BookCategory.valueOf(category),
-						count);
-
+				CustomCategoryCount customCategoryCount = new CustomCategoryCount(
+						BookCategory.valueOf(category.toUpperCase()), count);
 				books.add(customCategoryCount);
 			}
 
-		} catch (SQLException e) {
-
-			System.out.println(e.getMessage());
+		} catch (SQLException | DatabaseConnectionException | StatementPreparationException e) {
+			throw new DatabaseOperationException("Error fetching book count by category: " + e.getMessage(), e);
 		}
-		return books;
 
+		return books;
 	}
 
 	@Override
-	public List<CustomActiveIssuedBooks> getActiveIssuedBooks() throws InvalidException {
+	public List<CustomActiveIssuedBooks> getActiveIssuedBooks() throws DatabaseOperationException {
 		List<CustomActiveIssuedBooks> activeBooks = new ArrayList<>();
-		PreparedStatement ps;
+
 		try {
-			ps = PreparedStatementManager.getPreparedStatement(SQLQueries.GET_ACTIVE_ISSUED_BOOKS);
+			PreparedStatement ps = PreparedStatementManager.getPreparedStatement(SQLQueries.GET_ACTIVE_ISSUED_BOOKS);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				int memberId = rs.getInt("member_id");
@@ -240,24 +304,22 @@ public class BookDaoImpl implements BookDao {
 				String bookTitle = rs.getString("book_title");
 				LocalDate issuedDate = rs.getDate("issue_date").toLocalDate();
 
-				CustomActiveIssuedBooks customActiveIssuedBooks = new CustomActiveIssuedBooks(memberId, memberName,
-						bookId, bookTitle, issuedDate);
-
-				activeBooks.add(customActiveIssuedBooks);
-
+				activeBooks.add(new CustomActiveIssuedBooks(memberId, memberName, bookId, bookTitle, issuedDate));
 			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+
+		} catch (SQLException | DatabaseConnectionException | StatementPreparationException e) {
+			throw new DatabaseOperationException("Error fetching active issued books: " + e.getMessage(), e);
 		}
+
 		return activeBooks;
 	}
 
 	@Override
-	public List<CustomOverDueBooks> getOverDueBooks() throws InvalidException {
+	public List<CustomOverDueBooks> getOverDueBooks() throws DatabaseOperationException {
 		List<CustomOverDueBooks> overDueBooks = new ArrayList<>();
-		PreparedStatement ps;
+
 		try {
-			ps = PreparedStatementManager.getPreparedStatement(SQLQueries.GET_OVER_DUE_BOOKS);
+			PreparedStatement ps = PreparedStatementManager.getPreparedStatement(SQLQueries.GET_OVER_DUE_BOOKS);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				int bookId = rs.getInt("book_id");
@@ -266,49 +328,46 @@ public class BookDaoImpl implements BookDao {
 				String memberName = rs.getString("member_name");
 				LocalDate issuedDate = rs.getDate("issue_date").toLocalDate();
 
-				CustomOverDueBooks customOverDueBooks = new CustomOverDueBooks(bookId, bookName, memberId, memberName,
-						issuedDate);
-
-				overDueBooks.add(customOverDueBooks);
+				overDueBooks.add(new CustomOverDueBooks(bookId, bookName, memberId, memberName, issuedDate));
 			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+
+		} catch (SQLException | DatabaseConnectionException | StatementPreparationException e) {
+			throw new DatabaseOperationException("Error fetching overdue books: " + e.getMessage(), e);
 		}
+
 		return overDueBooks;
 	}
 
 	@Override
-	public Book getBookById(int id) throws InvalidException {
-		Book book = null;
-		PreparedStatement stmt;
+	public void bookLog(Book book, Connection conn) throws SQLException {
 		try {
+			PreparedStatement stmt = conn.prepareStatement(SQLQueries.BOOKS_LOG_INSERT);
+			stmt.setInt(1, book.getBookId());
+			stmt.setString(2, book.getTitle());
+			stmt.setString(3, book.getAuthor());
+			stmt.setString(4, book.getCategory().toString());
+			stmt.setString(5, String.valueOf(book.getStatus().toString().charAt(0)));
+			stmt.setString(6, String.valueOf(book.getAvailability().toString().charAt(0)));
 
-			stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.BOOK_SELECT_BY_ID);
-			stmt.setInt(1, id);
+			int rowsInserted = stmt.executeUpdate();
 
-			ResultSet rs = stmt.executeQuery();
-
-			if (rs.next()) {
-
-				int bookId = rs.getInt("book_id");
-				String title = rs.getString("title");
-				String author = rs.getString("author");
-				String category = rs.getString("category");
-				BookStatus status = rs.getString("status").equals("A") ? BookStatus.ACTIVE : BookStatus.INACTIVE;
-				BookAvailability availability = rs.getString("availability").equalsIgnoreCase("A")
-						? BookAvailability.AVAILABLE
-						: BookAvailability.ISSUED;
-				book = new Book(bookId, title, author, BookCategory.valueOf(category.toUpperCase()), status,
-						availability);
-
+			if (rowsInserted <= 0) {
+				throw new SQLException("Failed to insert book log.");
 			}
-
-			return book;
-
 		} catch (SQLException e) {
-			throw new InvalidException("Error in Server" + e.getMessage());
+			throw new SQLException("Failed to insert book log.");
 		}
+	}
 
+	private Book extractBookFromResultSet(ResultSet rs) throws SQLException, InvalidEnumValueException {
+		int bookId = rs.getInt("book_id");
+		String title = rs.getString("title");
+		String author = rs.getString("author");
+		BookCategory category = BookCategory.fromDisplayName(rs.getString("category"));
+		BookStatus status = BookStatus.fromDbName(rs.getString("status"));
+		BookAvailability availability = BookAvailability.fromDbName(rs.getString("availability"));
+
+		return new Book(bookId, title, author, category, status, availability);
 	}
 
 }

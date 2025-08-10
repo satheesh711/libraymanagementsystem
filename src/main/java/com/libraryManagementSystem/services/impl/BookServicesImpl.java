@@ -8,7 +8,10 @@ import com.libraryManagementSystem.domain.Book;
 import com.libraryManagementSystem.domain.CustomActiveIssuedBooks;
 import com.libraryManagementSystem.domain.CustomCategoryCount;
 import com.libraryManagementSystem.domain.CustomOverDueBooks;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.BookNotFoundException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
+import com.libraryManagementSystem.exceptions.DuplicateBookException;
+import com.libraryManagementSystem.exceptions.InvalidBookDataException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.utilities.BookAvailability;
 import com.libraryManagementSystem.utilities.Validations;
@@ -18,99 +21,133 @@ public class BookServicesImpl implements BookServices {
 	private final BookDao bookDao = new BookDaoImpl();
 
 	@Override
-	public void addBook(Book book) throws InvalidException {
+	public void addBook(Book book) throws InvalidBookDataException, DuplicateBookException, DatabaseOperationException {
 
-		if (!Validations.isValidString(book.getTitle())) {
-			throw new InvalidException("Enter Valid Title");
+		validateBookData(book);
+
+		if (bookDao.existsByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
+			throw new DuplicateBookException("This book already exists.");
+		}
+		try {
+			bookDao.addBook(book);
+		} catch (DatabaseOperationException e) {
+			throw new DatabaseOperationException(e.getMessage());
+		}
+	}
+
+	@Override
+	public List<Book> getBooks() throws DatabaseOperationException {
+
+		try {
+			return bookDao.getAllBooks();
+		} catch (DatabaseOperationException e) {
+			throw new DatabaseOperationException(e.getMessage());
 		}
 
-		if (!Validations.isValidString(book.getAuthor())) {
-			throw new InvalidException("Enter valid Author Name");
+	}
+
+	@Override
+	public void deleteBook(Book book)
+			throws BookNotFoundException, DatabaseOperationException, InvalidBookDataException {
+		try {
+			if (book.getAvailability().equals(BookAvailability.ISSUED)) {
+				throw new InvalidBookDataException("Book Availability is Issued.Please colluct Book");
+			}
+			bookDao.deleteBook(book);
+
+		} catch (DatabaseOperationException | BookNotFoundException e) {
+			throw new DatabaseOperationException(e.getMessage());
 		}
 
-		if (book.getCategory() == null) {
-			throw new InvalidException("Please Select Category Field!");
-		}
+	}
 
-		if (book.getStatus() == null) {
-			throw new InvalidException("Please Select Status Field!");
-		}
+	@Override
+	public void updateBook(Book book, Book oldBook)
+			throws BookNotFoundException, InvalidBookDataException, DatabaseOperationException, DuplicateBookException {
+
+		validateBookData(book);
 
 		if (book.getAvailability() == null) {
-			throw new InvalidException("Please Select Availability Field!");
+			throw new InvalidBookDataException("Please select availability.");
 		}
 
-		if (bookDao.getBookByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
-
-			throw new InvalidException("Book Already Exit");
+		if (bookDao.getBookById(book.getBookId()) == null) {
+			throw new BookNotFoundException("No book found with ID " + book.getBookId());
 		}
 
-		bookDao.addBook(book);
+		if (book.equals(oldBook)) {
+			throw new InvalidBookDataException("Please edit at least one field");
+		}
+
+		if (bookDao.existsByTitleAndAuthorExceptId(book.getTitle(), book.getAuthor(), book.getBookId())) {
+			throw new DuplicateBookException(
+					"Book with title '" + book.getTitle() + "' and author '" + book.getAuthor() + "' already exists.");
+		}
+
+		try {
+
+			bookDao.updateBook(book, oldBook);
+
+		} catch (DatabaseOperationException | BookNotFoundException e) {
+			throw new DatabaseOperationException(e.getMessage());
+		}
 
 	}
 
 	@Override
-	public List<Book> getBooks() throws InvalidException {
+	public void updateBookAvailability(Book book, BookAvailability avail)
+			throws BookNotFoundException, DatabaseOperationException {
+		try {
 
-		return bookDao.getAllBooks();
+			bookDao.updateBookAvailability(book, avail);
+
+		} catch (DatabaseOperationException | BookNotFoundException e) {
+			throw new DatabaseOperationException(e.getMessage());
+		}
 
 	}
 
 	@Override
-	public void deleteBook(Book book) throws InvalidException {
+	public List<CustomCategoryCount> getBooksCountByCategory() throws DatabaseOperationException {
 
-		bookDao.deleteBook(book);
+		try {
+			return bookDao.getBookCountByCategory();
+		} catch (DatabaseOperationException e) {
+			throw new DatabaseOperationException(e.getMessage());
+		}
 	}
 
 	@Override
-	public void updateBook(Book book, Book oldBook) throws InvalidException {
+	public List<CustomActiveIssuedBooks> getActiveIssuedBooks() throws DatabaseOperationException {
+		try {
+			return bookDao.getActiveIssuedBooks();
+		} catch (DatabaseOperationException e) {
+			throw new DatabaseOperationException(e.getMessage());
+		}
+	}
+
+	@Override
+	public List<CustomOverDueBooks> getOverDueBooks() throws DatabaseOperationException {
+		try {
+			return bookDao.getOverDueBooks();
+		} catch (DatabaseOperationException e) {
+			throw new DatabaseOperationException(e.getMessage());
+		}
+	}
+
+	private void validateBookData(Book book) throws InvalidBookDataException {
 
 		if (!Validations.isValidString(book.getTitle())) {
-			throw new InvalidException("Enter Valid Title");
+			throw new InvalidBookDataException(
+					"Please use only letters, numbers, and allowed punctuation and minimum 3 letters in the title.");
 		}
-
 		if (!Validations.isValidString(book.getAuthor())) {
-			throw new InvalidException("Enter valid Author Name");
+			throw new InvalidBookDataException(
+					"Please use only letters and spaces  and minimum 3 letters for the author's name.");
 		}
-
 		if (book.getCategory() == null) {
-			throw new InvalidException("Please Select Category Field!");
+			throw new InvalidBookDataException("Please select a category.");
 		}
-
-		if (book.getStatus() == null) {
-			throw new InvalidException("Please Select Status Field!");
-		}
-
-		if (book.getAvailability() == null) {
-			throw new InvalidException("Please Select Availability Field!");
-		}
-
-		bookDao.updateBook(book, oldBook);
-	}
-
-	@Override
-	public void updateBookAvailability(Book book, BookAvailability avail) throws InvalidException {
-
-		bookDao.updateBookAvalability(book, avail);
-
-	}
-
-	@Override
-	public List<CustomCategoryCount> getBookCountByCategory() throws InvalidException {
-
-		return bookDao.getBookCountByCategory();
-	}
-
-	@Override
-	public List<CustomActiveIssuedBooks> getActiveIssuedBooks() throws InvalidException {
-
-		return bookDao.getActiveIssuedBooks();
-	}
-
-	@Override
-	public List<CustomOverDueBooks> getOverDueBooks() throws InvalidException {
-
-		return bookDao.getOverDueBooks();
 	}
 
 }

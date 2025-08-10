@@ -7,7 +7,8 @@ import java.util.ResourceBundle;
 
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.Book;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.BookNotFoundException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.services.impl.BookServicesImpl;
 import com.libraryManagementSystem.utilities.BookAvailability;
@@ -54,7 +55,7 @@ public class BookAvailabilityController implements Initializable {
 					availability.getSelectionModel().select(book.getAvailability());
 				}
 			});
-		} catch (InvalidException e) {
+		} catch (DatabaseOperationException e) {
 
 			error.setText(e.getMessage());
 		}
@@ -78,7 +79,7 @@ public class BookAvailabilityController implements Initializable {
 					availability.setValue(null);
 					books.setValue(null);
 
-				} catch (InvalidException e) {
+				} catch (BookNotFoundException | DatabaseOperationException e) {
 					error.setText(e.getMessage());
 					error.setStyle("-fx-text-fill: red");
 				}
