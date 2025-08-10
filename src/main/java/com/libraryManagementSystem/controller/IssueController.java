@@ -9,8 +9,10 @@ import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.Book;
 import com.libraryManagementSystem.domain.IssueRecord;
 import com.libraryManagementSystem.domain.Member;
+import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
 import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.services.IssueService;
 import com.libraryManagementSystem.services.MemberService;
@@ -61,6 +63,10 @@ public class IssueController implements Initializable {
 
 		} catch (DatabaseOperationException | InvalidException e) {
 			error.setText(e.getMessage());
+		} catch (DatabaseConnectionException e) {
+			e.printStackTrace();
+		} catch (StatementPreparationException e) {
+			e.printStackTrace();
 		}
 
 	}

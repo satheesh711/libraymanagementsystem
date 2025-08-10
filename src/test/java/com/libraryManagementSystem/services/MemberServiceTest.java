@@ -10,7 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.libraryManagementSystem.domain.Member;
+import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
 import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.services.impl.MemberServiceImpl;
 import com.libraryManagementSystem.utilities.MemberGender;
 
@@ -26,7 +28,7 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testRegisterMemberInvalidName() {
+	public void testRegisterMemberInvalidName() throws DatabaseConnectionException, StatementPreparationException {
 		try {
 			service.registerMember(new Member(1, "n", "test@gmail.com", 1234567890, MemberGender.MALE, "madhapur"));
 			fail("Expected InvalidException to be thrown");
@@ -36,7 +38,7 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testRegisterMemberInvalidEmail() {
+	public void testRegisterMemberInvalidEmail() throws DatabaseConnectionException, StatementPreparationException {
 		try {
 			service.registerMember(new Member(1, "John", "invalid_email", 1234567890, MemberGender.MALE, "madhapur"));
 			fail("Expected InvalidException to be thrown");
@@ -46,7 +48,7 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testRegisterMemberInvalidMobile() {
+	public void testRegisterMemberInvalidMobile() throws DatabaseConnectionException, StatementPreparationException {
 		try {
 			service.registerMember(new Member(1, "John", "john@example.com", 123, MemberGender.MALE, "madhapur"));
 			fail("Expected InvalidException to be thrown");
@@ -56,7 +58,7 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testRegisterMemberInvalidGender() {
+	public void testRegisterMemberInvalidGender() throws DatabaseConnectionException, StatementPreparationException {
 		try {
 			service.registerMember(new Member(1, "John", "john@email.com", 1234567890, null, "address"));
 			fail("Expected InvalidException for gender");
@@ -66,7 +68,7 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testRegisterMemberInvalidAddress() {
+	public void testRegisterMemberInvalidAddress() throws DatabaseConnectionException, StatementPreparationException {
 		try {
 			service.registerMember(new Member(1, "John", "john@email.com", 1234567890, MemberGender.MALE, ""));
 			fail("Expected InvalidException for address");
@@ -76,7 +78,8 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testRegisterMemberDuplicateMobileNumber() {
+	public void testRegisterMemberDuplicateMobileNumber()
+			throws DatabaseConnectionException, StatementPreparationException {
 
 		try {
 			service.registerMember(new Member(1, "John", "john24@email.com", 1234567890, MemberGender.MALE, "address"));
@@ -88,14 +91,16 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testgetAllMembersValid() throws InvalidException {
+	public void testgetAllMembersValid()
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 
 		List<Member> result = service.getMembers();
 		assertNotNull(result);
 	}
 
 	@Test
-	public void testDeleteMemberInValid() throws InvalidException {
+	public void testDeleteMemberInValid()
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		try {
 			service.deleteMember(new Member(1, "John", "john125@email.com", 9876343210L, MemberGender.MALE, "address"));
 			fail("Expected InvalidException for No Member found");
@@ -106,7 +111,8 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testDeleteMemberValid() throws InvalidException {
+	public void testDeleteMemberValid()
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		try {
 			int res = service.deleteMember(
 					new Member(1, "John", "john125@email.com", 9876343210L, MemberGender.MALE, "address"));
@@ -117,7 +123,7 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testRegisterMemberDuplicateEmail() {
+	public void testRegisterMemberDuplicateEmail() throws DatabaseConnectionException, StatementPreparationException {
 
 		try {
 
@@ -130,7 +136,8 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testRegisterMemberValid() throws InvalidException {
+	public void testRegisterMemberValid()
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		try {
 			int res = service.registerMember(
 					new Member(1, "John", "john125@email.com", 9876343210L, MemberGender.MALE, "address"));
@@ -141,7 +148,8 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testUpdateMemberInvalidName() throws InvalidException {
+	public void testUpdateMemberInvalidName()
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		Member newMember = new Member(1, "nani", "test234@gmail.com", 1234567890, MemberGender.MALE, "madhapur");
 
 		try {
@@ -154,7 +162,8 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testUpdateMemberInvalidEmail() throws InvalidException {
+	public void testUpdateMemberInvalidEmail()
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		Member newMember = new Member(1, "nani", "test234@gmail.com", 1234567890, MemberGender.MALE, "madhapur");
 
 		try {
@@ -167,7 +176,8 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testUpdateMemberInvalidMobile() throws InvalidException {
+	public void testUpdateMemberInvalidMobile()
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		Member newMember = new Member(1, "nani", "test234@gmail.com", 1234567890, MemberGender.MALE, "madhapur");
 
 		try {
@@ -180,7 +190,8 @@ public class MemberServiceTest {
 	}
 
 	@Test
-	public void testUpdateMemberInvalidGender() throws InvalidException {
+	public void testUpdateMemberInvalidGender()
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		Member newMember = new Member(1, "nani", "test234@gmail.com", 1234567890, MemberGender.MALE, "madhapur");
 
 		try {

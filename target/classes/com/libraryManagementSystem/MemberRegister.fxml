@@ -26,6 +26,12 @@
              text=""
              styleClass="error-label"/>
    </children>
+   <children>
+      <Label layoutX="160.0" layoutY="40.0" fx:id="successerror"
+             text=""
+             styleClass="error-label"/>
+   </children>
+
 
    <!-- Labels and Fields -->
    <children>

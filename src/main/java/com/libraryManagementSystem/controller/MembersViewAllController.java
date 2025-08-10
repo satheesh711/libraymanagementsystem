@@ -8,9 +8,12 @@ import java.util.ResourceBundle;
 
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.Member;
+import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
 import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.services.MemberService;
 import com.libraryManagementSystem.services.impl.MemberServiceImpl;
+import com.libraryManagementSystem.utilities.MemberGender;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,7 +42,7 @@ public class MembersViewAllController implements Initializable {
 	@FXML
 	private TableColumn<Member, Long> mobile;
 	@FXML
-	private TableColumn<Member, String> gender;
+	private TableColumn<Member, MemberGender> gender;
 	@FXML
 	private TableColumn<Member, String> address;
 	@FXML
@@ -111,6 +114,10 @@ public class MembersViewAllController implements Initializable {
 		} catch (InvalidException e) {
 			error.setText(e.getMessage());
 			error.setStyle("-fx-text-fill: red");
+		} catch (DatabaseConnectionException e) {
+			e.printStackTrace();
+		} catch (StatementPreparationException e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -146,6 +153,10 @@ public class MembersViewAllController implements Initializable {
 						} catch (InvalidException e) {
 							deleteShow.setContentText(e.getMessage());
 							deleteShow.show();
+						} catch (DatabaseConnectionException e) {
+							e.printStackTrace();
+						} catch (StatementPreparationException e) {
+							e.printStackTrace();
 						}
 
 					} else {
@@ -163,6 +174,7 @@ public class MembersViewAllController implements Initializable {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+
 				});
 
 			}

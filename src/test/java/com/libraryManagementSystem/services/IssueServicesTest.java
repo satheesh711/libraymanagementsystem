@@ -37,11 +37,7 @@ public class IssueServicesTest {
 		// Create a fresh available book
 		Book book = new Book(0, "JUnit for Java", "Tester", BookCategory.EDUCATION, BookStatus.ACTIVE,
 				BookAvailability.AVAILABLE);
-		try {
-			bookServices.addBook(book);
-		} catch (InvalidException ignored) {
-			// might already exist, fine for test
-		}
+		bookServices.addBook(book);
 
 		// Find the book we just added
 		List<Book> books = bookServices.getBooks();

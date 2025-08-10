@@ -8,7 +8,9 @@ import java.util.List;
 
 import com.libraryManagementSystem.dao.MemberDao;
 import com.libraryManagementSystem.domain.Member;
+import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
 import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.utilities.MemberGender;
 import com.libraryManagementSystem.utilities.PreparedStatementManager;
 import com.libraryManagementSystem.utilities.SQLQueries;
@@ -16,7 +18,8 @@ import com.libraryManagementSystem.utilities.SQLQueries;
 public class MemberDaoImpl implements MemberDao {
 
 	@Override
-	public int RegisterMember(Member member) throws InvalidException {
+	public int RegisterMember(Member member)
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		try {
 
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_INSERT);
@@ -41,7 +44,8 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public boolean getMemberByMobile(Long mobile) throws InvalidException {
+	public boolean getMemberByMobile(Long mobile)
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		PreparedStatement stmt;
 		try {
 
@@ -63,7 +67,8 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public boolean getMemberByEmail(String email) throws InvalidException {
+	public boolean getMemberByEmail(String email)
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		PreparedStatement stmt;
 		try {
 
@@ -85,7 +90,8 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public int UpdateMember(Member member, Member oldMember) throws InvalidException {
+	public int UpdateMember(Member member, Member oldMember)
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 
 		try {
 
@@ -114,7 +120,8 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public List<Member> getAllMembers() throws InvalidException {
+	public List<Member> getAllMembers()
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 
 		List<Member> members = new ArrayList<>();
 		try {
@@ -137,7 +144,8 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public int deleteMember(Member memberData) throws InvalidException {
+	public int deleteMember(Member memberData)
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 
 		try {
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_DELETE);
@@ -161,7 +169,8 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public void memberLog(Member member) throws InvalidException {
+	public void memberLog(Member member)
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		PreparedStatement stmt;
 		try {
 

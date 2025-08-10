@@ -5,7 +5,9 @@ import java.util.List;
 import com.libraryManagementSystem.dao.MemberDao;
 import com.libraryManagementSystem.dao.impl.MemberDaoImpl;
 import com.libraryManagementSystem.domain.Member;
+import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
 import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.services.MemberService;
 import com.libraryManagementSystem.utilities.Validations;
 
@@ -14,7 +16,8 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberDao memberDao = new MemberDaoImpl();
 
 	@Override
-	public int registerMember(Member member) throws InvalidException {
+	public int registerMember(Member member)
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 
 		if (!Validations.isValidString(member.getName())) {
 			throw new InvalidException("Name must be at least 3 characters long");
@@ -51,19 +54,22 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Member> getMembers() throws InvalidException {
+	public List<Member> getMembers()
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 
 		return memberDao.getAllMembers();
 	}
 
 	@Override
-	public int deleteMember(Member memberData) throws InvalidException {
+	public int deleteMember(Member memberData)
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 		return memberDao.deleteMember(memberData);
 
 	}
 
 	@Override
-	public int updateMember(Member newMember, Member oldMember) throws InvalidException {
+	public int updateMember(Member newMember, Member oldMember)
+			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
 
 		if (!Validations.isValidString(newMember.getName())) {
 			throw new InvalidException("Name must be at least 3 characters long");
