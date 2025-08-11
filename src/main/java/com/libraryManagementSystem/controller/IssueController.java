@@ -23,6 +23,7 @@ import com.libraryManagementSystem.services.impl.IssueServiceImpl;
 import com.libraryManagementSystem.services.impl.MemberServiceImpl;
 import com.libraryManagementSystem.utilities.BookAvailability;
 import com.libraryManagementSystem.utilities.BookStatus;
+import com.libraryManagementSystem.utilities.Validations;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,6 +34,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 
 public class IssueController implements Initializable {
 
@@ -84,6 +86,15 @@ public class IssueController implements Initializable {
 				return;
 			}
 
+			bookSearchField.setTextFormatter(new TextFormatter<>(change -> {
+				error.setText("");
+				if (Validations.isValidTitle(change.getControlNewText())) {
+					return change;
+				}
+				setError("Please use only letters, numbers, and allowed punctuation in the title.");
+				return null;
+			}));
+
 			String filter = newVal.toLowerCase();
 			List<Book> matches = allBooks.stream().filter(
 					b -> b.getTitle().toLowerCase().contains(filter) || b.getAuthor().toLowerCase().contains(filter))
@@ -122,6 +133,14 @@ public class IssueController implements Initializable {
 				selectedBook = null;
 				return;
 			}
+			memberSearchField.setTextFormatter(new TextFormatter<>(change -> {
+				error.setText("");
+				if (Validations.isValidName(change.getControlNewText())) {
+					return change;
+				}
+				setError("Please use only letters and spaces for the author's name.");
+				return null;
+			}));
 
 			String filter = newVal.toLowerCase();
 			List<Member> matches = allMembers.stream().filter(m -> m.getName().contains(filter))
