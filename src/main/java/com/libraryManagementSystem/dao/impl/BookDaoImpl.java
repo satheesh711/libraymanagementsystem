@@ -190,7 +190,6 @@ public class BookDaoImpl implements BookDao {
 
 		try {
 			con = DBConnection.getConnection();
-			con.setAutoCommit(false);
 
 			try (PreparedStatement stmt = PreparedStatementManager
 					.getPreparedStatement(SQLQueries.BOOK_UPDATE_AVAILABILITY)) {
@@ -205,25 +204,15 @@ public class BookDaoImpl implements BookDao {
 				}
 
 				bookLog(book, con);
-
-				con.commit();
+				System.out.println("here bogLog");
 			} catch (SQLException e) {
-				if (con != null) {
-					con.rollback();
-				}
+
 				throw e;
 			}
 		} catch (SQLException | DatabaseConnectionException | StatementPreparationException e) {
 			throw new DatabaseOperationException("Error updating book availability: " + e.getMessage(), e);
-		} finally {
-			if (con != null) {
-				try {
-					con.setAutoCommit(true);
-					con.close();
-				} catch (SQLException ignored) {
-				}
-			}
 		}
+
 	}
 
 	@Override
@@ -345,9 +334,9 @@ public class BookDaoImpl implements BookDao {
 			stmt.setInt(1, book.getBookId());
 			stmt.setString(2, book.getTitle());
 			stmt.setString(3, book.getAuthor());
-			stmt.setString(4, book.getCategory().toString());
-			stmt.setString(5, String.valueOf(book.getStatus().toString().charAt(0)));
-			stmt.setString(6, String.valueOf(book.getAvailability().toString().charAt(0)));
+			stmt.setString(4, book.getCategory().getCategory());
+			stmt.setString(5, book.getStatus().getDbName());
+			stmt.setString(6, book.getAvailability().getDbName());
 
 			int rowsInserted = stmt.executeUpdate();
 
