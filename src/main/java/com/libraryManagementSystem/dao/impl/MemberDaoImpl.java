@@ -27,7 +27,7 @@ public class MemberDaoImpl implements MemberDao {
 			stmt.setString(1, member.getName());
 			stmt.setString(2, member.getEmail());
 			stmt.setLong(3, member.getMobile());
-			stmt.setString(4, String.valueOf(member.getGender().toString().charAt(0)));
+			stmt.setString(4, member.getGender().getDbName());
 			stmt.setString(5, member.getAddress());
 
 			int rows = stmt.executeUpdate();
@@ -98,7 +98,7 @@ public class MemberDaoImpl implements MemberDao {
 			stmt.setString(1, member.getName());
 			stmt.setString(2, member.getEmail());
 			stmt.setLong(3, member.getMobile());
-			stmt.setString(4, String.valueOf(member.getGender().toString().charAt(0)));
+			stmt.setString(4, member.getGender().getDbName());
 			stmt.setString(5, member.getAddress());
 			stmt.setLong(6, member.getMemberId());
 
@@ -126,8 +126,8 @@ public class MemberDaoImpl implements MemberDao {
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				MemberGender gender = rs.getString("gender").equalsIgnoreCase("F") ? MemberGender.FEMALE
-						: MemberGender.MALE;
+				MemberGender gender = MemberGender.fromDbName(rs.getString("gender"));
+
 				Member member = new Member(rs.getInt("member_id"), rs.getString("name"), rs.getString("email"),
 						rs.getLong("mobile"), gender, rs.getString("address"));
 				members.add(member);
@@ -174,7 +174,7 @@ public class MemberDaoImpl implements MemberDao {
 			stmt.setString(2, member.getName());
 			stmt.setString(3, member.getEmail());
 			stmt.setLong(4, member.getMobile());
-			stmt.setString(5, String.valueOf(member.getGender().toString().charAt(0)));
+			stmt.setString(5, member.getGender().getDbName());
 			stmt.setString(6, member.getAddress());
 
 			int rowsInserted = stmt.executeUpdate();

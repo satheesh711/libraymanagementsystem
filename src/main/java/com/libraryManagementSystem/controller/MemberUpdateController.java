@@ -44,6 +44,8 @@ public class MemberUpdateController implements Initializable {
 	private ComboBox<MemberGender> gender;
 	@FXML
 	private Label error;
+	 @FXML
+	    private TextField statusField;
 
 	@FXML
 	private void switchToMembers() throws Exception {
@@ -143,6 +145,8 @@ public class MemberUpdateController implements Initializable {
 		});
 
 	}
+	
+	
 
 	@FXML
 	public void update() throws DatabaseConnectionException, StatementPreparationException, InvalidMemberDataException {

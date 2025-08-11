@@ -6,13 +6,13 @@ public class SQLQueries {
 
 	}
 
-	public static final String MEMBER_INSERT = "INSERT INTO members (name, email, mobile, gender, address) VALUES (?, ?, ?,?,?)";
+	public static final String MEMBER_INSERT = "INSERT INTO members (name, email, mobile, gender, address, status) VALUES (?, ?, ?,?,?,'A')";
 
 	public static final String MEMBER_UPDATE = "UPDATE members SET name = ? ,email = ?, mobile = ?, gender = ?, address =? WHERE member_id=?";
 
-	public static final String SELECT_ALL_MEMBERS = "SELECT * FROM members";
+	public static final String SELECT_ALL_MEMBERS = "SELECT * FROM members where status='A'";
 
-	public static final String MEMBER_DELETE = "DELETE FROM members WHERE member_id= ?";
+	public static final String MEMBER_DELETE = "UPDATE members SET status = 'I' WHERE member_id = ? AND status = 'A'";
 
 	public static final String MEMBER_SELECT_BY_MOBILE = "SELECT * FROM members WHERE mobile = ?";
 

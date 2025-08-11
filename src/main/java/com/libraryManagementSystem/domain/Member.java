@@ -11,6 +11,7 @@ public class Member {
 	private long mobile;
 	private MemberGender gender;
 	private String address;
+	private String status;
 
 	public Member(int memberId, String name, String email, long mobile, MemberGender gender, String address) {
 		this.memberId = memberId;
@@ -45,6 +46,10 @@ public class Member {
 		return address;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
 	@Override
 	public String toString() {
 
@@ -65,7 +70,7 @@ public class Member {
 
 		return Objects.equals(member.getName(), name) && Objects.equals(member.getEmail(), email)
 				&& Objects.equals(member.getMobile(), mobile) && Objects.equals(member.getGender(), gender)
-				&& Objects.equals(member.getAddress(), address);
+				&& Objects.equals(member.getAddress(), address) && Objects.equals(member.getStatus(), status);
 
 	}
 

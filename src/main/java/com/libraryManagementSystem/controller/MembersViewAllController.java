@@ -49,7 +49,7 @@ public class MembersViewAllController implements Initializable {
 	@FXML
 	private Label error;
 
-	private static Member memberIdSelected = null;
+//	private static Member memberIdSelected = null;
 
 	private MemberService memberService = new MemberServiceImpl();
 
@@ -121,19 +121,18 @@ public class MembersViewAllController implements Initializable {
 	private void addActionButtons() {
 		actions.setCellFactory(col -> new TableCell<Member, Void>() {
 
-			private final Button editButton = new Button("Edit");
-			private final Button deletBotton = new Button("Delete");
-			private final HBox actionBox = new HBox(10, editButton, deletBotton);
+			private final Button deleteButton = new Button("Delete");
+			private final HBox actionBox = new HBox(10, deleteButton);
 
 			{
-				deletBotton.setOnAction(event -> {
+				deleteButton.setOnAction(event -> {
 
 					Member memberData = memberTableView.getItems().get(getIndex());
 
 					Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-					alert.setTitle("Delete Book ");
-					alert.setHeaderText("Delete item : " + memberData.getName());
-					alert.setContentText("Are you sure? ");
+					alert.setTitle("Delete Member");
+					alert.setHeaderText("Delete item: " + memberData.getName());
+					alert.setContentText("Are you sure?");
 
 					Optional<ButtonType> result = alert.showAndWait();
 
@@ -144,7 +143,7 @@ public class MembersViewAllController implements Initializable {
 						try {
 							memberService.deleteMember(memberData);
 							initialize(null, null);
-							deleteShow.setContentText(memberData.getName() + "Deleted successfully ");
+							deleteShow.setContentText(memberData.getName() + " deleted successfully");
 							deleteShow.show();
 						} catch (DatabaseConnectionException e) {
 							e.printStackTrace();
@@ -154,22 +153,11 @@ public class MembersViewAllController implements Initializable {
 
 					} else {
 						Alert deleteShow = new Alert(Alert.AlertType.INFORMATION);
-						deleteShow.setContentText("Cannceled ");
+						deleteShow.setContentText("Cancelled");
 						deleteShow.show();
 					}
 
 				});
-
-				editButton.setOnAction(event -> {
-					try {
-						memberIdSelected = memberTableView.getItems().get(getIndex());
-						App.setRoot("MemberUpdate");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
-				});
-
 			}
 
 			@Override
@@ -181,8 +169,4 @@ public class MembersViewAllController implements Initializable {
 		});
 	}
 
-	public static Member getMemberIdSelected() {
-
-		return memberIdSelected;
-	}
 }
