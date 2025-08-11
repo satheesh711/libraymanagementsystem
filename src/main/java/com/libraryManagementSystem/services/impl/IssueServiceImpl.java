@@ -9,8 +9,9 @@ import com.libraryManagementSystem.dao.impl.IssueRecordDaoImpl;
 import com.libraryManagementSystem.domain.Book;
 import com.libraryManagementSystem.domain.IssueRecord;
 import com.libraryManagementSystem.exceptions.BookNotFoundException;
+import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
 import com.libraryManagementSystem.exceptions.DatabaseOperationException;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.InvalidIssueDataException;
 import com.libraryManagementSystem.services.IssueService;
 import com.libraryManagementSystem.utilities.BookAvailability;
 import com.libraryManagementSystem.utilities.BookStatus;
@@ -21,47 +22,53 @@ public class IssueServiceImpl implements IssueService {
 	private final IssueRecordDao issueDao = new IssueRecordDaoImpl();
 
 	@Override
-	public void addIssue(IssueRecord newIssue) throws InvalidException {
+	public void addIssue(IssueRecord newIssue)
+			throws DatabaseOperationException, InvalidIssueDataException, BookNotFoundException {
 
 		if (newIssue.getIssueDate().isAfter(LocalDate.now())) {
-			throw new InvalidException("Date Should not greater than today!");
+			throw new InvalidIssueDataException("Date Should not greater than today!");
 		}
 
 		Book book = null;
 		try {
 			book = bookDao.getBookById(newIssue.getBookId());
-		} catch (BookNotFoundException | DatabaseOperationException e) {
+		} catch (DatabaseOperationException e) {
 
-			e.printStackTrace();
+			throw new DatabaseOperationException(e.getMessage());
 		}
 		if (book == null) {
-			throw new InvalidException("Book Details not found");
+			throw new BookNotFoundException("Book Details not found");
 		}
 
 		if (!(book.getAvailability().equals(BookAvailability.AVAILABLE))) {
-			throw new InvalidException("Book Already Issued");
+			throw new InvalidIssueDataException("Book Already Issued");
 		}
 
 		if (!(book.getStatus().equals(BookStatus.ACTIVE))) {
-			throw new InvalidException("Book Not Active");
+			throw new InvalidIssueDataException("Book Not Active");
 		}
 
-		issueDao.issueBook(newIssue, book);
+		try {
+			issueDao.issueBook(newIssue, book);
+		} catch (DatabaseOperationException | DatabaseConnectionException e) {
+			throw new DatabaseOperationException(e.getMessage());
+		}
 	}
 
 	@Override
-	public void returnBook(Book book, int id, LocalDate date) throws InvalidException {
+	public void returnBook(Book book, int id, LocalDate date)
+			throws DatabaseOperationException, InvalidIssueDataException, BookNotFoundException {
 
 		if (date.isAfter(LocalDate.now())) {
-			throw new InvalidException("Date Should not greater than today!");
+			throw new InvalidIssueDataException("Date Should not greater than today!");
 		}
 
 		if (book == null) {
-			throw new InvalidException("Book Details not found");
+			throw new BookNotFoundException("Book Details not found");
 		}
 
 		if (!(book.getAvailability().equals(BookAvailability.ISSUED))) {
-			throw new InvalidException("Book Not Issued");
+			throw new InvalidIssueDataException("Book Not Issued");
 		}
 
 		issueDao.returnBook(book, id, date);

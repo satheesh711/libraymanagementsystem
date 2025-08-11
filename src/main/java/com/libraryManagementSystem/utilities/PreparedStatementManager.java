@@ -17,7 +17,11 @@ public class PreparedStatementManager {
 	private static final Map<String, PreparedStatement> preparedStatementCache = new HashMap<>();
 
 	public static PreparedStatement getPreparedStatement(String query)
-			throws DatabaseConnectionException, StatementPreparationException {
+			throws DatabaseConnectionException, StatementPreparationException, SQLException {
+
+		if (preparedStatementCache.get(query) != null && preparedStatementCache.get(query).isClosed()) {
+			preparedStatementCache.remove(query);
+		}
 
 		if (!preparedStatementCache.containsKey(query)) {
 			Connection conn;

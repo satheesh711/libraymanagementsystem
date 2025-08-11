@@ -9,9 +9,11 @@ import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.Book;
 import com.libraryManagementSystem.domain.IssueRecord;
 import com.libraryManagementSystem.domain.Member;
+import com.libraryManagementSystem.exceptions.BookNotFoundException;
 import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
 import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.InvalidIssueDataException;
 import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.services.IssueService;
@@ -95,7 +97,7 @@ public class IssueController implements Initializable {
 				members.setPromptText("Select Member");
 				books.setPromptText("Select Book");
 
-			} catch (InvalidException e) {
+			} catch (DatabaseOperationException | InvalidIssueDataException | BookNotFoundException e) {
 				error.setText(e.getMessage());
 				error.setStyle("-fx-text-fill: red");
 			}

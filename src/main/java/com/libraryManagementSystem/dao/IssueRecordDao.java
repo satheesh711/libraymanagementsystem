@@ -4,13 +4,14 @@ import java.time.LocalDate;
 
 import com.libraryManagementSystem.domain.Book;
 import com.libraryManagementSystem.domain.IssueRecord;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 
 public interface IssueRecordDao {
 
-	void issueBook(IssueRecord newIssue, Book book) throws InvalidException;
+	void issueBook(IssueRecord newIssue, Book book) throws DatabaseOperationException, DatabaseConnectionException;
 
-	void returnBook(Book book, int id, LocalDate date) throws InvalidException;
+	void returnBook(Book book, int id, LocalDate date) throws DatabaseOperationException;
 
-	void issueLog(IssueRecord issue) throws InvalidException;
+	void issueLog(IssueRecord issue) throws DatabaseOperationException;
 }
