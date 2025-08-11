@@ -13,6 +13,7 @@ import com.libraryManagementSystem.domain.IssueRecord;
 import com.libraryManagementSystem.exceptions.BookNotFoundException;
 import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
 import com.libraryManagementSystem.exceptions.DatabaseOperationException;
+import com.libraryManagementSystem.exceptions.InvalidIssueDataException;
 import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.utilities.BookAvailability;
 import com.libraryManagementSystem.utilities.DBConnection;
@@ -26,7 +27,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 
 	@Override
 	public void issueBook(IssueRecord newIssue, Book book)
-			throws DatabaseOperationException, DatabaseConnectionException {
+			throws DatabaseConnectionException, DatabaseOperationException {
 		try {
 
 			DBConnection.setAutoCommit(false);
@@ -64,7 +65,8 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 	}
 
 	@Override
-	public void returnBook(Book book, int id, LocalDate date) throws DatabaseOperationException {
+	public void returnBook(Book book, int id, LocalDate date)
+			throws DatabaseOperationException, InvalidIssueDataException {
 		try {
 
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.ISSUE_SELECT_RETURN_DATE);
@@ -91,7 +93,9 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 			} else {
 				throw new BookNotFoundException("Issue record Not Found ");
 			}
-
+			if (issue.getIssueDate().isAfter(date)) {
+				throw new InvalidIssueDataException("Date Should greater than issue date");
+			}
 			DBConnection.setAutoCommit(false);
 
 			PreparedStatement stmt1 = PreparedStatementManager

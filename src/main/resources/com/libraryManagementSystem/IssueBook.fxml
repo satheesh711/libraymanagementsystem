@@ -26,19 +26,19 @@
             <!-- Member ComboBox -->
             <VBox spacing="5.0">
                 <Label text="Select Member" styleClass="input-label"/>
-                <ComboBox fx:id="members" promptText="Select Member" styleClass="input-field"/>
+                <TextField fx:id="memberSearchField"  styleClass="text-field"/>
             </VBox>
 
             <!-- Book ComboBox -->
             <VBox spacing="5.0">
                 <Label text="Select Book" styleClass="input-label"/>
-                <ComboBox fx:id="books" promptText="Select Book" styleClass="input-field"/>
+                <TextField fx:id="bookSearchField"  styleClass="text-field"/>
             </VBox>
 
             <!-- Issue Date -->
             <VBox spacing="5.0">
                 <Label text="Issue Date" styleClass="input-label"/>
-                <DatePicker fx:id="issueDate" disable="true" styleClass="input-field"/>
+                <DatePicker fx:id="issueDate"  styleClass="input-field"/>
             </VBox>
 
             <!-- Issue Button -->
