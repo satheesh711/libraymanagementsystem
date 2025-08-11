@@ -9,7 +9,7 @@ import java.util.List;
 import com.libraryManagementSystem.dao.MemberDao;
 import com.libraryManagementSystem.domain.Member;
 import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.utilities.MemberGender;
 import com.libraryManagementSystem.utilities.PreparedStatementManager;
@@ -19,7 +19,7 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	public int RegisterMember(Member member)
-			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
+			throws DatabaseConnectionException, StatementPreparationException, DatabaseOperationException {
 		try {
 
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_INSERT);
@@ -33,19 +33,18 @@ public class MemberDaoImpl implements MemberDao {
 			int rows = stmt.executeUpdate();
 
 			if (rows <= 0) {
-				throw new InvalidException("Member not added to server");
+				throw new DatabaseOperationException("Member not added to server");
 			}
 			return rows;
 
 		} catch (SQLException e) {
-			throw new InvalidException("Error adding member: " + e.getMessage());
+			throw new DatabaseConnectionException("Error adding member: " + e.getMessage());
 		}
 
 	}
 
 	@Override
-	public boolean getMemberByMobile(Long mobile)
-			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
+	public boolean getMemberByMobile(Long mobile) throws DatabaseConnectionException, StatementPreparationException {
 		PreparedStatement stmt;
 		try {
 
@@ -62,13 +61,12 @@ public class MemberDaoImpl implements MemberDao {
 			return false;
 
 		} catch (SQLException e) {
-			throw new InvalidException("Error in Server" + e.getMessage());
+			throw new DatabaseConnectionException("Error in Server" + e.getMessage());
 		}
 	}
 
 	@Override
-	public boolean getMemberByEmail(String email)
-			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
+	public boolean getMemberByEmail(String email) throws DatabaseConnectionException, StatementPreparationException {
 		PreparedStatement stmt;
 		try {
 
@@ -85,13 +83,13 @@ public class MemberDaoImpl implements MemberDao {
 			return false;
 
 		} catch (SQLException e) {
-			throw new InvalidException("Error in Server" + e.getMessage());
+			throw new DatabaseConnectionException("Error in Server" + e.getMessage());
 		}
 	}
 
 	@Override
 	public int UpdateMember(Member member, Member oldMember)
-			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
+			throws DatabaseConnectionException, StatementPreparationException {
 
 		try {
 
@@ -107,7 +105,7 @@ public class MemberDaoImpl implements MemberDao {
 			int rowsUpdated = stmt.executeUpdate();
 
 			if (rowsUpdated < 0) {
-				throw new InvalidException("Member not added to server");
+				throw new StatementPreparationException("Member not added to server");
 			}
 
 			memberLog(oldMember);
@@ -115,13 +113,12 @@ public class MemberDaoImpl implements MemberDao {
 			return rowsUpdated;
 
 		} catch (SQLException e) {
-			throw new InvalidException("Error in Server" + e.getMessage());
+			throw new DatabaseConnectionException("Error in Server" + e.getMessage());
 		}
 	}
 
 	@Override
-	public List<Member> getAllMembers()
-			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
+	public List<Member> getAllMembers() throws DatabaseConnectionException, StatementPreparationException {
 
 		List<Member> members = new ArrayList<>();
 		try {
@@ -137,15 +134,14 @@ public class MemberDaoImpl implements MemberDao {
 			}
 
 		} catch (SQLException e) {
-			throw new InvalidException("Error in Server" + e.getMessage());
+			throw new DatabaseConnectionException("Error in Server" + e.getMessage());
 		}
 
 		return members;
 	}
 
 	@Override
-	public int deleteMember(Member memberData)
-			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
+	public int deleteMember(Member memberData) throws DatabaseConnectionException, StatementPreparationException {
 
 		try {
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.MEMBER_DELETE);
@@ -155,7 +151,7 @@ public class MemberDaoImpl implements MemberDao {
 
 			if (rowsDeleted <= 0) {
 
-				throw new InvalidException("No Member found with Name: " + memberData.getName());
+				throw new StatementPreparationException("No Member found with Name: " + memberData.getName());
 			}
 
 			memberLog(memberData);
@@ -163,14 +159,13 @@ public class MemberDaoImpl implements MemberDao {
 			return rowsDeleted;
 
 		} catch (SQLException e) {
-			throw new InvalidException("Error in Server" + e.getMessage());
+			throw new DatabaseConnectionException("Error in Server" + e.getMessage());
 		}
 
 	}
 
 	@Override
-	public void memberLog(Member member)
-			throws InvalidException, DatabaseConnectionException, StatementPreparationException {
+	public void memberLog(Member member) throws DatabaseConnectionException, StatementPreparationException {
 		PreparedStatement stmt;
 		try {
 
@@ -184,13 +179,13 @@ public class MemberDaoImpl implements MemberDao {
 
 			int rowsInserted = stmt.executeUpdate();
 
-			if (rowsInserted > 0) {
-				System.out.println("log added ");
+			if (rowsInserted <= 0) {
+				throw new SQLException("Failed to insert member log.");
 			}
 
 		} catch (SQLException e) {
 
-			throw new InvalidException("Error in Server" + e.getMessage());
+			throw new DatabaseConnectionException("Error in Server" + e.getMessage());
 		}
 
 	}

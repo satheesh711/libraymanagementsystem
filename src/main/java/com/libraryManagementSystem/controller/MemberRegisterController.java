@@ -6,7 +6,8 @@ import java.util.ResourceBundle;
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.Member;
 import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.DatabaseOperationException;
+import com.libraryManagementSystem.exceptions.InvalidMemberDataException;
 import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.services.MemberService;
 import com.libraryManagementSystem.services.impl.MemberServiceImpl;
@@ -102,7 +103,8 @@ public class MemberRegisterController implements Initializable {
 	}
 
 	@FXML
-	public void submitDetails() throws DatabaseConnectionException, StatementPreparationException {
+	public void submitDetails() throws DatabaseConnectionException, StatementPreparationException,
+			InvalidMemberDataException, DatabaseOperationException {
 
 		String memberName = name.getText();
 		String memberEmail = email.getText();
@@ -134,7 +136,7 @@ public class MemberRegisterController implements Initializable {
 
 			gender.setPromptText("Select Gender");
 
-		} catch (InvalidException e) {
+		} catch (InvalidMemberDataException e) {
 			successerror.setText(e.getMessage());
 			successerror.setStyle("-fx-text-fill: red");
 		}

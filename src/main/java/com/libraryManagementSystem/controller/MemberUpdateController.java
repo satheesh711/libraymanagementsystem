@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.Member;
 import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
-import com.libraryManagementSystem.exceptions.InvalidException;
+import com.libraryManagementSystem.exceptions.InvalidMemberDataException;
 import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.services.MemberService;
 import com.libraryManagementSystem.services.impl.MemberServiceImpl;
@@ -60,8 +60,6 @@ public class MemberUpdateController implements Initializable {
 		List<Member> membersList = null;
 		try {
 			membersList = memberService.getMembers();
-		} catch (InvalidException e) {
-			e.printStackTrace();
 		} catch (DatabaseConnectionException e) {
 			e.printStackTrace();
 		} catch (StatementPreparationException e) {
@@ -147,7 +145,7 @@ public class MemberUpdateController implements Initializable {
 	}
 
 	@FXML
-	public void update() throws DatabaseConnectionException, StatementPreparationException {
+	public void update() throws DatabaseConnectionException, StatementPreparationException, InvalidMemberDataException {
 		Member member;
 
 		if (!members.getSelectionModel().isEmpty()) {
@@ -170,22 +168,16 @@ public class MemberUpdateController implements Initializable {
 					memberAddress);
 
 			if (!(member.equals(newMember))) {
-				try {
-					memberService.updateMember(newMember, member);
-					error.setText(member.getName() + " Member updated Successfully");
+				memberService.updateMember(newMember, member);
+				error.setText(member.getName() + " Member updated Successfully");
 
-					error.setStyle("-fx-text-fill: green");
+				error.setStyle("-fx-text-fill: green");
 
-					name.clear();
-					email.clear();
-					mobile.clear();
-					address.clear();
-					gender.setValue(null);
-
-				} catch (InvalidException e) {
-					error.setText(e.getMessage());
-					error.setStyle("-fx-text-fill: red");
-				}
+				name.clear();
+				email.clear();
+				mobile.clear();
+				address.clear();
+				gender.setValue(null);
 			} else {
 				error.setText("Please edit at least one Field");
 				error.setStyle("-fx-text-fill: red");

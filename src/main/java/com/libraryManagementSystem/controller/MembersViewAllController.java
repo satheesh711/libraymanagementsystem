@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.Member;
 import com.libraryManagementSystem.exceptions.DatabaseConnectionException;
-import com.libraryManagementSystem.exceptions.InvalidException;
 import com.libraryManagementSystem.exceptions.StatementPreparationException;
 import com.libraryManagementSystem.services.MemberService;
 import com.libraryManagementSystem.services.impl.MemberServiceImpl;
@@ -111,9 +110,6 @@ public class MembersViewAllController implements Initializable {
 			}
 			addActionButtons();
 
-		} catch (InvalidException e) {
-			error.setText(e.getMessage());
-			error.setStyle("-fx-text-fill: red");
 		} catch (DatabaseConnectionException e) {
 			e.printStackTrace();
 		} catch (StatementPreparationException e) {
@@ -149,9 +145,6 @@ public class MembersViewAllController implements Initializable {
 							memberService.deleteMember(memberData);
 							initialize(null, null);
 							deleteShow.setContentText(memberData.getName() + "Deleted successfully ");
-							deleteShow.show();
-						} catch (InvalidException e) {
-							deleteShow.setContentText(e.getMessage());
 							deleteShow.show();
 						} catch (DatabaseConnectionException e) {
 							e.printStackTrace();
