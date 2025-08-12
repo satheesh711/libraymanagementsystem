@@ -20,7 +20,7 @@ public class BookServicesImpl implements BookServices {
 	@Override
 	public void addBook(Book book) throws InvalidBookDataException, DuplicateBookException, DatabaseOperationException {
 
-		validateBookData(book);
+		validateBookData(book, null);
 
 		try {
 			bookDao.addBook(book);
@@ -59,7 +59,7 @@ public class BookServicesImpl implements BookServices {
 	public void updateBook(Book book, Book oldBook)
 			throws BookNotFoundException, InvalidBookDataException, DatabaseOperationException, DuplicateBookException {
 
-		validateBookData(book);
+		validateBookData(book, oldBook);
 
 		if (book.getAvailability() == null) {
 			throw new InvalidBookDataException("Please select availability.");
@@ -101,7 +101,7 @@ public class BookServicesImpl implements BookServices {
 
 	}
 
-	private void validateBookData(Book book)
+	private void validateBookData(Book book, Book oldbook)
 			throws InvalidBookDataException, DatabaseOperationException, DuplicateBookException {
 
 		if (!Validations.isValidTitle(book.getTitle()) || book.getTitle().trim().length() < 3) {
@@ -113,9 +113,12 @@ public class BookServicesImpl implements BookServices {
 		if (book.getCategory() == null) {
 			throw new InvalidBookDataException("Please select a category.");
 		}
-		if (bookDao.existsByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
+		if (oldbook != null) {
+			if (!(oldbook.getTitle().equals(book.getTitle()) || oldbook.getAuthor().equals(book.getAuthor()))) {
+				throw new DuplicateBookException("This book already exists.");
+			}
+		} else if (bookDao.existsByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
 			throw new DuplicateBookException("This book already exists.");
 		}
 	}
-
 }
