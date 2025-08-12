@@ -62,6 +62,7 @@ public class IssueController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		try {
+
 			allBooks = FXCollections.observableArrayList(bookService.getBooks());
 			setupSearch();
 			allMembers = FXCollections.observableArrayList(memberService.getMembers());
@@ -119,7 +120,7 @@ public class IssueController implements Initializable {
 			} else {
 				populateSuggestions(matches);
 				if (!suggestionsPopup.isShowing()) {
-					System.out.println("here");
+
 					suggestionsPopup.show(bookSearchField, javafx.geometry.Side.BOTTOM, 0, 0);
 				}
 			}
@@ -135,7 +136,7 @@ public class IssueController implements Initializable {
 			}
 			memberSearchField.setTextFormatter(new TextFormatter<>(change -> {
 				error.setText("");
-				if (Validations.isValidName(change.getControlNewText())) {
+				if (Validations.isValidIssueTitle(change.getControlNewText())) {
 					return change;
 				}
 				setError("Please use only letters and spaces for the author's name.");

@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.libraryManagementSystem.App;
 import com.libraryManagementSystem.domain.Book;
@@ -13,6 +14,7 @@ import com.libraryManagementSystem.exceptions.DuplicateBookException;
 import com.libraryManagementSystem.exceptions.InvalidBookDataException;
 import com.libraryManagementSystem.services.BookServices;
 import com.libraryManagementSystem.services.impl.BookServicesImpl;
+import com.libraryManagementSystem.utilities.BookAvailability;
 import com.libraryManagementSystem.utilities.BookCategory;
 import com.libraryManagementSystem.utilities.Validations;
 
@@ -38,7 +40,7 @@ public class BookUpdateController implements Initializable {
 	@FXML
 	private TextField bookSearchField;
 	@FXML
-	private ComboBox<BookCategory> category;
+	private ComboBox<String> category;
 	@FXML
 	private TextField title;
 	@FXML
@@ -64,8 +66,12 @@ public class BookUpdateController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
-			allBooks = FXCollections.observableArrayList(bookService.getBooks());
-			category.getItems().addAll(BookCategory.values());
+			allBooks = FXCollections.observableArrayList(bookService.getBooks().stream()
+					.filter(book -> book.getAvailability().equals(BookAvailability.AVAILABLE))
+					.collect(Collectors.toList()));
+			category.getItems().clear();
+			category.getItems().addAll(Stream.of(BookCategory.values()).map(category -> category.getCategory())
+					.collect(Collectors.toList()));
 
 			setupSearch();
 
@@ -145,7 +151,7 @@ public class BookUpdateController implements Initializable {
 
 	private void fillBookDetails(Book book) {
 		category.setDisable(false);
-		category.getSelectionModel().select(book.getCategory());
+		category.getSelectionModel().select(book.getCategory().getCategory());
 
 		title.setDisable(false);
 		title.setText(book.getTitle());
@@ -165,7 +171,7 @@ public class BookUpdateController implements Initializable {
 
 		String bookTitle = title.getText().trim();
 		String bookAuthor = author.getText().trim();
-		BookCategory bookCategory = category.getSelectionModel().getSelectedItem();
+		BookCategory bookCategory = BookCategory.fromDisplayName(category.getSelectionModel().getSelectedItem());
 
 		if (bookTitle.isEmpty() || bookAuthor.isEmpty() || bookCategory == null) {
 			showError("All fields must be filled out.");

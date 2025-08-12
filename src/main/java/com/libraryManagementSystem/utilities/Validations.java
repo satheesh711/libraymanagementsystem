@@ -7,6 +7,11 @@ public class Validations {
 		return title.trim().matches("[a-zA-Z0-9 :\\-.'&/,?!+]{0,50}");
 	}
 
+	public static boolean isValidIssueTitle(String title) {
+
+		return title.trim().matches("[a-zA-Z0-9 -'.()]{0,50}");
+	}
+
 	public static boolean isValidName(String name) {
 
 		return name.trim().matches("[a-zA-Z .'-]{0,50}");

@@ -67,7 +67,7 @@ public class ActiveBooksController implements Initializable {
 			activeIssuedBooks.forEach(book -> {
 				bookList.add(book);
 			});
-			bookList.forEach(System.out::println);
+
 			activeIssuedBooksTableView.setItems(bookList);
 		} catch (DatabaseOperationException e) {
 			error.setText(e.getMessage());

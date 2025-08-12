@@ -204,7 +204,7 @@ public class BookDaoImpl implements BookDao {
 				}
 
 				bookLog(book, con);
-				System.out.println("here bogLog");
+
 			} catch (SQLException e) {
 
 				throw e;

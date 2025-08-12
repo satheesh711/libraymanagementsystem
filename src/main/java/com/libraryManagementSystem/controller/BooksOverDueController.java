@@ -64,7 +64,7 @@ public class BooksOverDueController implements Initializable {
 			ObservableList<CustomOverDueBooks> bookList = FXCollections.observableArrayList();
 			overDueBooks.forEach(book -> {
 				bookList.add(book);
-				System.out.println(book);
+
 			});
 			overDueBookTableView.setItems(bookList);
 		} catch (DatabaseOperationException e) {

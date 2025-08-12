@@ -65,8 +65,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 	}
 
 	@Override
-	public void returnBook(Book book, int id, LocalDate date)
-			throws DatabaseOperationException, InvalidIssueDataException {
+	public void returnBook(Book book, int id, LocalDate date) throws DatabaseOperationException {
 		try {
 
 			PreparedStatement stmt = PreparedStatementManager.getPreparedStatement(SQLQueries.ISSUE_SELECT_RETURN_DATE);
@@ -93,6 +92,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 			} else {
 				throw new BookNotFoundException("Issue record Not Found ");
 			}
+
 			if (issue.getIssueDate().isAfter(date)) {
 				throw new InvalidIssueDataException("Date Should greater than issue date");
 			}
@@ -116,7 +116,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 			DBConnection.setAutoCommit(true);
 
 		} catch (SQLException | DatabaseConnectionException | StatementPreparationException | BookNotFoundException
-				| DatabaseOperationException e) {
+				| DatabaseOperationException | InvalidIssueDataException e) {
 			try {
 				DBConnection.rollback();
 				DBConnection.setAutoCommit(true);

@@ -23,7 +23,7 @@ public class IssueServiceImpl implements IssueService {
 
 	@Override
 	public void addIssue(Book book, Member member, LocalDate date) throws InvalidIssueDataException,
-			DatabaseOperationException, BookNotFoundException, InvalidMemberDataException {
+			BookNotFoundException, DatabaseOperationException, InvalidMemberDataException {
 
 		if (book == null) {
 			throw new BookNotFoundException("Book not found please select form Book Options");
