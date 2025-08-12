@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import com.libraryManagementSystem.App;
+import com.libraryManagementSystem.dao.ReportsDao;
+import com.libraryManagementSystem.dao.impl.ReportsDaoImpl;
 import com.libraryManagementSystem.domain.Book;
 import com.libraryManagementSystem.domain.Member;
 import com.libraryManagementSystem.exceptions.BookNotFoundException;
@@ -25,6 +27,7 @@ import com.libraryManagementSystem.utilities.BookAvailability;
 import com.libraryManagementSystem.utilities.BookStatus;
 import com.libraryManagementSystem.utilities.Validations;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -41,6 +44,7 @@ public class ReturnController implements Initializable {
 	BookServices bookService = new BookServicesImpl();
 	MemberService memberService = new MemberServiceImpl();
 	IssueService issueService = new IssueServiceImpl();
+	private final ReportsDao reportsService = new ReportsDaoImpl();
 
 	private ObservableList<Book> allBooks;
 	private ObservableList<Member> allMembers;
@@ -147,7 +151,7 @@ public class ReturnController implements Initializable {
 
 			memberSearchField.setTextFormatter(new TextFormatter<>(change -> {
 				error.setText("");
-				if (Validations.isValidName(change.getControlNewText())) {
+				if (Validations.isValidIssueTitle(change.getControlNewText())) {
 					return change;
 				}
 				setError("Please use only letters and spaces for the author's name.");
@@ -155,7 +159,7 @@ public class ReturnController implements Initializable {
 			}));
 
 			try {
-				List<Integer> ids = bookService.getActiveIssuedBooks().stream().map(i -> i.getMemberId())
+				List<Integer> ids = reportsService.getActiveIssuedBooks().stream().map(i -> i.getMemberId())
 						.collect(Collectors.toList());
 
 				String filter = newVal.toLowerCase();
@@ -226,9 +230,10 @@ public class ReturnController implements Initializable {
 
 			issueService.returnBook(book, member, date);
 
-			error.setText(book.getTitle() + " Book  is Return By " + member.getName());
-
-			error.setStyle("-fx-text-fill: green");
+			Platform.runLater(() -> {
+				error.setText(book.getTitle() + " Book  is Return By " + member.getName());
+				error.setStyle("-fx-text-fill: green");
+			});
 
 			returnDate.setValue(null);
 			memberSearchField.setText("");

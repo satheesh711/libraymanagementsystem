@@ -5,9 +5,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.libraryManagementSystem.domain.Book;
-import com.libraryManagementSystem.domain.CustomActiveIssuedBooks;
-import com.libraryManagementSystem.domain.CustomCategoryCount;
-import com.libraryManagementSystem.domain.CustomOverDueBooks;
 import com.libraryManagementSystem.exceptions.BookNotFoundException;
 import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.utilities.BookAvailability;
@@ -34,9 +31,4 @@ public interface BookDao {
 
 	void bookLog(Book book, Connection conn) throws SQLException;
 
-	List<CustomCategoryCount> getBookCountByCategory() throws DatabaseOperationException;
-
-	List<CustomActiveIssuedBooks> getActiveIssuedBooks() throws DatabaseOperationException;
-
-	List<CustomOverDueBooks> getOverDueBooks() throws DatabaseOperationException;
 }

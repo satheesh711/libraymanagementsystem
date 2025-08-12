@@ -25,6 +25,7 @@ import com.libraryManagementSystem.utilities.BookAvailability;
 import com.libraryManagementSystem.utilities.BookStatus;
 import com.libraryManagementSystem.utilities.Validations;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -206,10 +207,12 @@ public class IssueController implements Initializable {
 		try {
 
 			issueService.addIssue(book, member, date);
+			Platform.runLater(() -> {
+				error.setText(member.getName() + " Issued " + book.getTitle() + " Book");
 
-			error.setText(member.getName() + " Issued " + book.getTitle() + " Book");
+				error.setStyle("-fx-text-fill: green");
 
-			error.setStyle("-fx-text-fill: green");
+			});
 
 			issueDate.setValue(null);
 			memberSearchField.setText("");

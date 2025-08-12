@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.libraryManagementSystem.App;
+import com.libraryManagementSystem.dao.ReportsDao;
+import com.libraryManagementSystem.dao.impl.ReportsDaoImpl;
 import com.libraryManagementSystem.domain.CustomOverDueBooks;
 import com.libraryManagementSystem.exceptions.DatabaseOperationException;
-import com.libraryManagementSystem.services.BookServices;
-import com.libraryManagementSystem.services.impl.BookServicesImpl;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class BooksOverDueController implements Initializable {
-	private BookServices bookService = new BookServicesImpl();
+	private final ReportsDao reportsService = new ReportsDaoImpl();
 	@FXML
 	private TableView<CustomOverDueBooks> overDueBookTableView;
 	@FXML
@@ -53,7 +53,7 @@ public class BooksOverDueController implements Initializable {
 		try {
 			overDueBookTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-			overDueBooks = bookService.getOverDueBooks();
+			overDueBooks = reportsService.getOverDueBooks();
 
 			bookId.setCellValueFactory(new PropertyValueFactory<>("bookId"));
 			bookName.setCellValueFactory(new PropertyValueFactory<>("bookName"));

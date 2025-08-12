@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.libraryManagementSystem.App;
+import com.libraryManagementSystem.dao.ReportsDao;
+import com.libraryManagementSystem.dao.impl.ReportsDaoImpl;
 import com.libraryManagementSystem.domain.CustomCategoryCount;
 import com.libraryManagementSystem.exceptions.DatabaseOperationException;
-import com.libraryManagementSystem.services.BookServices;
-import com.libraryManagementSystem.services.impl.BookServicesImpl;
 import com.libraryManagementSystem.utilities.BookCategory;
 
 import javafx.collections.FXCollections;
@@ -22,7 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class CountOfBooksController implements Initializable {
 
-	private BookServices bookService = new BookServicesImpl();
+	private final ReportsDao reportsService = new ReportsDaoImpl();
 	@FXML
 	private TableView<CustomCategoryCount> categoryCountTableView;
 	@FXML
@@ -49,7 +49,7 @@ public class CountOfBooksController implements Initializable {
 		try {
 			categoryCountTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-			categories = bookService.getBooksCountByCategory();
+			categories = reportsService.getBookCountByCategory();
 
 			categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
 			bookCount.setCellValueFactory(new PropertyValueFactory<>("count"));

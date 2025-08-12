@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.libraryManagementSystem.App;
+import com.libraryManagementSystem.dao.ReportsDao;
+import com.libraryManagementSystem.dao.impl.ReportsDaoImpl;
 import com.libraryManagementSystem.domain.CustomActiveIssuedBooks;
 import com.libraryManagementSystem.exceptions.DatabaseOperationException;
-import com.libraryManagementSystem.services.BookServices;
-import com.libraryManagementSystem.services.impl.BookServicesImpl;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ActiveBooksController implements Initializable {
 
-	private BookServices bookService = new BookServicesImpl();
+	private final ReportsDao reportsService = new ReportsDaoImpl();
 
 	@FXML
 	private TableView<CustomActiveIssuedBooks> activeIssuedBooksTableView;
@@ -55,7 +55,7 @@ public class ActiveBooksController implements Initializable {
 		List<CustomActiveIssuedBooks> activeIssuedBooks;
 		try {
 			activeIssuedBooksTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-			activeIssuedBooks = bookService.getActiveIssuedBooks();
+			activeIssuedBooks = reportsService.getActiveIssuedBooks();
 			memberId.setCellValueFactory(new PropertyValueFactory<>("memberId"));
 			memberName.setCellValueFactory(new PropertyValueFactory<>("memberName"));
 			bookTitle.setCellValueFactory(new PropertyValueFactory<>("bookTitle"));

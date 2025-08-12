@@ -3,9 +3,6 @@ package com.libraryManagementSystem.services;
 import java.util.List;
 
 import com.libraryManagementSystem.domain.Book;
-import com.libraryManagementSystem.domain.CustomActiveIssuedBooks;
-import com.libraryManagementSystem.domain.CustomCategoryCount;
-import com.libraryManagementSystem.domain.CustomOverDueBooks;
 import com.libraryManagementSystem.exceptions.BookNotFoundException;
 import com.libraryManagementSystem.exceptions.DatabaseOperationException;
 import com.libraryManagementSystem.exceptions.DuplicateBookException;
@@ -25,11 +22,5 @@ public interface BookServices {
 
 	void updateBookAvailability(Book book, BookAvailability avail)
 			throws BookNotFoundException, DatabaseOperationException;
-
-	List<CustomCategoryCount> getBooksCountByCategory() throws DatabaseOperationException;
-
-	List<CustomActiveIssuedBooks> getActiveIssuedBooks() throws DatabaseOperationException;
-
-	List<CustomOverDueBooks> getOverDueBooks() throws DatabaseOperationException;
 
 }
